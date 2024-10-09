@@ -1,10 +1,9 @@
 #include <iostream>
-
 #include <mcpp/mcpp.h>
-
 #include "menuUtils.h"
 #include "Maze.h"
 #include "Agent.h"
+using std::cin;
 
 #define NORMAL_MODE 0
 #define TESTING_MODE 1
@@ -17,22 +16,29 @@ enum States{
     ST_Exit
 };
 
-int main(void){
+mcpp::MinecraftConnection mc;
 
-    bool mode = NORMAL_MODE;
-    //read Mode
+int main() {
+    int menuOption = 0;
 
+    // bool mode = NORMAL_MODE;
+    // read Mode
     
-
-    mcpp::MinecraftConnection mc; 
     mc.doCommand("time set day"); 
 
     States curState = ST_Main;
 
-    //State machine for menu        
-    while (curState != ST_Exit)
-    {
-        //Do something
+    printStartText();
+    // State machine for menu
+    while (curState != ST_Exit) {
+        printMainMenu();
+        cin >> menuOption;
+        if (menuOption == 1) {
+            printGenerateMazeMenu();
+        }
+        else if (menuOption == 2) {
+            
+        }
     }
 
     printExitMassage();
