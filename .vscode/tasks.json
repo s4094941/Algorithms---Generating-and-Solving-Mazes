@@ -9,12 +9,10 @@
                 "-Werror",
                 "-std=c++17",
                 "-O",
-                "-fdiagnostics-color=always",
                 "-g",
                 "${workspaceFolder}/*.cpp",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
-                "-lstdc++exp",
                 "-lmcpp"
             ],
             "options": {

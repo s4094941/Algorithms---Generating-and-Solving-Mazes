@@ -7,7 +7,9 @@
             "program": "${fileDirname}/${fileBasenameNoExtension}",
             "args": [
                 "<",
-                "${workspaceFolder}/*.input"
+                "${workspaceFolder}/*.input",
+                ">",
+                "${workspaceFolder}/*.output"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
