@@ -6,8 +6,6 @@ int main (void) {
     int row;
     int col;
 
-    std::cin >> row >> col;
-
     // Create dynamic array with size [row] * [col]
     char** structure = new char*[row];
 
