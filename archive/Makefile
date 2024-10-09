@@ -1,12 +1,11 @@
-.default: all
+.default: test.o
 
-all: mazeRunner
+# Rule to compile test.cpp into test.o
+test.o: test.cpp
+	g++ -Wall -Werror -std=c++17 -g -O -o $@ $^ -lmcpp -Wl,-rpath,/Users/jonasinocencio/PS2/mcpp/build
+
+# $^ represents ALL prerequisites
+# $< represents the FIRST prerequisite
 
 clean:
-	rm -f mazeRunner *.o
-
-mazeRunner: Maze.o Agent.o mazeRunner.o
-	g++ -Wall -Werror -std=c++17 -g -O -o $@ $^ -lmcpp
-
-%.o: %.cpp
-	g++ -Wall -Werror -std=c++17 -g -O -c $^
+	rm -f test.o
