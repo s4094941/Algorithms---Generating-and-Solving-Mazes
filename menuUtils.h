@@ -38,16 +38,12 @@ void printSolveMazeMenu(void){
     std::cout << "Enter Menu item to continue: " << std::endl;
 }
 
-
 void printTeamInfo(void){
     std::cout << std::endl;
     std::cout << "Team members:" << std::endl;
-
-    //TODO: change this part to reflect your team**********
-    std::cout << "\t [1] Ruwan Tennakoon (ruwan.tennekoon@rmit.edu.au)" << std::endl;
-    std::cout << "\t [2] Steven Korevaar (steven.korevaar@rmit.edu.au)" << std::endl;
-    //*************
-
+    std::cout << "\t [1] Alexander Davidson (s4089452@student.rmit.edu.au)" << std::endl;
+    std::cout << "\t [2] Caiden da Costa (s4904941@student.rmit.edu.au)" << std::endl;
+    std::cout << "\t [3] Jonas Inocencio (s3787701@student.rmit.edu.au)" << std::endl;
     std::cout << std::endl;
 }
 
