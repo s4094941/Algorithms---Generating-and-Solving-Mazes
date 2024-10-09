@@ -19,20 +19,11 @@ enum States {
 
 MinecraftConnection mc;
 
-<<<<<<< HEAD
-    //bool mode = NORMAL_MODE;
-    //read Mode
-=======
 int main() {
-<<<<<<< HEAD
     int mainMenuOption = 0;
     int generateMenuOption = 0;
     int solveMenuOption = 0;
     States curState = ST_Main;
-=======
-    int menuOption = 0;
->>>>>>> 9d5e18d862e41ca7ca2ecdddd28538c123d04f6d
->>>>>>> b3d356219fbd8d073e4ea95dc89b4bccd96715d0
 
     // bool mode = NORMAL_MODE;
     // read Mode
@@ -107,9 +98,6 @@ int main() {
     printExitMassage();
 
     return EXIT_SUCCESS;
-<<<<<<< HEAD
-}
-=======
 
 }
 
@@ -189,4 +177,3 @@ int buildMaze(int xLength, int zWidth, char** mazeArray) {
 
     return EXIT_SUCCESS;
 }
->>>>>>> b3d356219fbd8d073e4ea95dc89b4bccd96715d0
