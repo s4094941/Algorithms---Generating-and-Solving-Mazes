@@ -1,9 +1,13 @@
+.PHONY : run
+run: mazeRunner
+	 ./mazeRunner
+
 .default: all
 
 all: mazeRunner
 
 clean:
-	rm -f mazeRunner *.o
+	rm -f *.o
 
 mazeRunner: Maze.o Agent.o mazeRunner.o
 	g++ -Wall -Werror -std=c++17 -g -O -o $@ $^ -lmcpp
