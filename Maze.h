@@ -4,21 +4,14 @@
 #include <vector>
 #include <mcpp/mcpp.h>
 
-class Maze
-{
+class Maze {
+    public:
+        Maze(mcpp::Coordinate basePoint, unsigned int xlen, unsigned int zlen,
+             bool mode);
+        ~Maze();
 
-public:
-    Maze(mcpp::Coordinate basePoint, unsigned int xlen, 
-                                        unsigned int zlen,
-                                        bool mode);
-    ~Maze();
-
-private:
-    /* data */
+    private:
 
 };
 
-
-
-
-#endif //ASSIGN_MAZE_H
+#endif // ASSIGN_MAZE_H
