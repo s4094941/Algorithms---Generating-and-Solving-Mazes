@@ -11,7 +11,7 @@ using mcpp::Coordinate;
 #define MOVE_ZPLUS Coordinate(0, 0, 1)
 #define MOVE_ZMINUS Coordinate(0, 0, -1)
 
-MinecraftConnection mc;
+
 
 enum solveAlgorithm {
     RIGHT_HAND_FOLLOW,
@@ -31,7 +31,7 @@ class Agent {
         ~Agent();
 
     private:
-
+        MinecraftConnection mc;
 };
 
 #endif // ASSIGN3_AGENT_H
