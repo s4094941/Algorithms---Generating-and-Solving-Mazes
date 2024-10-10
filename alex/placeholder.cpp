@@ -62,10 +62,10 @@ int main() {
         if (curState == ST_GetMaze) {
             cin >> generateMenuOption;
             if (generateMenuOption == 1) {
-
+                curState = ST_Main;
             }
             else if (generateMenuOption == 2) {
-
+                curState = ST_Main;
             }
             else if (generateMenuOption == 3) {
                 curState = ST_Main;
@@ -78,10 +78,10 @@ int main() {
         else if (curState == ST_SolveMaze) {
             cin >> solveMenuOption;
             if (solveMenuOption == 1) {
-
+                curState = ST_Main;
             }
             else if (solveMenuOption == 2) {
-
+                curState = ST_Main;
             }
             else if (solveMenuOption == 3) {
                 curState = ST_Main;
@@ -94,11 +94,12 @@ int main() {
         else if (curState == ST_Creators) {
             curState = ST_Main;
         }
+        else if (curState == ST_Exit) {
+            printExitMassage();
+        }
     }
-    printExitMassage();
 
     return EXIT_SUCCESS;
-
 }
 
 int buildMaze(int xLength, int zWidth, char** mazeArray) {
