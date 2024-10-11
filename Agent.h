@@ -11,8 +11,6 @@ using mcpp::Coordinate;
 #define MOVE_ZPLUS Coordinate(0, 0, 1)
 #define MOVE_ZMINUS Coordinate(0, 0, -1)
 
-
-
 enum solveAlgorithm {
     RIGHT_HAND_FOLLOW,
     BREATH_FIRST_SEARCH,
