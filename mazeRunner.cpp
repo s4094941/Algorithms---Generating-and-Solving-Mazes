@@ -5,6 +5,7 @@ using mcpp::MinecraftConnection;
 using std::cin;
 using std::cout;
 using std::endl;
+using std::string;
 
 #define NORMAL_MODE 0
 #define TESTING_MODE 1
@@ -20,9 +21,9 @@ enum States {
 MinecraftConnection mc;
 
 int main() {
-    int mainMenuOption = 0;
-    int generateMenuOption = 0;
-    int solveMenuOption = 0;
+    string mainMenuOption = "";
+    string generateMenuOption = "";
+    string solveMenuOption = "";
     States curState = ST_Main;
 
     // bool mode = NORMAL_MODE;
@@ -36,22 +37,22 @@ int main() {
             printMainMenu();
         }
         cin >> mainMenuOption;
-        if (mainMenuOption == 1) {
+        if (mainMenuOption == "1") {
             printGenerateMazeMenu();
             curState = ST_GetMaze;
         }
-        else if (mainMenuOption == 2) {
+        else if (mainMenuOption == "2") {
             curState = ST_Main;
         }
-        else if (mainMenuOption == 3) {
+        else if (mainMenuOption == "3") {
             printSolveMazeMenu();
             curState = ST_SolveMaze;
         }
-        else if (mainMenuOption == 4) {
+        else if (mainMenuOption == "4") {
             printTeamInfo();
             curState = ST_Creators;
         }
-        else if (mainMenuOption == 5) {
+        else if (mainMenuOption == "5") {
             curState = ST_Exit;
         }
         else {
@@ -61,13 +62,13 @@ int main() {
 
         if (curState == ST_GetMaze) {
             cin >> generateMenuOption;
-            if (generateMenuOption == 1) {
+            if (generateMenuOption == "1") {
                 curState = ST_Main;
             }
-            else if (generateMenuOption == 2) {
+            else if (generateMenuOption == "2") {
                 curState = ST_Main;
             }
-            else if (generateMenuOption == 3) {
+            else if (generateMenuOption == "3") {
                 curState = ST_Main;
             }
             else {
@@ -77,13 +78,13 @@ int main() {
         }
         else if (curState == ST_SolveMaze) {
             cin >> solveMenuOption;
-            if (solveMenuOption == 1) {
+            if (solveMenuOption == "1") {
                 curState = ST_Main;
             }
-            else if (solveMenuOption == 2) {
+            else if (solveMenuOption == "2") {
                 curState = ST_Main;
             }
-            else if (solveMenuOption == 3) {
+            else if (solveMenuOption == "3") {
                 curState = ST_Main;
             }
             else {
