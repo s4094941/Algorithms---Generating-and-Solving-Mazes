@@ -63,3 +63,9 @@ int main (void) {
 
     return EXIT_SUCCESS;
 }
+
+// Create linked list for current path
+// Check 2 spaces in random direction
+    // if node, break wall
+    // else, pop the top node off, check that direction
+        // loop
