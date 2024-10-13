@@ -10,3 +10,7 @@ mazeRunner: Maze.o Agent.o mazeRunner.o
 
 %.o: %.cpp
 	g++ -Wall -Werror -std=c++17 -g -O -c $^
+
+.PHONY: run
+run: mazeRunner
+	 ./mazeRunner

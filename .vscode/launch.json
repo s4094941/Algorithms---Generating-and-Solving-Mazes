@@ -6,10 +6,11 @@
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
             "args": [
-                // "<",
-                // "${workspaceFolder}/Tests/*.input",
-                // ">",
-                // "${workspaceFolder}/Tests/*.expout"
+                "-testmode",
+                "<",
+                "${workspaceFolder}/Tests/test1.input",
+                ">",
+                "${workspaceFolder}/Tests/test1.out"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

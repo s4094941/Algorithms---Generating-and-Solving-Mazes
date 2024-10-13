@@ -1,9 +1,9 @@
 #include "Agent.h"
 
-Agent::Agent(mcpp::Coordinate startLoc)
-{
+Agent::Agent(Coordinate startLoc) {
+
 }
 
-Agent::~Agent()
-{
+Agent::~Agent() {
+
 }
