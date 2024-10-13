@@ -18,6 +18,8 @@ enum States {
     ST_Exit
 };
 
+void solveManually(bool mode);
+
 MinecraftConnection mc;
 
 int main(int argc, char* argv[]) {
@@ -68,7 +70,6 @@ int main(int argc, char* argv[]) {
         }
         else {
             cout << "Input Error: Enter a number between 1 and 5 ..." << endl;
-            curState = ST_Main;
         }
 
         if (curState == ST_GetMaze) {
@@ -113,6 +114,24 @@ int main(int argc, char* argv[]) {
     }
 
     return EXIT_SUCCESS;
+}
+
+void solveManually(bool mode) {
+    char maze[7][6] = { {"x.xxx"},
+                        {"x.x.x"},
+                        {"x.x.x"},
+                        {"x.x.x"},
+                        {"x.x.x"},
+                        {"x...x"},
+                        {"xxxxx"} };
+    
+    // loop through maze
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 6; j++) {
+            cout << maze[i][j];
+        }
+        cout << endl;
+    }
 }
 
 int buildMaze(int xLength, int zWidth, char** mazeArray) {
