@@ -18,9 +18,9 @@ enum States {
     ST_Exit
 };
 
-void solveManually(bool mode);
-
 MinecraftConnection mc;
+
+void solveManually(char** maze, int xLen, int zLen, bool mode);
 
 int main(int argc, char* argv[]) {
     string mainMenuOption = "";
@@ -116,22 +116,50 @@ int main(int argc, char* argv[]) {
     return EXIT_SUCCESS;
 }
 
-void solveManually(bool mode) {
-    char maze[7][6] = { {"x.xxx"},
-                        {"x.x.x"},
-                        {"x.x.x"},
-                        {"x.x.x"},
-                        {"x.x.x"},
-                        {"x...x"},
-                        {"xxxxx"} };
-    
-    // loop through maze
-    for (int i = 0; i < 7; i++) {
-        for (int j = 0; j < 6; j++) {
+void solveManually(char** maze, int xLen, int zLen, bool mode) {
+    int airCounter = 0;
+    int randAir = 0;
+    Coordinate airLoc(0, 0, 0);
+
+    for (int i = 0; i < xLen; i++) {
+        for (int j = 0; j < zLen; j++) {
             cout << maze[i][j];
         }
         cout << endl;
     }
+
+    if (mode == TESTING_MODE) {
+        // airLoc.x = ;
+        // airLoc.z = ;
+    }
+    else {
+        srand(time(0));
+
+        for (int i = 0; i < xLen; i++) {
+            for (int j = 0; j < zLen; j++) {
+                if (maze[i][j] == '.') {
+                    airCounter++;
+                }
+            }
+        }
+
+        randAir = rand() % airCounter;
+        airCounter = 0;
+        for (int i = 0; i < xLen; i++) {
+            for (int j = 0; j < zLen; j++) {
+                if (maze[i][j] == '.') {
+                    airCounter++;
+                }
+
+                if (airCounter == randAir) {
+                    airLoc.x = i;
+                    airLoc.z = j;
+                }
+            }
+        }
+    }
+    airLoc.y = mc.getHeight(airLoc.x, airLoc.z) + 1;
+    mc.setPlayerTilePosition(airLoc);
 }
 
 int buildMaze(int xLength, int zWidth, char** mazeArray) {
