@@ -18,17 +18,19 @@ enum States {
     ST_Exit
 };
 
-MinecraftConnection mc;
-
-void solveManually(char** maze, int xLen, int zLen, bool mode);
+void solveManually(mcpp::Coordinate basePoint, int xLen, int zLen, bool mode);
 
 int main(int argc, char* argv[]) {
+    MinecraftConnection mc;
     string mainMenuOption = "";
     string generateMenuOption = "";
     string solveMenuOption = "";
     string cmdLineArg = "";
     bool mode = NORMAL_MODE;
     States curState = ST_Main;
+    int xLen = 7;
+    int zLen = 6;
+    mcpp::Coordinate basePoint(4800, 72, 4389);
 
     // read Mode
     if (argc == 2) {
@@ -92,7 +94,7 @@ int main(int argc, char* argv[]) {
             printSolveMazeMenu();
             cin >> solveMenuOption;
             if (solveMenuOption == "1") {
-                curState = ST_Main;
+                solveManually(basePoint, xLen, zLen, mode);
             }
             else if (solveMenuOption == "2") {
                 curState = ST_Main;
@@ -116,18 +118,27 @@ int main(int argc, char* argv[]) {
     return EXIT_SUCCESS;
 }
 
-void solveManually(char** maze, int xLen, int zLen, bool mode) {
+void solveManually(mcpp::Coordinate basePoint, int xLen, int zLen, bool mode) {
+    MinecraftConnection mc;
     int airCounter = 0;
     int randAir = 0;
     Coordinate airLoc(0, 0, 0);
+    char maze[xLen][zLen] = { {"x.xxx"},
+                              {"x.x.x"},
+                              {"x.x.x"},
+                              {"x.x.x"},
+                              {"x.x.x"},
+                              {"x...x"},
+                              {"xxxxx"} };
+    bool foundRandAir = false;
 
     if (mode == TESTING_MODE) {
         // airLoc.x = ;
         // airLoc.z = ;
     }
     else {
-        for (int i = 0; i < xLen; i++) {
-            for (int j = 0; j < zLen; j++) {
+        for (int i = 0; i < zLen; i++) {
+            for (int j = 0; j < xLen; j++) {
                 if (maze[i][j] == '.') {
                     airCounter++;
                 }
@@ -135,21 +146,23 @@ void solveManually(char** maze, int xLen, int zLen, bool mode) {
         }
 
         srand(time(0));
-        randAir = rand() % airCounter;
+        randAir = rand() % airCounter + 1;
+        cout << randAir << endl;
         airCounter = 0;
-        for (int i = 0; i < xLen; i++) {
-            for (int j = 0; j < zLen; j++) {
+        for (int i = 0; i < zLen; i++) {
+            for (int j = 0; (j < xLen) && (!foundRandAir); j++) {
                 if (maze[i][j] == '.') {
                     airCounter++;
                 }
 
                 if (airCounter == randAir) {
-                    airLoc.x = i;
-                    airLoc.z = j;
+                    airLoc.z = i + basePoint.z;
+                    airLoc.x = j + basePoint.x;
+                    foundRandAir = true;
                 }
             }
         }
     }
-    airLoc.y = mc.getHeight(airLoc.x, airLoc.z) + 1;
+    airLoc.y = mc.getHeight(airLoc.x, airLoc.z);
     mc.setPlayerTilePosition(airLoc);
 }
