@@ -7,43 +7,88 @@
 class MazeNode {
     private:
         int row, col;
-        bool up, left, down, right, isWall;
-        bool explored = false;
+        int dirCount = 4;
+        bool up = false, down = false, left = false, right = false;
+        bool isWall = true, explored = false;
         MazeNode* prevNode = nullptr;
         // TODO: Change bools to bitfield 000000
     public:
-        MazeNode (int r, int c) : row(r), col(c) {
-            isWall = true;
-            up = false;
-            left = false;
-            down = false;
-            right = false;
-        }
+        MazeNode (int r, int c) : row(r), col(c) {}
+
         void setWall (bool status) {
             isWall = status;
         }
 
-        void print() {
-            if (isWall) {
-                std::cout << '#';
-            } else {
-                std::cout << '.';
+        void setExplored(bool status) {
+            explored = status;
+            isWall = false;
+        }
+
+        void checkUp() {
+            up = true;
+            --dirCount;
+        }
+        void checkDown() {
+            down = true;
+            --dirCount;
+        }
+        void checkLeft() {
+            left = true;
+            --dirCount;
+        }
+        void checkRight() {
+            right = false;
+            --dirCount;
+        }
+
+        int getRandomDirection() {
+            if (dirCount <= 0) { return -1; }
+
+            int count = 0;
+            int dirList[4];
+            if (!up) {
+                dirList[count++] = 0; // increment count if this line runs
             }
+            if (!down) {
+                dirList[count++] = 1;
+            }
+            if (!left) {
+                dirList[count++] = 2;
+            }
+            if (!right) {
+                dirList[count++] = 3;
+            }
+
+            int direction = dirList[rand() % dirCount];
+
+            return direction;
         }
 
         int getRow() { return row; }
         int getCol() { return col; }
         bool getExp() { return explored; }
-        MazeNode* getPrevNode() { return prevNode; }
+        MazeNode* getPrevNode() {
+            if (prevNode != nullptr) {
+                return prevNode;
+            }
+            return NULL;
+        }
 
-        ~MazeNode() {
-            delete this;
+        void print() {
+            if (isWall) {
+                std::cout << '#';
+            } else if (explored) {
+                std::cout << '-';
+            } else {
+                std::cout << dirCount;
+            }
         }
 };
 
 int main (void) {
     int row;
     int col;
+    srand((unsigned)time(NULL));
 
     std::cout << "Enter the number of rows and columns (must be odd)";
     std::cin >> row >> col;
@@ -72,7 +117,22 @@ int main (void) {
         if (i % 2 != 0) {
             for (int j = 0; j < col; ++j) {
                 if (j % 2 != 0) {
+                    // set as unexplored node
                     maze[i][j]->setWall(false);
+                    // check top row
+                    if (i == 1) {
+                        maze[i][j]->checkUp();
+                    }
+                    // check bottom row
+                    if (i == row - 2) {
+                        maze[i][j]->checkDown();
+                    }
+                    if (j == 1) {
+                        maze[i][j]->checkLeft();
+                    }
+                    if (j == col - 2) {
+                        maze[i][j]->checkRight();
+                    }
                 }
             }
         }
@@ -87,10 +147,9 @@ int main (void) {
         std::cout << std::endl;
     }
 
-    //bool complete = false;
-    srand((unsigned)time(NULL));
-    int startPoint = rand() % col;
-            std::cout << "StartPoint = " << startPoint; // DEBUG
+// Aight mf, lets go: Initialise first node
+    // maze[1][1]->setExplored(true);
+
 
 // Delete maze when done -----
     for (int i = 0; i < row; ++i) {
@@ -118,13 +177,3 @@ int main (void) {
 
 // valgrind --tool=memcheck --leak-check=yes ./test < env.input
     // env.input is just the saved input
-
-
-
-// NODE
-    // x, y
-    // wall/air
-    // explored y/n
-    // prev node, if no, exit
-    // bool for UP, LEFT, DOWN, RIGHT
-        // randomly check unexplored direction
