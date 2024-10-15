@@ -1,4 +1,7 @@
 #include <iostream>
+#include <cstdlib>
+#include <vector>
+#include <utility>
 
 int main (void) {
     int row;
@@ -27,15 +30,17 @@ int main (void) {
 // . = untouched node
 // x = wall
 // - = path
+
+
     for (int i = 0; i < row; ++i) {
-        if (i == 0 || i == row - 1) {
+        if (i % 2 == 0) {
             for (int j = 0; j < col; ++j) {
-                structure[i][j] = 'x';
+                structure[i][j] = '#';
             }
         } else {
             for (int j = 0; j < col; ++j) {
                 if (j % 2 == 0) {
-                    structure[i][j] = 'x';
+                    structure[i][j] = '#';
                 } else {
                     structure[i][j] = '.';
                 }
@@ -54,6 +59,17 @@ int main (void) {
     }
     std::cout << std::endl;
 
+
+
+// Create vector of pairs
+    std::vector<std::pair<int, int>> path;
+
+//
+    //bool complete = false;
+    srand((unsigned)time(NULL));
+    int startPoint = rand() % col;
+            std::cout << "StartPoint = " << startPoint; // DEBUG
+
 // Delete structure when done -----
     for (int i = 0; i < row; ++i) {
         delete[] structure[i];
@@ -64,8 +80,31 @@ int main (void) {
     return EXIT_SUCCESS;
 }
 
+// TODO: every even row/column will be air
+    // fill w air
+    // fill all x % 2 == 1 with wall
+    // fill all y % 2 == 1 with wall
+
 // Create linked list for current path
 // Check 2 spaces in random direction
     // if node, break wall
     // else, pop the top node off, check that direction
         // loop
+// end when vector.size() == 0
+
+// Random start/exit points
+
+// Random direction that HASN'T been explored
+
+// valgrind --tool=memcheck --leak-check=yes ./test < env.input
+    // env.input is just the saved input
+
+
+
+// NODE
+    // x, y
+    // wall/air
+    // explored y/n
+    // prev node, if no, exit
+    // bool for UP, LEFT, DOWN, RIGHT
+        // randomly check unexplored direction
