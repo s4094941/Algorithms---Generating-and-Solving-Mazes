@@ -11,43 +11,49 @@ class MazeNode {
         bool up = false, down = false, left = false, right = false;
         bool isWall = true, explored = false;
         MazeNode* prevNode = nullptr;
-        // TODO: Change bools to bitfield 000000
+    // TODO: Change bools to bitfield 000000
+
     public:
+    // Constructor
         MazeNode (int r, int c) : row(r), col(c) {}
 
-        void setWall (bool status) {
-            isWall = status;
+    // Basic mutators
+        void setWall (bool status) { isWall = status; }
+        void setExplored(bool status) { explored = status; isWall = false; }
+    
+    // Basic accessors
+        int getRow() { return row; }
+        int getCol() { return col; }
+        bool getExp() { return explored; }
+
+    // Returns the previous node if available
+        MazeNode* getPrevNode() {
+            if (prevNode != nullptr) {
+                return prevNode;
+            }
+            return NULL;
         }
 
-        void setExplored(bool status) {
-            explored = status;
-            isWall = false;
-        }
+    // Set directions as checked, and decrement number of valid directions
+        void checkUp()    { up    = true; --dirCount; }
+        void checkDown()  { down  = true; --dirCount; }
+        void checkLeft()  { left  = true; --dirCount; }
+        void checkRight() { right = true; --dirCount; }
 
-        void checkUp() {
-            up = true;
-            --dirCount;
-        }
-        void checkDown() {
-            down = true;
-            --dirCount;
-        }
-        void checkLeft() {
-            left = true;
-            --dirCount;
-        }
-        void checkRight() {
-            right = false;
-            --dirCount;
-        }
+        // void checkUp() {
+        //     up = true;
+        //     --dirCount;
+        // }
 
+    // Return a random direction from available directions
+    // UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3;
         int getRandomDirection() {
             if (dirCount <= 0) { return -1; }
 
             int count = 0;
             int dirList[4];
             if (!up) {
-                dirList[count++] = 0; // increment count if this line runs
+                dirList[count++] = 0;
             }
             if (!down) {
                 dirList[count++] = 1;
@@ -62,16 +68,6 @@ class MazeNode {
             int direction = dirList[rand() % dirCount];
 
             return direction;
-        }
-
-        int getRow() { return row; }
-        int getCol() { return col; }
-        bool getExp() { return explored; }
-        MazeNode* getPrevNode() {
-            if (prevNode != nullptr) {
-                return prevNode;
-            }
-            return NULL;
         }
 
         void print() {
