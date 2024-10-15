@@ -28,8 +28,8 @@ int main(int argc, char* argv[]) {
     string cmdLineArg = "";
     bool mode = NORMAL_MODE;
     States curState = ST_Main;
-    int xLen = 7;
-    int zLen = 6;
+    int xLen = 6;
+    int zLen = 7;
     mcpp::Coordinate basePoint(4800, 72, 4389);
 
     // read Mode
@@ -123,7 +123,7 @@ void solveManually(mcpp::Coordinate basePoint, int xLen, int zLen, bool mode) {
     int airCounter = 0;
     int randAir = 0;
     Coordinate airLoc(0, 0, 0);
-    char maze[xLen][zLen] = { {"x.xxx"},
+    char maze[zLen][xLen] = { {"x.xxx"},
                               {"x.x.x"},
                               {"x.x.x"},
                               {"x.x.x"},
