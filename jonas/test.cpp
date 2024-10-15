@@ -2,6 +2,44 @@
 #include <cstdlib>
 #include <vector>
 #include <utility>
+//#include <MazeNode.h>
+
+class MazeNode {
+    private:
+        int row, col;
+        bool up, left, down, right, isWall;
+        bool explored = false;
+        MazeNode* prevNode = nullptr;
+        // TODO: Change bools to bitfield 000000
+    public:
+        MazeNode (int r, int c) : row(r), col(c) {
+            isWall = true;
+            up = false;
+            left = false;
+            down = false;
+            right = false;
+        }
+        void setWall (bool status) {
+            isWall = status;
+        }
+
+        void print() {
+            if (isWall) {
+                std::cout << '#';
+            } else {
+                std::cout << '.';
+            }
+        }
+
+        int getRow() { return row; }
+        int getCol() { return col; }
+        bool getExp() { return explored; }
+        MazeNode* getPrevNode() { return prevNode; }
+
+        ~MazeNode() {
+            delete this;
+        }
+};
 
 int main (void) {
     int row;
@@ -18,72 +56,54 @@ int main (void) {
     if (row % 2 == 0) { ++row; }
     if (col % 2 == 0) { ++col; }
 
-// Create dynamic array with size [row] * [col]
-    char** structure = new char*[row];
-
+// Create dynamic array of MazeNodes with size [row] * [col]
+    MazeNode*** maze = new MazeNode**[row];
     for (int i = 0; i < row; ++i) {
-        structure[i] = new char[col];
+        maze[i] = new MazeNode*[col];
+        for (int j = 0; j < col; ++j) {
+            maze[i][j] = new MazeNode(i, j);
+        }
     }
 
-    std::cout << "creating a structure with [" << row << "] rows and [" << col << "] columns" << std::endl;
+    std::cout << "creating a maze with [" << row << "] rows and [" << col << "] columns" << std::endl;
 
-// . = untouched node
-// x = wall
-// - = path
-
-
+// Set wallStatus to false for all nodes where x and y are odd
     for (int i = 0; i < row; ++i) {
-        if (i % 2 == 0) {
+        if (i % 2 != 0) {
             for (int j = 0; j < col; ++j) {
-                structure[i][j] = '#';
-            }
-        } else {
-            for (int j = 0; j < col; ++j) {
-                if (j % 2 == 0) {
-                    structure[i][j] = '#';
-                } else {
-                    structure[i][j] = '.';
+                if (j % 2 != 0) {
+                    maze[i][j]->setWall(false);
                 }
             }
         }
     }
 
-// Print structure
+// Print maze
+
     for (int i = 0; i < row; ++i) {
-        //std::cout << "?";
         for (int j = 0; j < col; ++j) {
-            //std::cout << "!";
-            std::cout << structure[i][j];
+            maze[i][j]->print();
         }
         std::cout << std::endl;
     }
-    std::cout << std::endl;
 
-
-
-// Create vector of pairs
-    std::vector<std::pair<int, int>> path;
-
-//
     //bool complete = false;
     srand((unsigned)time(NULL));
     int startPoint = rand() % col;
             std::cout << "StartPoint = " << startPoint; // DEBUG
 
-// Delete structure when done -----
+// Delete maze when done -----
     for (int i = 0; i < row; ++i) {
-        delete[] structure[i];
+        for (int j = 0; j < col; ++j) {
+            delete maze[i][j];
+        }
+        delete[] maze[i];
     }
 
-    delete[] structure;
+    delete[] maze;
 
     return EXIT_SUCCESS;
 }
-
-// TODO: every even row/column will be air
-    // fill w air
-    // fill all x % 2 == 1 with wall
-    // fill all y % 2 == 1 with wall
 
 // Create linked list for current path
 // Check 2 spaces in random direction
