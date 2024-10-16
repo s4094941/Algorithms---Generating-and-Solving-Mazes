@@ -149,8 +149,8 @@ void solveManually(mcpp::Coordinate basePoint, int xLen, int zLen, bool mode) {
         randAir = rand() % airCounter + 1;
         cout << randAir << endl;
         airCounter = 0;
-        for (int i = 0; i < zLen; i++) {
-            for (int j = 0; (j < xLen) && (!foundRandAir); j++) {
+        for (int i = 0; (i < zLen) && !foundRandAir; i++) {
+            for (int j = 0; (j < xLen) && !foundRandAir; j++) {
                 if (maze[i][j] == '.') {
                     airCounter++;
                 }
