@@ -20,30 +20,40 @@ class MazeNode {
     // Basic mutators
         void setWall (bool status) { isWall = status; }
         void setExplored(bool status) { explored = status; isWall = false; }
+        void setPrev (MazeNode* prev) { prevNode = prev; }
     
     // Basic accessors
         int getRow() { return row; }
         int getCol() { return col; }
         bool getExp() { return explored; }
 
+        void getPrev() {
+            if (prevNode == nullptr) {
+                std::cout << "No previous node" << std::endl;
+            } else {
+                std::cout << "Previous node found" << std::endl;
+            }
+        }
+
     // Returns the previous node if available
         MazeNode* getPrevNode() {
-            if (prevNode != nullptr) {
-                return prevNode;
-            }
+            if (prevNode != nullptr) { return prevNode; }
             return NULL;
         }
 
     // Set directions as checked, and decrement number of valid directions
-        void checkUp()    { up    = true; --dirCount; }
-        void checkDown()  { down  = true; --dirCount; }
-        void checkLeft()  { left  = true; --dirCount; }
-        void checkRight() { right = true; --dirCount; }
-
-        // void checkUp() {
-        //     up = true;
-        //     --dirCount;
-        // }
+        void checkUp()    {
+            up    = true; --dirCount;
+        }
+        void checkDown()  {
+            down  = true; --dirCount;
+        }
+        void checkLeft()  {
+            left  = true; --dirCount;
+        }
+        void checkRight() {
+            right = true; --dirCount;
+        }
 
     // Return a random direction from available directions
     // UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3;
@@ -51,7 +61,7 @@ class MazeNode {
             if (dirCount <= 0) { return -1; }
 
             int count = 0;
-            int dirList[4];
+            int dirList[dirCount];
             if (!up) {
                 dirList[count++] = 0;
             }
@@ -134,6 +144,32 @@ int main (void) {
         }
     }
 
+// Begin randomisation
+
+    int startCol = (rand() % col - 2) + 1;
+    int endCol = (rand() % col - 2) + 1;
+    if (startCol % 2 == 0) { ++startCol; }
+    if (endCol % 2 == 0)   { ++endCol; }
+    
+    MazeNode* headNode = new MazeNode(-1, -1);
+    MazeNode* currNode = maze[1][startCol];
+    currNode->setExplored(true);
+    currNode->setPrev(headNode);
+
+//TESTING STUFF ===================================================
+    maze[0][startCol]->setWall(false);
+    //maze[0][startCol]->setExplored(true);
+    maze[row - 1][endCol]->setWall(false);
+    //maze[row - 1][endCol]->setExplored(true);
+    std::cout << startCol << " " << endCol << std::endl;
+    maze[1][startCol]->getPrev();
+//TESTING STUFF ===================================================
+    
+    while (currNode != headNode) {
+
+    }
+
+
 // Print maze
 
     for (int i = 0; i < row; ++i) {
@@ -142,10 +178,6 @@ int main (void) {
         }
         std::cout << std::endl;
     }
-
-// Aight mf, lets go: Initialise first node
-    // maze[1][1]->setExplored(true);
-
 
 // Delete maze when done -----
     for (int i = 0; i < row; ++i) {
