@@ -25,6 +25,7 @@ class MazeNode {
     // Basic accessors
         int getRow() { return row; }
         int getCol() { return col; }
+        int getDirCount() { return dirCount; }
         bool getExp() { return explored; }
 
         void getPrev() {
@@ -42,16 +43,16 @@ class MazeNode {
         }
 
     // Set directions as checked, and decrement number of valid directions
-        void checkUp()    {
+        void markUp()    {
             up    = true; --dirCount;
         }
-        void checkDown()  {
+        void markDown()  {
             down  = true; --dirCount;
         }
-        void checkLeft()  {
+        void markLeft()  {
             left  = true; --dirCount;
         }
-        void checkRight() {
+        void markRight() {
             right = true; --dirCount;
         }
 
@@ -61,7 +62,7 @@ class MazeNode {
             if (dirCount <= 0) { return -1; }
 
             int count = 0;
-            int dirList[dirCount];
+            int dirList[4];
             if (!up) {
                 dirList[count++] = 0;
             }
@@ -127,17 +128,18 @@ int main (void) {
                     maze[i][j]->setWall(false);
                     // check top row
                     if (i == 1) {
-                        maze[i][j]->checkUp();
+                        maze[i][j]->markUp();
                     }
                     // check bottom row
                     if (i == row - 2) {
-                        maze[i][j]->checkDown();
+                        maze[i][j]->markDown();
                     }
                     if (j == 1) {
-                        maze[i][j]->checkLeft();
+                        maze[i][j]->markLeft();
                     }
                     if (j == col - 2) {
-                        maze[i][j]->checkRight();
+                        maze[i][j]->markRight
+            ();
                     }
                 }
             }
@@ -145,30 +147,72 @@ int main (void) {
     }
 
 // Begin randomisation
-
-    int startCol = (rand() % col - 2) + 1;
-    int endCol = (rand() % col - 2) + 1;
-    if (startCol % 2 == 0) { ++startCol; }
-    if (endCol % 2 == 0)   { ++endCol; }
+    int startCol = (rand() % ((col - 1) / 2)) * 2 + 1;
     
     MazeNode* headNode = new MazeNode(-1, -1);
     MazeNode* currNode = maze[1][startCol];
     currNode->setExplored(true);
     currNode->setPrev(headNode);
-
-//TESTING STUFF ===================================================
     maze[0][startCol]->setWall(false);
-    //maze[0][startCol]->setExplored(true);
-    maze[row - 1][endCol]->setWall(false);
-    //maze[row - 1][endCol]->setExplored(true);
-    std::cout << startCol << " " << endCol << std::endl;
-    maze[1][startCol]->getPrev();
-//TESTING STUFF ===================================================
+    maze[0][startCol]->setExplored(true);
     
     while (currNode != headNode) {
-
+    // bool checkDirection(int dir) --------------------
+        if (currNode->getDirCount() == 0) {
+            currNode = currNode->getPrevNode();
+            continue;
+        }
+        int dir = currNode->getRandomDirection();
+    // check node 2 blocks UP
+        if (dir == 0) {
+            currNode->markUp();
+            MazeNode* nextNode =  maze[currNode->getRow() - 2][currNode->getCol()];
+            MazeNode* nextWall = maze[currNode->getRow() - 1][currNode->getCol()];
+            if (nextNode->getExp() == false) {
+                nextNode->setPrev(currNode);
+                currNode = nextNode;
+                currNode->setExplored(true);
+                nextWall->setExplored(true);
+                //delete nextNode;
+            }
+    // check node 2 blocks DOWN            
+        } else if (dir == 1) {
+            currNode->markDown();
+            MazeNode* nextNode =  maze[currNode->getRow() + 2][currNode->getCol()];
+            MazeNode* nextWall = maze[currNode->getRow() + 1][currNode->getCol()];
+            if (nextNode->getExp() == false) {
+                nextNode->setPrev(currNode);
+                currNode = nextNode;
+                currNode->setExplored(true);
+                nextWall->setExplored(true);
+                //delete nextNode;
+            }
+    // check node 2 blocks LEFT            
+        } else if (dir == 2) {
+            currNode->markLeft();
+            MazeNode* nextNode =  maze[currNode->getRow()][currNode->getCol() - 2];
+            MazeNode* nextWall = maze[currNode->getRow()][currNode->getCol() - 1];
+            if (nextNode->getExp() == false) {
+                nextNode->setPrev(currNode);
+                currNode = nextNode;
+                currNode->setExplored(true);
+                nextWall->setExplored(true);
+                //delete nextNode;
+            }
+    // check node 2 blocks RIGHT
+        } else if (dir == 3) {
+            currNode->markRight();
+            MazeNode* nextNode =  maze[currNode->getRow()][currNode->getCol() + 2];
+            MazeNode* nextWall = maze[currNode->getRow()][currNode->getCol() + 1];
+            if (nextNode->getExp() == false) {
+                nextNode->setPrev(currNode);
+                currNode = nextNode;
+                currNode->setExplored(true);
+                nextWall->setExplored(true);
+                //delete nextNode;
+            }
+        }
     }
-
 
 // Print maze
 
