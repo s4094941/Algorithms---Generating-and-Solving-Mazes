@@ -82,3 +82,4 @@ void MazeNode::printNode() {
     } else {
         std::cout << dirCount;
     }
+}
