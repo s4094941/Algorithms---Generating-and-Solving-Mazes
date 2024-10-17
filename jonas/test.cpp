@@ -83,9 +83,9 @@ class MazeNode {
 
         void print() {
             if (isWall) {
-                std::cout << '#';
+                std::cout << 'x';
             } else if (explored) {
-                std::cout << '-';
+                std::cout << '.';
             } else {
                 std::cout << dirCount;
             }
