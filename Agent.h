@@ -1,7 +1,6 @@
 #ifndef ASSIGN3_AGENT_H
 #define ASSIGN3_AGENT_H
 
-#include <iostream>
 #include <mcpp/mcpp.h>
 using mcpp::MinecraftConnection;
 using mcpp::Coordinate;
@@ -13,7 +12,7 @@ using mcpp::Coordinate;
 
 enum solveAlgorithm {
     RIGHT_HAND_FOLLOW,
-    BREATH_FIRST_SEARCH,
+    BREATH_FIRST_SEARCH
 };
 
 enum AgentOrientation {

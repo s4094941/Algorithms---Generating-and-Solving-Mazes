@@ -1,6 +1,7 @@
 #include "menuUtils.h"
 #include "Maze.h"
 #include "Agent.h"
+#include "solveManually.h"
 using mcpp::MinecraftConnection;
 using std::cin;
 using std::cout;
@@ -18,8 +19,6 @@ enum States {
     ST_Exit
 };
 
-void solveManually(mcpp::Coordinate basePoint, int xLen, int zLen, bool mode);
-
 int main(int argc, char* argv[]) {
     MinecraftConnection mc;
     string mainMenuOption = "";
@@ -28,9 +27,6 @@ int main(int argc, char* argv[]) {
     string cmdLineArg = "";
     bool mode = NORMAL_MODE;
     States curState = ST_Main;
-    int xLen = 6;
-    int zLen = 7;
-    mcpp::Coordinate basePoint(4800, 72, 4389);
 
     // read Mode
     if (argc == 2) {
@@ -94,7 +90,8 @@ int main(int argc, char* argv[]) {
             printSolveMazeMenu();
             cin >> solveMenuOption;
             if (solveMenuOption == "1") {
-                solveManually(basePoint, xLen, zLen, mode);
+                // Input will be a Maze object later
+                solveManually();
             }
             else if (solveMenuOption == "2") {
                 curState = ST_Main;
@@ -116,53 +113,4 @@ int main(int argc, char* argv[]) {
     }
 
     return EXIT_SUCCESS;
-}
-
-void solveManually(mcpp::Coordinate basePoint, int xLen, int zLen, bool mode) {
-    MinecraftConnection mc;
-    int airCounter = 0;
-    int randAir = 0;
-    Coordinate airLoc(0, 0, 0);
-    char maze[zLen][xLen] = { {"x.xxx"},
-                              {"x.x.x"},
-                              {"x.x.x"},
-                              {"x.x.x"},
-                              {"x.x.x"},
-                              {"x...x"},
-                              {"xxxxx"} };
-    bool foundRandAir = false;
-
-    if (mode == TESTING_MODE) {
-        // airLoc.x = ;
-        // airLoc.z = ;
-    }
-    else {
-        for (int i = 0; i < zLen; i++) {
-            for (int j = 0; j < xLen; j++) {
-                if (maze[i][j] == '.') {
-                    airCounter++;
-                }
-            }
-        }
-
-        srand(time(0));
-        randAir = rand() % airCounter + 1;
-        cout << randAir << endl;
-        airCounter = 0;
-        for (int i = 0; (i < zLen) && !foundRandAir; i++) {
-            for (int j = 0; (j < xLen) && !foundRandAir; j++) {
-                if (maze[i][j] == '.') {
-                    airCounter++;
-                }
-
-                if (airCounter == randAir) {
-                    airLoc.z = i + basePoint.z;
-                    airLoc.x = j + basePoint.x;
-                    foundRandAir = true;
-                }
-            }
-        }
-    }
-    airLoc.y = mc.getHeight(airLoc.x, airLoc.z);
-    mc.setPlayerTilePosition(airLoc);
 }
