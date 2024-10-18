@@ -5,7 +5,7 @@ class MazeNode {
     private:
         int row, col;
         int dirCount;
-        bool up, left, down, right;
+        bool up, down, left, right;
         bool isWall, explored;
         MazeNode* prevNode;
 

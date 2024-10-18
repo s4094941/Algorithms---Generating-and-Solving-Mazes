@@ -4,11 +4,14 @@
 
 class Maze {
     private:
+        int row, col;
         MazeNode*** maze;
 
     public:
         Maze(int, int);
-        // Maze(char**);
+        void generateTestMaze();
+        void generateRandomMaze();
+        void generateManualMaze();
         void printMaze();
         ~Maze();
 };
