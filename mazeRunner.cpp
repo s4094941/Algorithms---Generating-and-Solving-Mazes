@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
                 solveManually();
             }
             else if (solveMenuOption == "2") {
-                curState = ST_Main;
+                Agent agent(mc.getPlayerPosition());
             }
             else if (solveMenuOption == "3") {
                 curState = ST_Main;

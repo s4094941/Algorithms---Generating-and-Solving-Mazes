@@ -15,7 +15,7 @@ enum solveAlgorithm {
     BREATH_FIRST_SEARCH
 };
 
-enum AgentOrientation {
+enum agentOrientation {
     X_PLUS,
     Z_PLUS,
     X_MINUS,
