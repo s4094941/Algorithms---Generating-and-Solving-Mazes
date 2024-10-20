@@ -10,6 +10,7 @@ Agent::Agent(Coordinate startLoc) {
     agentOrientation currOrientation;
     Coordinate currLoc;
     Coordinate currRightLoc;
+    int randomDir = 0;
 
     if (mc.getBlock(Coordinate(startLoc.x + 1, startLoc.y, startLoc.z)) != Blocks::AIR) {
         orientation = X_PLUS;
@@ -24,16 +25,37 @@ Agent::Agent(Coordinate startLoc) {
         orientation = Z_PLUS;
     }
     else {
-
+        randomDir = rand() % 4;
+        if (randomDir == 0) {
+            startLoc = Coordinate(startLoc.x + 1, startLoc.y + 1, startLoc.z);
+            mc.setBlock(startLoc, Blocks::LIME_CARPET);
+        }
+        else if (randomDir == 1) {
+            startLoc = Coordinate(startLoc.x, startLoc.y + 1, startLoc.z - 1);
+            mc.setBlock(startLoc, Blocks::LIME_CARPET);
+        }
+        else if (randomDir == 2) {
+            startLoc = Coordinate(startLoc.x - 1, startLoc.y + 1, startLoc.z);
+            mc.setBlock(startLoc, Blocks::LIME_CARPET);
+        }
+        else if (randomDir == 3) {
+            startLoc = Coordinate(startLoc.x, startLoc.y + 1, startLoc.z + 1);
+            mc.setBlock(startLoc, Blocks::LIME_CARPET);
+        }
+        sleep_for(milliseconds(500));
+        mc.setBlock(Coordinate(startLoc.x, startLoc.y + 1, startLoc.z), Blocks::AIR);
     }
 
     currLoc = startLoc;
-    do {
+    while (mc.getBlock(currLoc) != Blocks::LIGHT_BLUE_CARPET) {
         
-        // Sleep function
+        mc.setBlock(Coordinate(currLoc.x, currLoc.y + 1, currLoc.z), Blocks::LIME_CARPET);
         sleep_for(milliseconds(500));
+        mc.setBlock(Coordinate(currLoc.x, currLoc.y + 1, currLoc.z), Blocks::AIR);
 
-    } while (mc.getBlock(currLoc) != Blocks::LIGHT_BLUE_CARPET);
+        // Move forward
+
+    }
 }
 
 Agent::~Agent() {
