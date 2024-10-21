@@ -161,14 +161,13 @@ void Maze::generateTestMaze() {
 
     // Begin randomisation. Begin at random node in row index 1. Check 2 blocks in available directions. If unexplored, new node becomes current. Loop.
     // If no available directions, backtrack and check again. If current node = dummy node, end loop.
-    int startCol = (rand() % ((col - 1) / 2)) * 2 + 1;
     
     MazeNode* headNode = new MazeNode(-1, -1);
-    MazeNode* currNode = maze[1][startCol];
+    MazeNode* currNode = maze[1][1];
     currNode->setExplored(true);
     currNode->setPrevNode(headNode);
-    maze[0][startCol]->setWall(false);
-    maze[0][startCol]->setExplored(true);
+    maze[1][0]->setWall(false);
+    maze[1][0]->setExplored(true);
     
     while (currNode != headNode) {
     // bool checkDirection(int dir) --------------------
