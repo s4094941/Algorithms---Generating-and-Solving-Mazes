@@ -34,6 +34,7 @@ class MazeNode {
         // Get a random direction from available directions
         // 0 = UP, 1 = DOWN, 2 = LEFT, 3 = RIGHT
         int getRandomDirection();
+        int getTestDirection();
 
         // Print node
         void printNode();

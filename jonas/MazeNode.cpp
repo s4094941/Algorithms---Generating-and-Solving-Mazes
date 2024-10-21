@@ -73,6 +73,20 @@ int MazeNode::getRandomDirection() {
     return direction;
 }
 
+int MazeNode::getTestDirection() {
+    if (dirCount <= 0) { return -1; }
+
+    if (up == false) {
+        return 0;
+    } else if (right == false) {
+        return 3;
+    } else if (down == false) {
+        return 1;
+    } else {
+        return 2;
+    }
+}
+
 // Print Node
 void MazeNode::printNode() {
     if (isWall) {
