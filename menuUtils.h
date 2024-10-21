@@ -1,3 +1,6 @@
+#ifndef MENUUTILS_H
+#define MENUUTILS_H
+
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -44,3 +47,5 @@ void printTeamInfo() {
 void printExitMassage() {
     cout << endl << "The End!" << endl << endl;
 }
+
+#endif
