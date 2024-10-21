@@ -133,8 +133,6 @@ void Maze::generateRandomMaze() {
 
 // Generate maze based on test rules
 void Maze::generateTestMaze() {
-    std::cout << "TODO: IMPLEMENT FEATURE" << std::endl;
-
     // Set wallStatus to false for all nodes where x and y are odd
     for (int i = 0; i < row; ++i) {
         if (i % 2 != 0) {
@@ -160,6 +158,75 @@ void Maze::generateTestMaze() {
             }
         }
     }
+
+    // Begin randomisation. Begin at random node in row index 1. Check 2 blocks in available directions. If unexplored, new node becomes current. Loop.
+    // If no available directions, backtrack and check again. If current node = dummy node, end loop.
+    int startCol = (rand() % ((col - 1) / 2)) * 2 + 1;
+    
+    MazeNode* headNode = new MazeNode(-1, -1);
+    MazeNode* currNode = maze[1][startCol];
+    currNode->setExplored(true);
+    currNode->setPrevNode(headNode);
+    maze[0][startCol]->setWall(false);
+    maze[0][startCol]->setExplored(true);
+    
+    while (currNode != headNode) {
+    // bool checkDirection(int dir) --------------------
+        if (currNode->getDirCount() == 0) {
+            currNode = currNode->getPrevNode();
+            continue;
+        }
+        int dir = currNode->getTestDirection();
+    // check node 2 blocks UP
+        if (dir == 0) {
+            currNode->markUp();
+            MazeNode* nextNode =  maze[currNode->getRow() - 2][currNode->getCol()];
+            MazeNode* nextWall = maze[currNode->getRow() - 1][currNode->getCol()];
+            if (nextNode->getStatus() == false) {
+                nextNode->setPrevNode(currNode);
+                currNode = nextNode;
+                currNode->setExplored(true);
+                nextWall->setExplored(true);
+                //delete nextNode;
+            }
+    // check node 2 blocks DOWN            
+        } else if (dir == 1) {
+            currNode->markDown();
+            MazeNode* nextNode =  maze[currNode->getRow() + 2][currNode->getCol()];
+            MazeNode* nextWall = maze[currNode->getRow() + 1][currNode->getCol()];
+            if (nextNode->getStatus() == false) {
+                nextNode->setPrevNode(currNode);
+                currNode = nextNode;
+                currNode->setExplored(true);
+                nextWall->setExplored(true);
+                //delete nextNode;
+            }
+    // check node 2 blocks LEFT            
+        } else if (dir == 2) {
+            currNode->markLeft();
+            MazeNode* nextNode =  maze[currNode->getRow()][currNode->getCol() - 2];
+            MazeNode* nextWall = maze[currNode->getRow()][currNode->getCol() - 1];
+            if (nextNode->getStatus() == false) {
+                nextNode->setPrevNode(currNode);
+                currNode = nextNode;
+                currNode->setExplored(true);
+                nextWall->setExplored(true);
+                //delete nextNode;
+            }
+    // check node 2 blocks RIGHT
+        } else if (dir == 3) {
+            currNode->markRight();
+            MazeNode* nextNode =  maze[currNode->getRow()][currNode->getCol() + 2];
+            MazeNode* nextWall = maze[currNode->getRow()][currNode->getCol() + 1];
+            if (nextNode->getStatus() == false) {
+                nextNode->setPrevNode(currNode);
+                currNode = nextNode;
+                currNode->setExplored(true);
+                nextWall->setExplored(true);
+                //delete nextNode;
+            }
+        }
+    }
 }
 
 // Generate maze using user input
@@ -179,15 +246,24 @@ void Maze::printMaze() {
 
 // Destructor
 Maze::~Maze() {
-    for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < col; ++j) {
-            delete maze[i][j];
+        for (int i = 0; i < row; ++i) {
+            for (int j = 0; j < col; ++j) {
+                delete maze[i][j];
+            }
+            delete[] maze[i];
         }
-        delete[] maze[i];
-    }
-    delete[] maze;
+        delete[] maze;
 }
 
 // ASSUMPTIONS:
     // row and column must both be positive odd integers. If a value below 3 is passed, it will be converted to 3.
         // Any even values will have 1 added to them such that they are odd.
+
+
+// Random exit
+    // random row between 0 and row - 1
+        // if rand == 0 or row - 1
+            // exit = random between 1 and col - 1
+        // else
+            // exit = 0 or col - 1
+
