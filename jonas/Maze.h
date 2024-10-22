@@ -8,6 +8,7 @@ class Maze {
         MazeNode*** maze;
         void createGrid();
         MazeNode* checkDirection(MazeNode*, int);
+        MazeNode* getRandomStart();
 
     public:
         Maze(int, int);

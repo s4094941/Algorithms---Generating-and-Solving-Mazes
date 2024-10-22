@@ -6,7 +6,7 @@
 Maze::Maze(int x, int y) {
     row = x;
     col = y;
-    srand((unsigned)time(NULL));
+    srand(time(0));
 
     if (row < 3) {
         row = 3;
@@ -61,6 +61,43 @@ void Maze::createGrid() {
     }
 }
 
+MazeNode* Maze::getRandomStart() {
+    int x = 1;
+    int y = 1;
+    MazeNode* start;
+
+    // Random odd number between 1 and row - 1 - 1 (row - 2)
+    // Random odd number between 0 and row - 3, + 1
+    // random number between 0 and (row - 3) / 2, * 2, + 1
+    // x = ((rand() % (row - 3)) * 2) + 1;
+    x = (rand() % ((row - 1) / 2)) * 2 + 1;
+
+    if (x == 1 || x == row - 2) {
+        y = (rand() % ((col - 1) / 2)) * 2 + 1;
+        if (x == 1) {
+            maze[0][y]->setWall(false);
+            maze[0][y]->setExplored(true);
+        } else {
+            maze[row - 1][y]->setWall(false);
+            maze[row - 1][y]->setExplored(true);
+        }
+    } else {
+        // random between 0 or 1 (start or end);
+        y = rand() % 2;
+        if (y == 0) {
+            y = 1;
+            maze[x][0]->setWall(false);
+            maze[x][0]->setExplored(true);
+        } else if (y == 1) {
+            y = col - 2;
+            maze[x][col - 1]->setWall(false);
+            maze[x][col - 1]->setExplored(true);
+        }
+    }
+    start = maze[x][y];
+    return start;
+}
+
 MazeNode* Maze::checkDirection(MazeNode* curr, int dir) {
     // Row offset and Column offset
     int ros = 0;
@@ -98,14 +135,10 @@ void Maze::generateRandomMaze() {
 
     // Begin randomisation. Begin at random node in row index 1. Check 2 blocks in available directions. If unexplored, new node becomes current. Loop.
     // If no available directions, backtrack and check again. If current node = dummy node, end loop.
-    int startCol = (rand() % ((col - 1) / 2)) * 2 + 1;
-    
     MazeNode* headNode = new MazeNode(-1, -1);
-    MazeNode* currNode = maze[1][startCol];
+    MazeNode* currNode = getRandomStart();
     currNode->setExplored(true);
     currNode->setPrevNode(headNode);
-    maze[0][startCol]->setWall(false);
-    maze[0][startCol]->setExplored(true);
     
     while (currNode != headNode) {
         if (currNode->getDirCount() == 0) {
