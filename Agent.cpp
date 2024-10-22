@@ -7,157 +7,134 @@ using std::chrono::milliseconds;
 
 Agent::Agent(Coordinate startLoc) {
     Coordinate currLoc;
-    Coordinate currRightLoc;
-    bool setZPLUS = false;
-    bool setZMINUS = false;
-    bool setXPLUS = false;
-    bool setXMINUS = false;
+    agentOrientation orientation = X_PLUS;
     int xFactor = 0;
     int zFactor = 0;
 
+    srand(time(0));
     currLoc = startLoc;
-    if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
-        setXPLUS = true;
+    if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, currLoc.z)) 
+                                                            == Blocks::AIR) {
+        orientation = X_PLUS;
     }
-    else if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
-        setXMINUS = true;
+    else if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z)) 
+                                                            == Blocks::AIR) {
+        orientation = X_MINUS;
     }
-    else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1)) == Blocks::AIR) {
-        setZPLUS = true;
+    else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1)) 
+                                                            == Blocks::AIR) {
+        orientation = Z_PLUS;
     }
-    else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1)) == Blocks::AIR) {
-        setZMINUS = true;
+    else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1)) 
+                                                            == Blocks::AIR) {
+        orientation = Z_MINUS;
+    }
+    else {
+        orientation = static_cast<agentOrientation>(rand() % 4);
     }
 
-    while (mc.getBlock(Coordinate(currLoc.x + xFactor, currLoc.y, currLoc.z + zFactor)) != Blocks::LIGHT_BLUE_CARPET) {
+    while (mc.getBlock(Coordinate(currLoc.x + xFactor, currLoc.y, currLoc.z + 
+                                    zFactor)) != Blocks::LIGHT_BLUE_CARPET) {
         do {
             xFactor = 0;
             zFactor = 0;
             mc.setBlock(currLoc, Blocks::LIME_CARPET);
             sleep_for(milliseconds(500));
             mc.setBlock(currLoc, Blocks::AIR);
-            if (setZPLUS) {
+            if (orientation == Z_PLUS) {
                 currLoc.z++;
                 zFactor++;
             }
-            else if (setZMINUS) {
+            else if (orientation == Z_MINUS) {
                 currLoc.z--;
                 zFactor--;
             }
-            else if (setXPLUS) {
+            else if (orientation == X_PLUS) {
                 currLoc.x++;
                 xFactor++;
             }
-            else if (setXMINUS) {
+            else if (orientation == X_MINUS) {
                 currLoc.x--;
                 xFactor--;
             }
             std::cout << currLoc.x << " " << currLoc.z << std::endl;
-        } while (mc.getBlock(Coordinate(currLoc.x + xFactor, currLoc.y, currLoc.z + zFactor)) == Blocks::AIR);
+        } while (mc.getBlock(Coordinate(currLoc.x + xFactor, currLoc.y, 
+                                        currLoc.z + zFactor)) == Blocks::AIR);
 
-        if (setXPLUS) {
-            if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1)) == Blocks::AIR) {
-                setZPLUS = true;
-                setXPLUS = false;
-                setXMINUS = false;
-                setZMINUS = false;
+        if (orientation == X_PLUS) {
+            if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1)) 
+                                                            == Blocks::AIR) {
+                orientation = Z_PLUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
-                setXPLUS = true;
-                setXMINUS = false;
-                setZPLUS = false;
-                setZMINUS = false;
+            else if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, 
+                                                currLoc.z)) == Blocks::AIR) {
+                orientation = X_PLUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1)) == Blocks::AIR) {
-                setXPLUS = false;
-                setXMINUS = false;
-                setZPLUS = false;
-                setZMINUS = true;
+            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1
+                                                        )) == Blocks::AIR) {
+                orientation = Z_MINUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
-                setXMINUS = true;
-                setZPLUS = false;
-                setZMINUS = false;
-                setXPLUS = false;
+            else if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z
+                                                        )) == Blocks::AIR) {
+                orientation = X_MINUS;
             }
         }
-        else if (setXMINUS) {
-            if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1)) == Blocks::AIR) {
-                setZMINUS = false;
-                setXPLUS = false;
-                setXMINUS = false;
-                setZPLUS = true;
+        else if (orientation == X_MINUS) {
+            if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1)) 
+                                                            == Blocks::AIR) {
+                orientation = Z_PLUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
-                setZMINUS = false;
-                setXPLUS = false;
-                setXMINUS = true;
-                setZPLUS = false;
+            else if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, 
+                                                currLoc.z)) == Blocks::AIR) {
+                orientation = X_MINUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1)) == Blocks::AIR) {
-                setXPLUS = false;
-                setXMINUS = false;
-                setZPLUS = false;
-                setZMINUS = true;
+            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1
+                                                        )) == Blocks::AIR) {
+                orientation = Z_MINUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
-                setXMINUS = false;
-                setZPLUS = false;
-                setZMINUS = false;
-                setXPLUS = true;
+            else if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, 
+                                                currLoc.z)) == Blocks::AIR) {
+                orientation = X_PLUS;
             }
         }
-        else if (setZPLUS) {
-            if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
-                setZMINUS = false;
-                setXPLUS = false;
-                setXMINUS = true;
-                setZPLUS = false;
+        else if (orientation == Z_PLUS) {
+            if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z)) 
+                                                            == Blocks::AIR) {
+                orientation = X_MINUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1)) == Blocks::AIR) {
-                setZMINUS = false;
-                setXPLUS = false;
-                setXMINUS = false;
-                setZPLUS = true;
+            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1
+                                                        )) == Blocks::AIR) {
+                orientation = Z_PLUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
-                setXPLUS = true;
-                setXMINUS = false;
-                setZPLUS = false;
-                setZMINUS = false;
+            else if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, 
+                                                currLoc.z)) == Blocks::AIR) {
+                orientation = X_PLUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1)) == Blocks::AIR) {
-                setXMINUS = false;
-                setZPLUS = false;
-                setZMINUS = true;
-                setXPLUS = false;
+            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1
+                                                        )) == Blocks::AIR) {
+                orientation = Z_MINUS;
             }
         }
-        else if (setZMINUS) {
-            if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
-                setZMINUS = false;
-                setXPLUS = true;
-                setXMINUS = false;
-                setZPLUS = false;
+        else if (orientation == Z_MINUS) {
+            if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, currLoc.z)) 
+                                                            == Blocks::AIR) {
+                orientation = X_PLUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1)) == Blocks::AIR) {
-                setZMINUS = true;
-                setXPLUS = false;
-                setXMINUS = false;
-                setZPLUS = false;
+            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1
+                                                        )) == Blocks::AIR) {
+                orientation = Z_MINUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
-                setXPLUS = false;
-                setXMINUS = true;
-                setZPLUS = false;
-                setZMINUS = false;
+            else if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, 
+                                                    currLoc.z)) == Blocks::AIR) {
+                orientation = X_MINUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1)) == Blocks::AIR) {
-                setXMINUS = false;
-                setZPLUS = true;
-                setZMINUS = false;
-                setXPLUS = false;
+            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1
+                                                        )) == Blocks::AIR) {
+                orientation = Z_PLUS;
             }
+        }
+        else {
+            orientation = static_cast<agentOrientation>(rand() % 4);
         }
     }
     mc.setBlock(currLoc, Blocks::LIME_CARPET);
