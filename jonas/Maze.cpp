@@ -266,3 +266,6 @@ Maze::~Maze() {
         // else
             // exit = 0 or col - 1
 
+// TODO: Remove occurrences of multiple return commands
+// TODO: Remove continue, break, goto, next
+
