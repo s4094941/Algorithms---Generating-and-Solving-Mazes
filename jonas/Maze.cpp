@@ -66,10 +66,7 @@ MazeNode* Maze::getRandomStart() {
     int y = 1;
     MazeNode* start;
 
-    // Random odd number between 1 and row - 1 - 1 (row - 2)
-    // Random odd number between 0 and row - 3, + 1
-    // random number between 0 and (row - 3) / 2, * 2, + 1
-    // x = ((rand() % (row - 3)) * 2) + 1;
+    // Random odd number between 1 and row - 2
     x = (rand() % ((row - 1) / 2)) * 2 + 1;
 
     if (x == 1 || x == row - 2) {
@@ -82,7 +79,7 @@ MazeNode* Maze::getRandomStart() {
             maze[row - 1][y]->setExplored(true);
         }
     } else {
-        // random between 0 or 1 (start or end);
+        // random between 0 or 1 (start or end)
         y = rand() % 2;
         if (y == 0) {
             y = 1;
@@ -133,7 +130,7 @@ void Maze::generateRandomMaze() {
     // Set wallStatus to false for all nodes where x and y are odd
     createGrid();
 
-    // Begin randomisation. Begin at random node in row index 1. Check 2 blocks in available directions. If unexplored, new node becomes current. Loop.
+    // Begin randomisation. Begin at random node adjacent to side wall. Check 2 blocks in available directions. If unexplored, new node becomes current. Loop.
     // If no available directions, backtrack and check again. If current node = dummy node, end loop.
     MazeNode* headNode = new MazeNode(-1, -1);
     MazeNode* currNode = getRandomStart();
