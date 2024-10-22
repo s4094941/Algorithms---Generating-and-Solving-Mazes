@@ -34,7 +34,7 @@ Agent::Agent(Coordinate startLoc) {
     }
 
     while (mc.getBlock(Coordinate(currLoc.x + xFactor, currLoc.y, currLoc.z + 
-                                    zFactor)) != Blocks::LIGHT_BLUE_CARPET) {
+                                    zFactor)) != Blocks::BLUE_CARPET) {
         do {
             xFactor = 0;
             zFactor = 0;
