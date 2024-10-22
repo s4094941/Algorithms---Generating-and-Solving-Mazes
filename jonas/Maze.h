@@ -6,6 +6,8 @@ class Maze {
     private:
         int row, col;
         MazeNode*** maze;
+        void createGrid();
+        MazeNode* checkDirection(MazeNode*, int);
 
     public:
         Maze(int, int);
