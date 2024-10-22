@@ -14,7 +14,8 @@ void solveManually() {
     Coordinate airLoc(0, 0, 0);
 
     // Temporariliy for testing
-    Coordinate basePoint(4848, 71, 4369);
+    // Coordinate basePoint(4848, 71, 4369);
+    Coordinate basePoint(115, 74, 153);
     const int zLen = 7;
     const int xLen = 6;
     char maze[zLen][xLen] = { {"x.xxx"},
@@ -26,8 +27,8 @@ void solveManually() {
                               {"xxxxx"} };
 
     if (mode == TESTING_MODE) {
-        // airLoc.x = ;
-        // airLoc.z = ;
+        airLoc.z += zLen - 2;
+        airLoc.x += xLen - 2;
     }
     else {
         for (int i = 0; i < zLen; i++) {
