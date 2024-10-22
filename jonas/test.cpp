@@ -11,7 +11,7 @@ int main (void) {
     Maze maze(row, col);
 
     //maze.generateRandomMaze();
-    maze.generateTestMaze();
+    maze.generateRandomMaze();
     maze.printMaze();
 
     return EXIT_SUCCESS;
