@@ -10,7 +10,8 @@ int main (void) {
 
     Maze maze(row, col);
 
-    maze.generateRandomMaze();
+    //maze.generateRandomMaze();
+    maze.generateTestMaze();
     maze.printMaze();
 
     return EXIT_SUCCESS;
