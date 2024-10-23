@@ -4,18 +4,21 @@
 using mcpp::Blocks;
 using std::this_thread::sleep_for;
 using std::chrono::milliseconds;
+using std::cout;
+using std::endl;
 
 Agent::Agent(Coordinate startLoc) {
-    Coordinate currLoc;
-    agentOrientation orientation = X_PLUS;
+    Coordinate currLoc(0, 0, 0);
+    srand(time(0));
+    agentOrientation orientation = static_cast<agentOrientation>(rand() % 4);
     int xFactor = 0;
     int zFactor = 0;
+    int stepCounter = 0;
     bool foundXMinusDir = false;
     bool foundXPlusDir = false;
     bool foundZMinusDir = false;
     bool foundZPlusDir = false;
 
-    srand(time(0));
     currLoc = startLoc;
     if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, currLoc.z)) 
                                                             == Blocks::AIR) {
@@ -46,9 +49,14 @@ Agent::Agent(Coordinate startLoc) {
             foundZPlusDir = false;
             xFactor = 0;
             zFactor = 0;
+
             mc.setBlock(currLoc, Blocks::LIME_CARPET);
             sleep_for(milliseconds(500));
             mc.setBlock(currLoc, Blocks::AIR);
+            stepCounter++;
+            cout << "Step[" << stepCounter << "]: (" << currLoc.x << ", " << 
+                                currLoc.y << ", " << currLoc.z << ")" << endl;
+
             if (orientation == Z_PLUS) {
                 currLoc.z++;
                 zFactor++;
@@ -65,7 +73,6 @@ Agent::Agent(Coordinate startLoc) {
                 currLoc.x--;
                 xFactor--;
             }
-            std::cout << currLoc.x << " " << currLoc.z << std::endl;
 
             if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
                 foundXMinusDir = true;
@@ -81,7 +88,10 @@ Agent::Agent(Coordinate startLoc) {
             }
 
         } while ((mc.getBlock(Coordinate(currLoc.x + xFactor, currLoc.y, 
-                                        currLoc.z + zFactor)) == Blocks::AIR) && ((!foundXMinusDir) && (!foundXPlusDir) && (!foundZMinusDir) && (!foundZPlusDir)));
+                                        currLoc.z + zFactor)) == Blocks::AIR) 
+                                        && ((!foundXMinusDir) && 
+                                        (!foundXPlusDir) && (!foundZMinusDir) 
+                                        && (!foundZPlusDir)));
 
         if (orientation == X_PLUS) {
             if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1)) 
@@ -159,6 +169,8 @@ Agent::Agent(Coordinate startLoc) {
             orientation = static_cast<agentOrientation>(rand() % 4);
         }
     }
+    cout << "Step[" << stepCounter << "]: (" << currLoc.x << ", " << 
+                                currLoc.y << ", " << currLoc.z << ")" << endl;
     mc.setBlock(currLoc, Blocks::LIME_CARPET);
     sleep_for(milliseconds(500));
     mc.setBlock(currLoc, Blocks::AIR);
