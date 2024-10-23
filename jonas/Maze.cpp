@@ -72,21 +72,25 @@ MazeNode* Maze::getRandomStart() {
 
     if (x == 1 || x == row - 2) {
         y = (rand() % ((col - 1) / 2)) * 2 + 1;
+        // CASE: TOP ROW
         if (x == 1) {
             maze[0][y]->setWall(false);
             maze[0][y]->setExplored(true);
         } else {
+        // CASE: BOTTOM ROW
             maze[row - 1][y]->setWall(false);
             maze[row - 1][y]->setExplored(true);
         }
     } else {
         // random between 0 or 1 (start or end)
         y = rand() % 2;
+        // CASE: LEFT
         if (y == 0) {
             y = 1;
             maze[x][0]->setWall(false);
             maze[x][0]->setExplored(true);
         } else if (y == 1) {
+        // CASE: RIGHT
             y = col - 2;
             maze[x][col - 1]->setWall(false);
             maze[x][col - 1]->setExplored(true);

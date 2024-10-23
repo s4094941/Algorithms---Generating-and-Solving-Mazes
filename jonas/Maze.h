@@ -6,6 +6,7 @@ class Maze {
     private:
         int row, col;
         bool testMode;
+        // bool isBuilt;
         MazeNode*** maze;
         void createGrid();
         MazeNode* checkDirection(MazeNode*, int);
@@ -21,6 +22,7 @@ class Maze {
         void createMaze();
         void buildMaze();
         void printMaze();
+        // void placeMaze();
         ~Maze();
 };
 
