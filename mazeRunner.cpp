@@ -26,6 +26,7 @@ int main(int argc, char* argv[]) {
     string solveMenuOption = "";
     string cmdLineArg = "";
     bool mode = NORMAL_MODE;
+    // bool hasBuilt = false;
     States curState = ST_Main;
 
     // read Mode
@@ -95,6 +96,7 @@ int main(int argc, char* argv[]) {
             }
             else if (solveMenuOption == "2") {
                 Agent agent(mc.getPlayerPosition());
+                agent.rightHandFollow();
             }
             else if (solveMenuOption == "3") {
                 curState = ST_Main;

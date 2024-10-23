@@ -26,9 +26,11 @@ class Agent {
     public:
         Agent(Coordinate startLoc);
         ~Agent();
+        void rightHandFollow();
 
     private:
         MinecraftConnection mc;
+        Coordinate startLoc;
 };
 
 #endif // ASSIGN3_AGENT_H
