@@ -109,7 +109,7 @@ int main(int argc, char* argv[]) {
             curState = ST_Main;
         }
         else if (curState == ST_Exit) {
-            printExitMassage();
+            printExitMessage();
         }
     }
 

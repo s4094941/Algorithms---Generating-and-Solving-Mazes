@@ -44,7 +44,7 @@ void printTeamInfo() {
     cout << endl;
 }
 
-void printExitMassage() {
+void printExitMessage() {
     cout << endl << "The End!" << endl << endl;
 }
 
