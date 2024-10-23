@@ -1,6 +1,7 @@
 #include "Maze.h"
-#include <iostream>
-#include <cstdlib>
+#include <mcpp/mcpp.h>
+using mcpp::MinecraftConnection;
+using mcpp::Coordinate;
 
 // Construct maze with x rows and y columns
 Maze::Maze(int x, int y, bool testMode) {
@@ -261,3 +262,73 @@ Maze::~Maze() {
 // TODO: Remove occurrences of multiple return commands
 // TODO: Remove continue, break, goto, next
 // TODO: Create checkUp, checkDown, checkLeft, checkRight commands
+
+void Maze::solveManually() {
+    // Input will be a Maze object later
+    MinecraftConnection mc;
+    int airCounter = 0;
+    int randAir = 0;
+    bool foundRandAir = false;
+    Coordinate airLoc(0, 0, 0);
+
+    // Temporariliy for testing
+    // Coordinate basePoint(4848, 71, 4369);
+    // Coordinate basePoint(115, 74, 153);
+    Coordinate basePoint(150, 74, 137);
+    // const int zLen = 7;
+    // const int xLen = 6;
+    // char maze[zLen][xLen] = {
+    //     {"x.xxx"},
+    //     {"x.x.x"},
+    //     {"x.x.x"},
+    //     {"x.x.x"},
+    //     {"x.x.x"},
+    //     {"x...x"},
+    //     {"xxxxx"}
+    // };
+    const int zLen = 9;
+    const int xLen = 10;
+    char maze[zLen][xLen] = {
+        {"xxxxx.xxx"},
+        {"x.x...x.x"},
+        {"x.x.xxx.x"},
+        {"x.x.x...x"},
+        {"x.x.x.x.x"},
+        {"x...x.x.x"},
+        {"x.xxxxx.x"},
+        {"xxxxxxxxx"}
+    };
+
+    if (testMode) {
+        airLoc.z += zLen - 2;
+        airLoc.x += xLen - 2;
+    }
+    else {
+        for (int i = 0; i < zLen; i++) {
+            for (int j = 0; j < xLen; j++) {
+                if (maze[i][j] == '.') {
+                    airCounter++;
+                }
+            }
+        }
+
+        srand(time(0));
+        randAir = rand() % airCounter + 1;
+        airCounter = 0;
+        for (int i = 0; (i < zLen) && !foundRandAir; i++) {
+            for (int j = 0; (j < xLen) && !foundRandAir; j++) {
+                if (maze[i][j] == '.') {
+                    airCounter++;
+                }
+
+                if (airCounter == randAir) {
+                    airLoc.z = i + basePoint.z;
+                    airLoc.x = j + basePoint.x;
+                    foundRandAir = true;
+                }
+            }
+        }
+    }
+    airLoc.y = mc.getHeight(airLoc.x, airLoc.z);
+    mc.setPlayerTilePosition(airLoc);
+}

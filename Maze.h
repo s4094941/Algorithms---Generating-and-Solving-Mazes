@@ -1,5 +1,6 @@
 #ifndef MAZE_H
 #define MAZE_H
+
 #include "MazeNode.h"
 
 class Maze {
@@ -33,13 +34,13 @@ class Maze {
         void buildMaze();
         void printMaze();
         // void placeMaze();
+        void solveManually();
 
         // Destructor
         ~Maze();
 };
 
 #endif // MAZE_H
-
 
 // TODO: Check if user-generated maze if valid:
     // check edge of maze. If open areas != 1, invalid

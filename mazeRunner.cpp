@@ -1,7 +1,6 @@
 #include "menuUtils.h"
 #include "Maze.h"
 #include "Agent.h"
-#include "solveManually.h"
 using mcpp::MinecraftConnection;
 using std::cin;
 using std::cout;
@@ -92,7 +91,7 @@ int main(int argc, char* argv[]) {
             cin >> solveMenuOption;
             if (solveMenuOption == "1") {
                 // Input will be a Maze object later
-                solveManually();
+                // maze.solveManually();
             }
             else if (solveMenuOption == "2") {
                 Agent agent(mc.getPlayerPosition());
