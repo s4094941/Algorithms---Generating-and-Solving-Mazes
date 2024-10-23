@@ -38,6 +38,7 @@ class MazeNode {
 
         // Print node
         void printNode();
+        // void placeNode();
 
 };
 
