@@ -37,6 +37,11 @@ Maze::Maze(int x, int y, bool testMode) {
 
 void Maze::createGrid() {
     for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            maze[i][j]->setWall(true);
+        }
+    }
+    for (int i = 0; i < row; ++i) {
         if (i % 2 != 0) {
             for (int j = 0; j < col; ++j) {
                 if (j % 2 != 0) {
