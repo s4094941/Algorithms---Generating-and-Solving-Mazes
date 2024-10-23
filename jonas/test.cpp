@@ -8,7 +8,7 @@ int main (void) {
     std::cin >> row >> col;
     std::cout << std::endl;
 
-    Maze maze(row, col, false);
+    Maze maze(row, col, true);
 
     //maze.generateRandomMaze();
     maze.createMaze();
