@@ -5,16 +5,21 @@
 class Maze {
     private:
         int row, col;
+        bool testMode;
         MazeNode*** maze;
         void createGrid();
         MazeNode* checkDirection(MazeNode*, int);
         MazeNode* getRandomStart();
-
-    public:
-        Maze(int, int);
         void generateTestMaze();
         void generateRandomMaze();
-        void generateManualMaze();
+
+    public:
+        Maze(int, int, bool);
+        int getRow();
+        int getCol();
+        bool getMode();
+        void createMaze();
+        void buildMaze();
         void printMaze();
         ~Maze();
 };

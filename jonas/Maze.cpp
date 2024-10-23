@@ -3,9 +3,10 @@
 #include <cstdlib>
 
 // Construct maze with x rows and y columns
-Maze::Maze(int x, int y) {
+Maze::Maze(int x, int y, bool testMode) {
     row = x;
     col = y;
+    this->testMode = testMode;
     srand(time(0));
 
     if (row < 3) {
@@ -125,6 +126,14 @@ MazeNode* Maze::checkDirection(MazeNode* curr, int dir) {
     return curr;
 }
 
+void Maze::createMaze() {
+    if (testMode) {
+        generateTestMaze();
+    } else {
+        generateRandomMaze();
+    }
+}
+
 // Generate maze randomly
 void Maze::generateRandomMaze() {
     // Set wallStatus to false for all nodes where x and y are odd
@@ -191,7 +200,7 @@ void Maze::generateTestMaze() {
 }
 
 // Generate maze using user input
-void Maze::generateManualMaze() {
+void Maze::buildMaze() {
     std::cout << "TODO: IMPLEMENT FEATURE" << std::endl;
 }
 
@@ -203,6 +212,18 @@ void Maze::printMaze() {
         }
         std::cout << std::endl;
     }
+}
+
+int Maze::getRow() {
+    return row;
+}
+
+int Maze::getCol() {
+    return col;
+}
+
+bool Maze::getMode() {
+    return testMode;
 }
 
 // Destructor
