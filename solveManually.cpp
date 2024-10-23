@@ -15,16 +15,31 @@ void solveManually() {
 
     // Temporariliy for testing
     // Coordinate basePoint(4848, 71, 4369);
-    Coordinate basePoint(115, 74, 153);
-    const int zLen = 7;
-    const int xLen = 6;
-    char maze[zLen][xLen] = { {"x.xxx"},
-                              {"x.x.x"},
-                              {"x.x.x"},
-                              {"x.x.x"},
-                              {"x.x.x"},
-                              {"x...x"},
-                              {"xxxxx"} };
+    // Coordinate basePoint(115, 74, 153);
+    Coordinate basePoint(150, 74, 137);
+    // const int zLen = 7;
+    // const int xLen = 6;
+    // char maze[zLen][xLen] = {
+    //     {"x.xxx"},
+    //     {"x.x.x"},
+    //     {"x.x.x"},
+    //     {"x.x.x"},
+    //     {"x.x.x"},
+    //     {"x...x"},
+    //     {"xxxxx"}
+    // };
+    const int zLen = 9;
+    const int xLen = 10;
+    char maze[zLen][xLen] = {
+        {"xxxxx.xxx"},
+        {"x.x...x.x"},
+        {"x.x.xxx.x"},
+        {"x.x.x...x"},
+        {"x.x.x.x.x"},
+        {"x...x.x.x"},
+        {"x.xxxxx.x"},
+        {"xxxxxxxxx"}
+    };
 
     if (mode == TESTING_MODE) {
         airLoc.z += zLen - 2;
