@@ -5,17 +5,36 @@
 class Maze {
     private:
         int row, col;
+        bool testMode;
+        // bool isBuilt;
         MazeNode*** maze;
-        void createGrid();
+
+        // Private methods
+        void createGrid();  // TODO: Regenerate base grid (set walls/air)
+
         MazeNode* checkDirection(MazeNode*, int);
         MazeNode* getRandomStart();
 
-    public:
-        Maze(int, int);
+        // Generate maze based on testMode
         void generateTestMaze();
         void generateRandomMaze();
-        void generateManualMaze();
+
+    public:
+        // Constructor
+        Maze(int, int, bool);
+
+        // Accessors
+        int getRow();
+        int getCol();
+        bool getMode();
+
+        // Generate/Build/Print maze
+        void createMaze();
+        void buildMaze();
         void printMaze();
+        // void placeMaze();
+
+        // Destructor
         ~Maze();
 };
 
@@ -25,3 +44,5 @@ class Maze {
 // TODO: Check if user-generated maze if valid:
     // check edge of maze. If open areas != 1, invalid
     // if not perfect maze (i.e. existence of a loop), invalid
+
+    // Get random location, send to Agent

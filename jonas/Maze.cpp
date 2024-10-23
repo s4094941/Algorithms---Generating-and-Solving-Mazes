@@ -3,9 +3,10 @@
 #include <cstdlib>
 
 // Construct maze with x rows and y columns
-Maze::Maze(int x, int y) {
+Maze::Maze(int x, int y, bool testMode) {
     row = x;
     col = y;
+    this->testMode = testMode;
     srand(time(0));
 
     if (row < 3) {
@@ -35,6 +36,11 @@ Maze::Maze(int x, int y) {
 }
 
 void Maze::createGrid() {
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            maze[i][j]->setWall(true);
+        }
+    }
     for (int i = 0; i < row; ++i) {
         if (i % 2 != 0) {
             for (int j = 0; j < col; ++j) {
@@ -71,21 +77,25 @@ MazeNode* Maze::getRandomStart() {
 
     if (x == 1 || x == row - 2) {
         y = (rand() % ((col - 1) / 2)) * 2 + 1;
+        // CASE: TOP ROW
         if (x == 1) {
             maze[0][y]->setWall(false);
             maze[0][y]->setExplored(true);
         } else {
+        // CASE: BOTTOM ROW
             maze[row - 1][y]->setWall(false);
             maze[row - 1][y]->setExplored(true);
         }
     } else {
         // random between 0 or 1 (start or end)
         y = rand() % 2;
+        // CASE: LEFT
         if (y == 0) {
             y = 1;
             maze[x][0]->setWall(false);
             maze[x][0]->setExplored(true);
         } else if (y == 1) {
+        // CASE: RIGHT
             y = col - 2;
             maze[x][col - 1]->setWall(false);
             maze[x][col - 1]->setExplored(true);
@@ -123,6 +133,14 @@ MazeNode* Maze::checkDirection(MazeNode* curr, int dir) {
         curr->setExplored(true);
     }
     return curr;
+}
+
+void Maze::createMaze() {
+    if (testMode) {
+        generateTestMaze();
+    } else {
+        generateRandomMaze();
+    }
 }
 
 // Generate maze randomly
@@ -191,7 +209,7 @@ void Maze::generateTestMaze() {
 }
 
 // Generate maze using user input
-void Maze::generateManualMaze() {
+void Maze::buildMaze() {
     std::cout << "TODO: IMPLEMENT FEATURE" << std::endl;
 }
 
@@ -203,6 +221,18 @@ void Maze::printMaze() {
         }
         std::cout << std::endl;
     }
+}
+
+int Maze::getRow() {
+    return row;
+}
+
+int Maze::getCol() {
+    return col;
+}
+
+bool Maze::getMode() {
+    return testMode;
 }
 
 // Destructor

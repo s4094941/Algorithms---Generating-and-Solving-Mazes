@@ -8,10 +8,10 @@ int main (void) {
     std::cin >> row >> col;
     std::cout << std::endl;
 
-    Maze maze(row, col);
+    Maze maze(row, col, true);
 
     //maze.generateRandomMaze();
-    maze.generateRandomMaze();
+    maze.createMaze();
     maze.printMaze();
 
     return EXIT_SUCCESS;
