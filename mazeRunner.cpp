@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     string solveMenuOption = "";
     string cmdLineArg = "";
     bool mode = NORMAL_MODE;
-    // bool hasBuilt = false;
+    bool hasBuilt = false;
     States curState = ST_Main;
 
     // read Mode
@@ -55,6 +55,7 @@ int main(int argc, char* argv[]) {
             curState = ST_GetMaze;
         }
         else if (mainMenuOption == "2") {
+            hasBuilt = true;
             curState = ST_Main;
         }
         else if (mainMenuOption == "3") {
@@ -90,12 +91,23 @@ int main(int argc, char* argv[]) {
             printSolveMazeMenu();
             cin >> solveMenuOption;
             if (solveMenuOption == "1") {
-                // Input will be a Maze object later
-                // maze.solveManually();
+                if (hasBuilt) {
+                    // Input will be a Maze object later
+                    // maze.solveManually();
+                }
+                else {
+                    cout << "Cannot place player without building a maze ..." << endl;
+                }
             }
             else if (solveMenuOption == "2") {
-                Agent agent(mc.getPlayerPosition());
-                agent.rightHandFollow();
+                if (hasBuilt) {
+                    Agent agent(mc.getPlayerPosition());
+                    agent.rightHandFollow();
+                }
+                else {
+                    cout << "Cannot solve maze without building a maze ..." << endl;
+                    curState = ST_Main;
+                }
             }
             else if (solveMenuOption == "3") {
                 curState = ST_Main;
