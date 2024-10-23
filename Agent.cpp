@@ -8,7 +8,14 @@ using std::cout;
 using std::endl;
 
 Agent::Agent(Coordinate startLoc) {
-    Coordinate currLoc(0, 0, 0);
+    this->startLoc = startLoc;
+}
+
+Agent::~Agent() {
+
+}
+
+void Agent::rightHandFollow() {
     srand(time(0));
     agentOrientation orientation = static_cast<agentOrientation>(rand() % 4);
     int xFactor = 0;
@@ -19,29 +26,28 @@ Agent::Agent(Coordinate startLoc) {
     bool foundZMinusDir = false;
     bool foundZPlusDir = false;
 
-    currLoc = startLoc;
-    if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, currLoc.z)) 
-                                                            == Blocks::AIR) {
+    if (mc.getBlock(Coordinate(this->startLoc.x + 1, this->startLoc.y, 
+            this->startLoc.z)) == Blocks::AIR) {
         orientation = X_PLUS;
     }
-    else if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z)) 
-                                                            == Blocks::AIR) {
+    else if (mc.getBlock(Coordinate(this->startLoc.x - 1, this->startLoc.y, 
+            this->startLoc.z)) == Blocks::AIR) {
         orientation = X_MINUS;
     }
-    else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1)) 
-                                                            == Blocks::AIR) {
+    else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
+            this->startLoc.z + 1)) == Blocks::AIR) {
         orientation = Z_PLUS;
     }
-    else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1)) 
-                                                            == Blocks::AIR) {
+    else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
+            this->startLoc.z - 1)) == Blocks::AIR) {
         orientation = Z_MINUS;
     }
     else {
         orientation = static_cast<agentOrientation>(rand() % 4);
     }
 
-    while (mc.getBlock(Coordinate(currLoc.x + xFactor, currLoc.y, currLoc.z + 
-                                    zFactor)) != Blocks::BLUE_CARPET) {
+    while (mc.getBlock(Coordinate(this->startLoc.x + xFactor, this->startLoc.y,
+        this->startLoc.z + zFactor)) != Blocks::BLUE_CARPET) {
         do {
             foundXMinusDir = false;
             foundXPlusDir = false;
@@ -50,118 +56,122 @@ Agent::Agent(Coordinate startLoc) {
             xFactor = 0;
             zFactor = 0;
 
-            mc.setBlock(currLoc, Blocks::LIME_CARPET);
+            mc.setBlock(this->startLoc, Blocks::LIME_CARPET);
             sleep_for(milliseconds(500));
-            mc.setBlock(currLoc, Blocks::AIR);
+            mc.setBlock(this->startLoc, Blocks::AIR);
             stepCounter++;
-            cout << "Step[" << stepCounter << "]: (" << currLoc.x << ", " << 
-                                currLoc.y << ", " << currLoc.z << ")" << endl;
+            cout << "Step[" << stepCounter << "]: (" << this->startLoc.x << 
+                            ", " << this->startLoc.y << ", " << 
+                                            this->startLoc.z << ")" << endl;
 
             if (orientation == Z_PLUS) {
-                currLoc.z++;
+                this->startLoc.z++;
                 zFactor++;
             }
             else if (orientation == Z_MINUS) {
-                currLoc.z--;
+                this->startLoc.z--;
                 zFactor--;
             }
             else if (orientation == X_PLUS) {
-                currLoc.x++;
+                this->startLoc.x++;
                 xFactor++;
             }
             else if (orientation == X_MINUS) {
-                currLoc.x--;
+                this->startLoc.x--;
                 xFactor--;
             }
 
-            if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
+            if (mc.getBlock(Coordinate(this->startLoc.x - 1, this->startLoc.y, 
+                    this->startLoc.z)) == Blocks::AIR) {
                 foundXMinusDir = true;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, currLoc.z)) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x + 1, 
+                    this->startLoc.y, this->startLoc.z)) == Blocks::AIR) {
                 foundXPlusDir = true;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1)) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x, 
+                    this->startLoc.y, this->startLoc.z - 1)) == Blocks::AIR) {
                 foundZMinusDir = true;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1)) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y,
+                                    this->startLoc.z + 1)) == Blocks::AIR) {
                 foundZPlusDir = true;
             }
 
-        } while ((mc.getBlock(Coordinate(currLoc.x + xFactor, currLoc.y, 
-                                        currLoc.z + zFactor)) == Blocks::AIR) 
-                                        && ((!foundXMinusDir) && 
-                                        (!foundXPlusDir) && (!foundZMinusDir) 
-                                        && (!foundZPlusDir)));
+        } while ((mc.getBlock(Coordinate(this->startLoc.x + xFactor, 
+            this->startLoc.y, this->startLoc.z + zFactor)) == Blocks::AIR) && 
+                (!foundXMinusDir && !foundXPlusDir && !foundZMinusDir && 
+                    !foundZPlusDir));
 
         if (orientation == X_PLUS) {
-            if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1)) 
-                                                            == Blocks::AIR) {
+            if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
+                    this->startLoc.z + 1)) == Blocks::AIR) {
                 orientation = Z_PLUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, 
-                                                currLoc.z)) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x + 1, 
+                    this->startLoc.y, this->startLoc.z)) == Blocks::AIR) {
                 orientation = X_PLUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1
-                                                        )) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y,
+                    this->startLoc.z - 1)) == Blocks::AIR) {
                 orientation = Z_MINUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z
-                                                        )) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x - 1, 
+                    this->startLoc.y, this->startLoc.z)) == Blocks::AIR) {
                 orientation = X_MINUS;
             }
         }
         else if (orientation == X_MINUS) {
-            if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1)) 
-                                                            == Blocks::AIR) {
+            if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
+                    this->startLoc.z - 1)) == Blocks::AIR) {
                 orientation = Z_MINUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, 
-                                                currLoc.z)) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x - 1, this->startLoc.y, 
+                    this->startLoc.z)) == Blocks::AIR) {
                 orientation = X_MINUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1
-                                                        )) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y,
+                    this->startLoc.z + 1)) == Blocks::AIR) {
                 orientation = Z_PLUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, 
-                                                currLoc.z)) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x + 1, this->startLoc.y, 
+                    this->startLoc.z)) == Blocks::AIR) {
                 orientation = X_PLUS;
             }
         }
         else if (orientation == Z_PLUS) {
-            if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, currLoc.z)) 
-                                                            == Blocks::AIR) {
+            if (mc.getBlock(Coordinate(this->startLoc.x - 1, this->startLoc.y, 
+                    this->startLoc.z)) == Blocks::AIR) {
                 orientation = X_MINUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1
-                                                        )) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y,
+                    this->startLoc.z + 1)) == Blocks::AIR) {
                 orientation = Z_PLUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, 
-                                                currLoc.z)) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x + 1, this->startLoc.y, 
+                    this->startLoc.z)) == Blocks::AIR) {
                 orientation = X_PLUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1
-                                                        )) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y,
+                    this->startLoc.z - 1)) == Blocks::AIR) {
                 orientation = Z_MINUS;
             }
         }
         else if (orientation == Z_MINUS) {
-            if (mc.getBlock(Coordinate(currLoc.x + 1, currLoc.y, currLoc.z)) 
-                                                            == Blocks::AIR) {
+            if (mc.getBlock(Coordinate(this->startLoc.x + 1, this->startLoc.y, 
+                    this->startLoc.z)) == Blocks::AIR) {
                 orientation = X_PLUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z - 1
-                                                        )) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y,
+                    this->startLoc.z - 1)) == Blocks::AIR) {
                 orientation = Z_MINUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x - 1, currLoc.y, 
-                                                    currLoc.z)) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x - 1, 
+                    this->startLoc.y, this->startLoc.z)) == Blocks::AIR) {
                 orientation = X_MINUS;
             }
-            else if (mc.getBlock(Coordinate(currLoc.x, currLoc.y, currLoc.z + 1
-                                                        )) == Blocks::AIR) {
+            else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y,
+                    this->startLoc.z + 1)) == Blocks::AIR) {
                 orientation = Z_PLUS;
             }
         }
@@ -169,13 +179,9 @@ Agent::Agent(Coordinate startLoc) {
             orientation = static_cast<agentOrientation>(rand() % 4);
         }
     }
-    cout << "Step[" << stepCounter << "]: (" << currLoc.x << ", " << 
-                                currLoc.y << ", " << currLoc.z << ")" << endl;
-    mc.setBlock(currLoc, Blocks::LIME_CARPET);
+    mc.setBlock(this->startLoc, Blocks::LIME_CARPET);
     sleep_for(milliseconds(500));
-    mc.setBlock(currLoc, Blocks::AIR);
-}
-
-Agent::~Agent() {
-
+    mc.setBlock(this->startLoc, Blocks::AIR);
+    cout << "Step[" << stepCounter << "]: (" << this->startLoc.x << ", " << 
+        this->startLoc.y << ", " << this->startLoc.z << ")" << endl;
 }
