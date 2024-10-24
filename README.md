@@ -4,3 +4,6 @@ Team Member Allocations:
 - Alex: Maze Solving, E1 (Build Maze Without Flattening Terrain)
 - Caiden: Maze Building & Cleaning World, E2 (Find Shortest Path)
 - Jonas: Maze Generation, E3 (Validate User Input Maze)
+
+Compiling and Running:
+- Run ```make && ./mazeRunner``` in unix terminal
