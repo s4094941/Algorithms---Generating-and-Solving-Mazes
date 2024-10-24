@@ -8,11 +8,11 @@
                 "-Wall",
                 "-Werror",
                 "-std=c++17",
-                "-O",
                 "-g",
-                "${workspaceFolder}/*.cpp",
+                "-O",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
+                "${workspaceFolder}/*.cpp",
                 "-lmcpp"
             ],
             "options": {
