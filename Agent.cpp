@@ -16,7 +16,6 @@ Agent::~Agent() {
 }
 
 /*
- * Pre-reqs: Before method execution; requires the maze to first be generated and then built.
  * Brief: In normal mode, this method starts by initialising the lime carpet orientation such that it checks its surrounding blocks anti-clockwise until it reaches the first air block.
  *        Then it enters a double loop where it first it checkes if the block in front of the current block is a blue carpet, then it continues along until the block in front of
  *        the current block is not an an air block i.e. an acacia block. Reason for checking blocks in front of the current block is to not accidently overwrite them.
