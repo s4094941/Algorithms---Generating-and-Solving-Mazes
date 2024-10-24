@@ -86,7 +86,15 @@ int main(int argc, char* argv[]) {
             else if (generateMenuOption == "2") {
                 cout << "In Minecraft, navigate to where you need the maze to" 
                     << "be built in Minecraft and type - done:" << endl;
-
+                cin >> doneStr;
+                if (doneStr == "done") {
+                    cout << "Enter the length and width of maze:" << endl;
+                    cin >> length >> width;
+                    curState = ST_Main;
+                }
+                else {
+                    cout << "Type \'done\' exactly" << endl;
+                }
                 if (basePoint != nullptr) {
                     delete basePoint;
                 }
@@ -99,7 +107,6 @@ int main(int argc, char* argv[]) {
                 maze = new Maze(0, 0, mode);
 
                 hasGenerated = true;
-                curState = ST_Main;
             }
             else if (generateMenuOption == "3") {
                 curState = ST_Main;

@@ -2,6 +2,8 @@
 #define MAZE_H
 
 #include "MazeNode.h"
+#include <mcpp/mcpp.h>
+using mcpp::Coordinate;
 
 class Maze {
     private:
