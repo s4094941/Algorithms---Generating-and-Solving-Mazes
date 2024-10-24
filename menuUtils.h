@@ -48,4 +48,4 @@ void printExitMessage() {
     cout << endl << "The End!" << endl << endl;
 }
 
-#endif
+#endif // MENUUTILS_H

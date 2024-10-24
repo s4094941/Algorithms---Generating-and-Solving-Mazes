@@ -39,7 +39,6 @@ class MazeNode {
         // Print node
         void printNode();
         // void placeNode();
-
 };
 
 #endif // MAZENODE_H

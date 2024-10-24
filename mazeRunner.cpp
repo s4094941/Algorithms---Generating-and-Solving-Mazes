@@ -39,10 +39,6 @@ int main(int argc, char* argv[]) {
     if ((argc == 2) && (cmdLineArg == "-testmode")) {
         mode = TESTING_MODE;
     }
-    
-    if (mode == TESTING_MODE) {
-        // do something later with the testing mode
-    }
 
     mc.doCommand("time set day");
 
@@ -100,7 +96,7 @@ int main(int argc, char* argv[]) {
                     delete maze;
                 }
                 // user input to constructor
-                maze = new Maze(0, 0, 0);
+                maze = new Maze(0, 0, mode);
 
                 hasGenerated = true;
                 curState = ST_Main;
@@ -131,15 +127,16 @@ int main(int argc, char* argv[]) {
                     agent.rightHandFollow();
                 }
                 else {
-                    cout << "Cannot solve maze without building a maze ..." << endl;
-                    curState = ST_Main;
+                    cout << "Cannot solve a maze without building a maze ..." 
+                        << endl;
                 }
             }
             else if (solveMenuOption == "3") {
                 curState = ST_Main;
             }
             else {
-                cout << "Input Error: Enter a number between 1 and 3 ..." << endl;
+                cout << "Input Error: Enter a number between 1 and 3 ..." << 
+                    endl;
             }
         }
         else if (curState == ST_Creators) {
