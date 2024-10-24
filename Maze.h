@@ -34,7 +34,7 @@ class Maze {
         void buildMaze();
         void printMaze();
         // void placeMaze();
-        void solveManually();
+        void solveManually(Coordinate* basePoint);
 
         // Destructor
         ~Maze();

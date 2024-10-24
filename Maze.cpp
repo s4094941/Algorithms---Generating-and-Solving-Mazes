@@ -38,11 +38,6 @@ Maze::Maze(int x, int y, bool testMode) {
 
 void Maze::createGrid() {
     for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < col; ++j) {
-            maze[i][j]->setWall(true);
-        }
-    }
-    for (int i = 0; i < row; ++i) {
         if (i % 2 != 0) {
             for (int j = 0; j < col; ++j) {
                 if (j % 2 != 0) {
@@ -238,13 +233,13 @@ bool Maze::getMode() {
 
 // Destructor
 Maze::~Maze() {
-        for (int i = 0; i < row; ++i) {
-            for (int j = 0; j < col; ++j) {
-                delete maze[i][j];
-            }
-            delete[] maze[i];
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            delete maze[i][j];
         }
-        delete[] maze;
+        delete[] maze[i];
+    }
+    delete[] maze;
 }
 
 // ASSUMPTIONS:
@@ -263,8 +258,10 @@ Maze::~Maze() {
 // TODO: Remove continue, break, goto, next
 // TODO: Create checkUp, checkDown, checkLeft, checkRight commands
 
-void Maze::solveManually() {
-    // Input will be a Maze object later
+/*
+ * 
+ */
+void Maze::solveManually(Coordinate* basePoint) {
     MinecraftConnection mc;
     int airCounter = 0;
     int randAir = 0;
@@ -274,7 +271,7 @@ void Maze::solveManually() {
     // Temporariliy for testing
     // Coordinate basePoint(4848, 71, 4369);
     // Coordinate basePoint(115, 74, 153);
-    Coordinate basePoint(150, 74, 137);
+    // Coordinate basePoint(150, 74, 137);
     // const int zLen = 7;
     // const int xLen = 6;
     // char maze[zLen][xLen] = {
@@ -286,27 +283,27 @@ void Maze::solveManually() {
     //     {"x...x"},
     //     {"xxxxx"}
     // };
-    const int zLen = 9;
-    const int xLen = 10;
-    char maze[zLen][xLen] = {
-        {"xxxxx.xxx"},
-        {"x.x...x.x"},
-        {"x.x.xxx.x"},
-        {"x.x.x...x"},
-        {"x.x.x.x.x"},
-        {"x...x.x.x"},
-        {"x.xxxxx.x"},
-        {"xxxxxxxxx"}
-    };
+    // const int zLen = 9;
+    // const int xLen = 10;
+    // char maze[zLen][xLen] = {
+    //     {"xxxxx.xxx"},
+    //     {"x.x...x.x"},
+    //     {"x.x.xxx.x"},
+    //     {"x.x.x...x"},
+    //     {"x.x.x.x.x"},
+    //     {"x...x.x.x"},
+    //     {"x.xxxxx.x"},
+    //     {"xxxxxxxxx"}
+    // };
 
     if (testMode) {
-        airLoc.z += zLen - 2;
-        airLoc.x += xLen - 2;
+        airLoc.z += this->row - 2;
+        airLoc.x += this->col - 2;
     }
     else {
-        for (int i = 0; i < zLen; i++) {
-            for (int j = 0; j < xLen; j++) {
-                if (maze[i][j] == '.') {
+        for (int i = 0; i < this->row; i++) {
+            for (int j = 0; j < this->col; j++) {
+                if (maze[i][j]->getStatus()) {
                     airCounter++;
                 }
             }
@@ -315,15 +312,15 @@ void Maze::solveManually() {
         srand(time(0));
         randAir = rand() % airCounter + 1;
         airCounter = 0;
-        for (int i = 0; (i < zLen) && !foundRandAir; i++) {
-            for (int j = 0; (j < xLen) && !foundRandAir; j++) {
-                if (maze[i][j] == '.') {
+        for (int i = 0; (i < this->row) && !foundRandAir; i++) {
+            for (int j = 0; (j < this->col) && !foundRandAir; j++) {
+                if (maze[i][j]->getStatus()) {
                     airCounter++;
                 }
 
                 if (airCounter == randAir) {
-                    airLoc.z = i + basePoint.z;
-                    airLoc.x = j + basePoint.x;
+                    airLoc.z = i + basePoint->z;
+                    airLoc.x = j + basePoint->x;
                     foundRandAir = true;
                 }
             }

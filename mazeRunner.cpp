@@ -1,10 +1,7 @@
 #include "menuUtils.h"
 #include "Maze.h"
 #include "Agent.h"
-using mcpp::MinecraftConnection;
 using std::cin;
-using std::cout;
-using std::endl;
 using std::string;
 
 #define NORMAL_MODE 0
@@ -24,9 +21,15 @@ int main(int argc, char* argv[]) {
     string generateMenuOption = "";
     string solveMenuOption = "";
     string cmdLineArg = "";
+    string doneStr = "";
     bool mode = NORMAL_MODE;
     bool hasBuilt = false;
+    bool hasGenerated = false;
     States curState = ST_Main;
+    Maze* maze = nullptr;
+    Coordinate* basePoint = nullptr;
+    int length = 0;
+    int width = 0;
 
     // read Mode
     if (argc == 2) {
@@ -55,7 +58,14 @@ int main(int argc, char* argv[]) {
             curState = ST_GetMaze;
         }
         else if (mainMenuOption == "2") {
-            hasBuilt = true;
+            if (hasGenerated) {
+                // Call building maze function
+                hasBuilt = true;
+            }
+            else {
+                cout << "Cannot build a maze without generating a maze ..." << 
+                    endl;
+            }
             curState = ST_Main;
         }
         else if (mainMenuOption == "3") {
@@ -78,29 +88,45 @@ int main(int argc, char* argv[]) {
                 curState = ST_Main;
             }
             else if (generateMenuOption == "2") {
+                cout << "In Minecraft, navigate to where you need the maze to" 
+                    << "be built in Minecraft and type - done:" << endl;
+
+                if (basePoint != nullptr) {
+                    delete basePoint;
+                }
+                basePoint = new Coordinate(mc.getPlayerPosition());
+
+                if (maze != nullptr) {
+                    delete maze;
+                }
+                // user input to constructor
+                maze = new Maze(0, 0, 0);
+
+                hasGenerated = true;
                 curState = ST_Main;
             }
             else if (generateMenuOption == "3") {
                 curState = ST_Main;
             }
             else {
-                cout << "Input Error: Enter a number between 1 and 3 ..." << endl;
+                cout << "Input Error: Enter a number between 1 and 3 ..." <<
+                    endl;
             }
         }
         else if (curState == ST_SolveMaze) {
             printSolveMazeMenu();
             cin >> solveMenuOption;
             if (solveMenuOption == "1") {
-                if (hasBuilt) {
-                    // Input will be a Maze object later
-                    // maze.solveManually();
+                if (hasGenerated && hasBuilt) {
+                    maze->solveManually(basePoint);
                 }
                 else {
-                    cout << "Cannot place player without building a maze ..." << endl;
+                    cout << "Cannot place player in a maze without building a"
+                        << "maze ..." << endl;
                 }
             }
             else if (solveMenuOption == "2") {
-                if (hasBuilt) {
+                if (hasGenerated && hasBuilt) {
                     Agent agent(mc.getPlayerPosition());
                     agent.rightHandFollow();
                 }
@@ -123,6 +149,14 @@ int main(int argc, char* argv[]) {
         else if (curState == ST_Exit) {
             printExitMessage();
         }
+    }
+
+    if (basePoint != nullptr) {
+        delete basePoint;
+    }
+
+    if (maze != nullptr) {
+        delete maze;
     }
 
     return EXIT_SUCCESS;
