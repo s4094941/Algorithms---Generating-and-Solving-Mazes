@@ -26,7 +26,7 @@ class Agent {
     public:
         Agent(Coordinate startLoc);
         ~Agent();
-        void rightHandFollow();
+        void rightHandFollow(bool mode);
 
     private:
         MinecraftConnection mc;
