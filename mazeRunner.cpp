@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
     printStartText();
     curState = ST_Main;
     // State machine for menu
-    while (curState != ST_Exit) {
+    while ((curState != ST_Exit) && !cin.eof()) {
         if (curState == ST_Main) {
             printMainMenu();
             cin >> mainMenuOption;
@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
         else if (mainMenuOption == "5") {
             curState = ST_Exit;
         }
-        else {
+        else if (!cin.eof()) {
             cout << "Input Error: Enter a number between 1 and 5 ..." << endl;
         }
 
@@ -103,15 +103,13 @@ int main(int argc, char* argv[]) {
                 if (maze != nullptr) {
                     delete maze;
                 }
-                // user input to constructor
-                maze = new Maze(0, 0, mode);
-
+                maze = new Maze(length, width, mode);
                 hasGenerated = true;
             }
             else if (generateMenuOption == "3") {
                 curState = ST_Main;
             }
-            else {
+            else if (!cin.eof()) {
                 cout << "Input Error: Enter a number between 1 and 3 ..." <<
                     endl;
             }
@@ -124,24 +122,24 @@ int main(int argc, char* argv[]) {
                     maze->solveManually(basePoint);
                 }
                 else {
-                    cout << "Cannot place player in a maze without building a"
+                    cout << "Cannot place player in a maze without building a" 
                         << "maze ..." << endl;
                 }
             }
             else if (solveMenuOption == "2") {
-                if (hasGenerated && hasBuilt) {
+                // if (hasGenerated && hasBuilt) {
                     Agent agent(mc.getPlayerPosition());
-                    agent.rightHandFollow();
-                }
-                else {
-                    cout << "Cannot solve a maze without building a maze ..." 
-                        << endl;
-                }
+                    agent.rightHandFollow(mode);
+                // }
+                // else {
+                //     cout << "Cannot solve a maze without building a maze ..." 
+                //         << endl;
+                // }
             }
             else if (solveMenuOption == "3") {
                 curState = ST_Main;
             }
-            else {
+            else if (!cin.eof()) {
                 cout << "Input Error: Enter a number between 1 and 3 ..." << 
                     endl;
             }
