@@ -29,6 +29,7 @@ class MazeNode {
         int getCol();
         int getDirCount();
         bool getStatus();
+        bool getWall();
         MazeNode* getPrevNode();
 
         // Get a random direction from available directions

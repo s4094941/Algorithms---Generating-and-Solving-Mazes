@@ -23,6 +23,8 @@ class Maze {
         // Constructor
         Maze(int, int, bool);
 
+        void setMode(bool);
+
         // Accessors
         int getRow();
         int getCol();

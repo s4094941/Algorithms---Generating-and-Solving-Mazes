@@ -122,7 +122,7 @@ MazeNode* Maze::checkDirection(MazeNode* curr, int dir) {
 
     MazeNode* next = maze[curr->getRow() + ros][curr->getCol() + cos];
     MazeNode* wall = maze[curr->getRow() + wros][curr->getCol() + wcos];
-    if (next->getStatus() == false) {
+    if (next->getStatus() == false && next->isWall() == false;) {
         next->setPrevNode(curr);
         wall->setExplored(true);
         curr=next;
@@ -144,7 +144,7 @@ void Maze::generateRandomMaze() {
     // Set wallStatus to false for all nodes where x and y are odd
     createGrid();
 
-    // Begin randomisation. Begin at random node adjacent to side wall. Check 2 blocks in available directions. If unexplored, new node becomes current. Loop.
+    // Random generation. Begin at random node adjacent to side wall. Check 2 blocks in available directions. If unexplored, new node becomes current. Loop.
     // If no available directions, backtrack and check again. If current node = dummy node, end loop.
     MazeNode* headNode = new MazeNode(-1, -1);
     MazeNode* currNode = getRandomStart();
@@ -175,7 +175,7 @@ void Maze::generateTestMaze() {
     // Set wallStatus to false for all nodes where x and y are odd
     createGrid();
 
-    // Test randomisation. Begin at [1][0]. Break available walls in the order:
+    // Test mode generation. Begin at [1][0]. Break available walls in the order:
     // Up, Right, Down, Left. If no walls are available, backtrack until currNode = headNode.
     
     MazeNode* headNode = new MazeNode(-1, -1);
@@ -206,7 +206,36 @@ void Maze::generateTestMaze() {
 
 // Generate maze using user input
 void Maze::buildMaze() {
-    std::cout << "TODO: IMPLEMENT FEATURE" << std::endl;
+    std::cout << "USER GENERATED MAZE:" << std::endl;
+    std::cout << "'x' for wall, '.' for empty space." <<
+    std::cout << "Note: Entering q will fill the remaining structure with walls." << std::endl;
+    std::cout << "Construct your [" << row << " x " << col << "] structure:" << std::endl;
+    bool quitState = false;
+    char currChar = '';
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            if (!quitState) {
+                std::cin >> currChar;
+                if (currChar == 'x') {
+                    maze[i][j]->setWall(true);
+                } else if (currChar == '.') {
+                    maze[i][j]->setExplored(true);
+                } else if (currChar == 'q') {
+                    maze[i][j]->setWall(true);
+                    std::cout << "filling in remaining structure with walls." << std::endl;
+                    quitState = true;
+                } else {
+                    maze[i][j]->setWall(true);
+                    std::cout << "invalid char at [" << i << "][" << j << "]. Defaulted to x" << std::endl;
+                }
+            } else {
+                maze[i][j]->setWall(true);
+            }
+
+        }
+    }
+    std::cout << "Maze generated." << std::endl;
+    // TODO: CHECK VALIDITY OF USER-GENERATED MAZE
 }
 
 // Print all nodes in terminal
