@@ -9,13 +9,14 @@ int main (void) {
     std::cin >> row >> col;
     std::cout << std::endl;
 
+    Maze maze (row, col, false);
+
     std::cout << "[1] Generate random maze" << std::endl;
     std::cout << "[2] Generate test maze" << std::endl;
     std::cout << "[3] User-generated maze" << std::endl;
     std::cout << "enter your option" << std::endl;
-    setd::cin >> mode;
+    std::cin >> mode;
 
-    Maze maze (row, col, false);
     if (mode == 2) {
         maze.setMode(true);
     }

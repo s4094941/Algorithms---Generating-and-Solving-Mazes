@@ -9,8 +9,8 @@ MazeNode::MazeNode(int r, int c) : row(r), col(c), dirCount(4), up(false), down(
 // Basic mutators
 void MazeNode::setWall (bool status) {
     isWall = status;
-    if (status == true) {
-        explored = true;
+    if (status == false) {
+        explored = false;
     }
 }
 void MazeNode::setExplored(bool status) {
@@ -100,9 +100,7 @@ int MazeNode::getTestDirection() {
 void MazeNode::printNode() {
     if (isWall) {
         std::cout << 'x';
-    } else if (explored) {
-        std::cout << '.';
     } else {
-        std::cout << dirCount;
+        std::cout << '.';
     }
 }
