@@ -1,5 +1,4 @@
 #include "Maze.h"
-#include <mcpp/mcpp.h>
 using mcpp::MinecraftConnection;
 using mcpp::Coordinate;
 
@@ -259,9 +258,9 @@ Maze::~Maze() {
 // TODO: Create checkUp, checkDown, checkLeft, checkRight commands
 
 /*
- * This method takes as input a pointer to a Coordinate object, to dynamically 
- * update basePoint when the user generates multiple mazes in different 
- * locations, in a single running session.
+ * Input: A pointer to a Coordinate object, to dynamically update basePoint 
+ * when the user generates multiple mazes in different locations, in a single 
+ * running session.
  * 
  * Brief: In normal mode, this method will teleport the player to a random 
  *        location within the maze, avoiding walls, by counting all the air 

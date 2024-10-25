@@ -1,4 +1,3 @@
-#include <chrono>
 #include <thread>
 #include "Agent.h"
 using mcpp::Blocks;
@@ -12,19 +11,28 @@ Agent::Agent(Coordinate startLoc) {
 }
 
 Agent::~Agent() {
-
+    // Default destructor
 }
 
-/*
- * Brief: In normal mode, this method starts by initialising the lime carpet orientation such that it checks its surrounding blocks anti-clockwise until it reaches the first air block.
- *        Then it enters a double loop where it first it checkes if the block in front of the current block is a blue carpet, then it continues along until the block in front of
- *        the current block is not an an air block i.e. an acacia block. Reason for checking blocks in front of the current block is to not accidently overwrite them.
- *        If however an air block is found immediately to the right of current block it breaks out of the inner loop to perform the orientation change.
- *        Lastly it finishes the carpet placement, by placing down a carpet just before the exit.
+/* Input: A bool mode which tells the method to run as testing or normal mode
+ * Brief: In normal mode, this method starts by initialising the lime carpet 
+ *        orientation such that it checks its surrounding blocks anti-clockwise
+ *        until it reaches the first air block. Then it enters a double loop 
+ *        where it first it checkes if the block in front of the current block 
+ *        is a blue carpet, then it continues along until the block in front of
+ *        the current block is not an an air block i.e. an acacia block. Reason
+ *        for checking blocks in front of the current block is to not 
+ *        accidently overwrite them. If however an air block is found 
+ *        immediately to the right of current block it breaks out of the inner 
+ *        loop to perform the orientation change.
+ *        Lastly it finishes the carpet placement, by placing down a carpet 
+ *        just before the exit.
  *
- *        In testing mode, this method will instead initialise the carpet orientation such taht it checks its surrounding blocks clockwise until it reaches the first air block.
+ *        In testing mode, this method will instead initialise the carpet 
+ *        orientation such taht it checks its surrounding blocks clockwise 
+ *        until it reaches the first air block.
  */
-void Agent::rightHandFollow() {
+void Agent::rightHandFollow(bool mode) {
     srand(time(0));
     agentOrientation orientation = static_cast<agentOrientation>(rand() % 4);
     int xFactor = 0;
@@ -35,27 +43,52 @@ void Agent::rightHandFollow() {
     bool foundZMinusDir = false;
     bool foundZPlusDir = false;
 
-    // TODO: Change order of orientation to go anti-clockwise
-    // TODO: Add testing mode capabilities
-
-    if (mc.getBlock(Coordinate(this->startLoc.x + 1, this->startLoc.y, 
-            this->startLoc.z)) == Blocks::AIR) {
-        orientation = X_PLUS;
-    }
-    else if (mc.getBlock(Coordinate(this->startLoc.x - 1, this->startLoc.y, 
-            this->startLoc.z)) == Blocks::AIR) {
-        orientation = X_MINUS;
-    }
-    else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
-            this->startLoc.z + 1)) == Blocks::AIR) {
-        orientation = Z_PLUS;
-    }
-    else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
-            this->startLoc.z - 1)) == Blocks::AIR) {
-        orientation = Z_MINUS;
+    // If testing mode
+    if (mode) {
+        if (mc.getBlock(Coordinate(this->startLoc.x + 1, this->startLoc.y, 
+                this->startLoc.z)) == Blocks::AIR) {
+            orientation = X_PLUS;
+        }
+        else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
+                this->startLoc.z + 1)) == Blocks::AIR) {
+            orientation = Z_PLUS;
+        }
+        else if (mc.getBlock(Coordinate(this->startLoc.x - 1, this->startLoc.y,
+                this->startLoc.z)) == Blocks::AIR) {
+            orientation = X_MINUS;
+        }
+        else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
+                this->startLoc.z + 1)) == Blocks::AIR) {
+            orientation = Z_MINUS;
+        }
+        else {
+            /*
+            * Choose a random direction if the player is in the middle of a '+' 
+            * intersection
+            */
+            orientation = static_cast<agentOrientation>(rand() % 4);
+        }
     }
     else {
-        orientation = static_cast<agentOrientation>(rand() % 4);
+        if (mc.getBlock(Coordinate(this->startLoc.x + 1, this->startLoc.y, 
+                this->startLoc.z)) == Blocks::AIR) {
+            orientation = X_PLUS;
+        }
+        else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
+                this->startLoc.z - 1)) == Blocks::AIR) {
+            orientation = Z_MINUS;
+        }
+        else if (mc.getBlock(Coordinate(this->startLoc.x - 1, this->startLoc.y,
+                this->startLoc.z)) == Blocks::AIR) {
+            orientation = X_MINUS;
+        }
+        else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
+                this->startLoc.z + 1)) == Blocks::AIR) {
+            orientation = Z_PLUS;
+        }
+        else {
+            orientation = static_cast<agentOrientation>(rand() % 4);
+        }
     }
 
     while (mc.getBlock(Coordinate(this->startLoc.x + xFactor, this->startLoc.y,
@@ -65,8 +98,6 @@ void Agent::rightHandFollow() {
             foundXPlusDir = false;
             foundZMinusDir = false;
             foundZPlusDir = false;
-
-            // For checking the block in front of the current one
             xFactor = 0;
             zFactor = 0;
 
@@ -78,9 +109,10 @@ void Agent::rightHandFollow() {
             // Terminal step output
             stepCounter++;
             cout << "Step[" << stepCounter << "]: (" << this->startLoc.x << 
-                            ", " << this->startLoc.y << ", " << 
-                                            this->startLoc.z << ")" << endl;
+                ", " << this->startLoc.y << ", " << this->startLoc.z << ")" << 
+                    endl;
 
+            // Move forward and check the block in front of the current block
             if (orientation == Z_PLUS) {
                 this->startLoc.z++;
                 zFactor++;
@@ -98,21 +130,24 @@ void Agent::rightHandFollow() {
                 xFactor--;
             }
 
-            // If any immediate right location is an air block turn right and break
-            if (mc.getBlock(Coordinate(this->startLoc.x - 1, this->startLoc.y, 
+            /*
+             * If any immediate right location is an air block turn right and 
+             * break
+             */
+            if (mc.getBlock(Coordinate(this->startLoc.x + 1, this->startLoc.y, 
                     this->startLoc.z)) == Blocks::AIR) {
-                foundXMinusDir = true;
-            }
-            else if (mc.getBlock(Coordinate(this->startLoc.x + 1, 
-                    this->startLoc.y, this->startLoc.z)) == Blocks::AIR) {
                 foundXPlusDir = true;
             }
             else if (mc.getBlock(Coordinate(this->startLoc.x, 
                     this->startLoc.y, this->startLoc.z - 1)) == Blocks::AIR) {
                 foundZMinusDir = true;
             }
+            else if (mc.getBlock(Coordinate(this->startLoc.x - 1, 
+                    this->startLoc.y, this->startLoc.z)) == Blocks::AIR) {
+                foundXMinusDir = true;
+            }
             else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y,
-                                    this->startLoc.z + 1)) == Blocks::AIR) {
+                    this->startLoc.z + 1)) == Blocks::AIR) {
                 foundZPlusDir = true;
             }
 
@@ -126,7 +161,10 @@ void Agent::rightHandFollow() {
                     this->startLoc.z + 1)) == Blocks::AIR) {
                 orientation = Z_PLUS;
             }
-            // For completion, this check has been added to all the respective current orientations, however there will always be a wall here.
+            /*
+             * For completion, this check has been added to all the respective 
+             * current orientations, however there will always be a wall here.
+             */
             else if (mc.getBlock(Coordinate(this->startLoc.x + 1, 
                     this->startLoc.y, this->startLoc.z)) == Blocks::AIR) {
                 orientation = X_PLUS;
