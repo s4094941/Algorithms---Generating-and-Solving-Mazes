@@ -259,12 +259,21 @@ Maze::~Maze() {
 // TODO: Create checkUp, checkDown, checkLeft, checkRight commands
 
 /*
- * This method takes as input a pointer to a Coordinate object, to dynamically update basePoint when the user generates multiple mazes in different locations, in a single running session.
- * Brief: In normal mode, this method will teleport the player to a random location within the maze, avoiding walls, by counting all the air blocks present (just for one y-coord level).
- *        The bool getStatus() Maze method will return true if there is no wall at the current location.
- *        It then generates a 'true random' integer from the count which will be used as the 'anchor' which will be added to the basePoint coordinate to teleport the player once found.
+ * This method takes as input a pointer to a Coordinate object, to dynamically 
+ * update basePoint when the user generates multiple mazes in different 
+ * locations, in a single running session.
+ * 
+ * Brief: In normal mode, this method will teleport the player to a random 
+ *        location within the maze, avoiding walls, by counting all the air 
+ *        blocks present (just for one y-coord level). The bool getStatus() 
+ *        Maze method will return true if there is no wall at the current 
+ *        location. It then generates a 'true random' integer from the count 
+ *        which will be used as the 'anchor' which will be added to the 
+ *        basePoint coordinate to teleport the player once found.
  *
- *        In testing mode, this method will teleport the player as far away as possible from the basePoint which is two blocks in, both Z and X coords from the lower right corner of the maze.
+ *        In testing mode, this method will teleport the player as far away as 
+ *        possible from the basePoint which is two blocks in, both Z and X 
+ *        coords from the lower right corner of the maze.
  */
 void Maze::solveManually(Coordinate* basePoint) {
     MinecraftConnection mc;
