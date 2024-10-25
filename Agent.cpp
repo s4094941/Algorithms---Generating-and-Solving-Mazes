@@ -101,7 +101,7 @@ void Agent::rightHandFollow(bool mode) {
             xFactor = 0;
             zFactor = 0;
 
-            // Place carpet with half a second of each run of inner loop
+            // Place carpet with a half a second delay in each run of inner loop
             mc.setBlock(this->startLoc, Blocks::LIME_CARPET);
             sleep_for(milliseconds(500));
             mc.setBlock(this->startLoc, Blocks::AIR);
