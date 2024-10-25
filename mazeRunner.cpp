@@ -4,6 +4,8 @@
 using std::cin;
 using std::string;
 using std::exception;
+using std::cout;
+using std::endl;
 
 #define NORMAL_MODE 0
 #define TESTING_MODE 1
@@ -156,7 +158,7 @@ int main(int argc, char* argv[]) {
         }
     }
     catch (exception& excpt) {
-        std::cout << excpt.what() << std::endl;
+        cout << excpt.what() << std;
     }
 
     if (basePoint != nullptr) {
