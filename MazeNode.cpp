@@ -9,9 +9,15 @@ MazeNode::MazeNode(int r, int c) : row(r), col(c), dirCount(4), up(false), down(
 // Basic mutators
 void MazeNode::setWall (bool status) {
     isWall = status;
+    if (status == true) {
+        explored = true;
+    }
 }
 void MazeNode::setExplored(bool status) {
-    explored = status; isWall = false;
+    explored = status;
+    if (status == true) {
+        isWall = false;
+    }
 }
 void MazeNode::setPrevNode (MazeNode* prev) {
     prevNode = prev;
@@ -42,6 +48,9 @@ int MazeNode::getDirCount() {
 }
 bool MazeNode::getStatus() {
     return explored;
+}
+bool MazeNode::getWall() {
+    return isWall;
 }
 MazeNode* MazeNode::getPrevNode() {
     if (prevNode != nullptr) { return prevNode; }
