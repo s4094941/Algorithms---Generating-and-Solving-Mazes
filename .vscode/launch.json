@@ -8,9 +8,9 @@
             "args": [
                 // "-testmode",
                 // "<",
-                // "${workspaceFolder}/Tests/test1.input",
+                // "${workspaceFolder}/Tests/test_testingModeGenerate.input",
                 // ">",
-                // "${workspaceFolder}/Tests/test1.out"
+                // "${workspaceFolder}/Tests/test_testingModeGenerate.out"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

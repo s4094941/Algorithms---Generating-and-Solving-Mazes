@@ -89,7 +89,8 @@ int main(int argc, char* argv[]) {
                 }
                 else if (generateMenuOption == "2") {
                     cout << "In Minecraft, navigate to where you need the maze"
-                        << " to be built in Minecraft and type - done:" << endl;
+                        << endl << "to be built in Minecraft and type - done:" 
+                            << endl;
                     cin >> doneStr;
                     if (doneStr == "done") {
                         cout << "Enter the length and width of maze:" << endl;
@@ -123,6 +124,7 @@ int main(int argc, char* argv[]) {
                 cin >> solveMenuOption;
                 if (solveMenuOption == "1") {
                     if (hasGenerated && hasBuilt) {
+                        cout << "Maze ready to Solve..." << endl;
                         maze->solveManually(basePoint);
                     }
                     else {
