@@ -309,7 +309,7 @@ void Maze::solveManually(Coordinate* basePoint) {
     //     {"xxxxxxxxx"}
     // };
 
-    if (testMode) {
+    if (this->testMode) {
         airLoc.z += this->row - 2;
         airLoc.x += this->col - 2;
     }
