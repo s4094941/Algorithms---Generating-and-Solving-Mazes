@@ -158,7 +158,7 @@ int main(int argc, char* argv[]) {
         }
     }
     catch (exception& excpt) {
-        cout << excpt.what() << std;
+        cout << excpt.what() << endl;
     }
 
     if (basePoint != nullptr) {
