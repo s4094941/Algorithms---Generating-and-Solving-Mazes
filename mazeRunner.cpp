@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
         cmdLineArg = argv[1];
     }
 
-    if ((argc == 2) && (cmdLineArg == "-testmode")) {
+    if (cmdLineArg == "-testmode") {
         mode = TESTING_MODE;
     }
 
