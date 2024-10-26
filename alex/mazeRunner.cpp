@@ -1,6 +1,6 @@
-#include "menuUtils.h"
-#include "Maze.h"
-#include "Agent.h"
+#include "alex/menuUtils.h"
+#include "alex/Maze.h"
+#include "alex/Agent.h"
 using std::cin;
 using std::string;
 using std::exception;
@@ -24,7 +24,9 @@ int main(int argc, char* argv[]) {
     string solveMenuOption = "";
     string cmdLineArg = "";
     string doneStr = "";
+    string generateRandMenuOption = "";
     bool mode = NORMAL_MODE;
+    bool enhancementMode = false;
     bool hasBuilt = false;
     bool hasGenerated = false;
     States curState = ST_Main;
@@ -88,25 +90,48 @@ int main(int argc, char* argv[]) {
                     curState = ST_Main;
                 }
                 else if (generateMenuOption == "2") {
+                    printGenerateRandMazeMenu();
+                    cin >> generateRandMenuOption;
                     cout << "In Minecraft, navigate to where you need the maze"
-                        << endl << "to be built in Minecraft and type - done:" 
-                            << endl;
+                    << endl << "to be built in Minecraft and type - done:" 
+                        << endl;
                     cin >> doneStr;
                     if (doneStr == "done") {
                         cout << "Enter the length and width of maze:" << endl;
                         cin >> length >> width;
-                        
+
                         if (basePoint != nullptr) {
                             delete basePoint;
                         }
                         basePoint = new Coordinate(mc.getPlayerPosition());
 
-                        if (maze != nullptr) {
-                            delete maze;
+                        if (generateRandMenuOption == "1") {
+                            enhancementMode = false;
+                            if (maze != nullptr) {
+                                delete maze;
+                            }
+                            maze = new Maze(length, width, mode, enhancementMode, basePoint);
+                        
+                            hasGenerated = true;
                         }
-                        maze = new Maze(length, width, mode);
-                        hasGenerated = true;
-                        curState = ST_Main;
+                        else if (generateRandMenuOption == "2") {
+                            mode = false;
+                            enhancementMode = true;
+                            if (maze != nullptr) {
+                                delete maze;
+                            }
+                            maze = new Maze(length, width, mode, enhancementMode, basePoint);
+                            
+                        
+                            hasGenerated = true;
+                        }
+                        else if (generateMenuOption == "3") {
+                            curState = ST_GetMaze;
+                        }
+                        else if (!cin.eof()) {
+                            cout << "Input Error: Enter a number between 1 and"
+                                << " 3 ..." << endl;
+                        }
                     }
                     else {
                         cout << "Type \'done\' exactly" << endl;
