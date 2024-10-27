@@ -260,7 +260,7 @@ bool Maze::getMode() {
     return testMode;
 }
 
-void Maze::flattenTerrain(int row, int col) {
+void Maze::flattenTerrain(int row, int col, mcpp::Coordinate basePoint) {
 /*
  * Create Loop to check every block within the coordinates
  * If y coordinate is too high, store block ID and coordinates
@@ -271,7 +271,6 @@ void Maze::flattenTerrain(int row, int col) {
     blockNode* blockHistory;
 
     // Original Player Position, Remove Block and Place Block coordinates
-    mcpp::Coordinate playerPos;
     mcpp::Coordinate removeBlock;
     mcpp::Coordinate addBlock;
 
@@ -279,24 +278,21 @@ void Maze::flattenTerrain(int row, int col) {
     mcpp::BlockType const AIR(0);
     mcpp::BlockType tempPlacement(0);
 
-    // Original Player Position, (Bottom Left Corner)
-    playerPos = mc.getPlayerPosition();
-
 
     // i = Current x coordinate
-    for (int i = playerPos.x; i < playerPos.x + row; ++i) {
+    for (int i = basePoint.x; i < basePoint.x + row; ++i) {
         removeBlock.x = i;
         addBlock.x = i;
 
         // j = Current z coordinate
-        for (int j = playerPos.z; j < playerPos.z + col; ++j) {
+        for (int j = basePoint.z; j < basePoint.z + col; ++j) {
             removeBlock.z = j;
             addBlock.z = j;
 
             // If statement for too high (Repeat until y coordinate = player)
-            if (mc.getHeight(i, j) > playerPos.y - 1) {
+            if (mc.getHeight(i, j) > basePoint.y - 1) {
 
-                while (mc.getHeight(i, j) > playerPos.y - 1) {
+                while (mc.getHeight(i, j) > basePoint.y - 1) {
                     removeBlock.y = mc.getHeight(i, j);
 
                     addNode(removeBlock, mc.getBlock(removeBlock));
@@ -306,10 +302,10 @@ void Maze::flattenTerrain(int row, int col) {
             }
 
             // If statement for too low
-            if (mc.getHeight(i, j) < playerPos.y - 1) {
+            if (mc.getHeight(i, j) < basePoint.y - 1) {
                 addBlock.y = mc.getHeight(i, j) + 1;
 
-                while (mc.getHeight(i,j) < playerPos.y - 1) {
+                while (mc.getHeight(i,j) < basePoint.y - 1) {
                     tempPlacement = mc.getBlock(addBlock);
 
                     mc.setBlock(addBlock, tempPlacement);
