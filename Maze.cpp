@@ -3,7 +3,7 @@ using mcpp::MinecraftConnection;
 using mcpp::Coordinate;
 
 // Construct maze with x rows and y columns
-Maze::Maze(int x, int y, bool testMode, mcpp::Coordinate playerPos) {
+Maze::Maze(int x, int y, bool testMode) {
     row = x;
     col = y;
     //this -> playerPos = playerPos;
