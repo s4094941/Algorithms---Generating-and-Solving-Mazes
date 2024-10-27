@@ -268,7 +268,7 @@ void Maze::flattenTerrain(mcpp::Coordinate basePoint) {
 */
     
     mcpp::MinecraftConnection mc;
-    blockNode* blockHistory;
+    // blockNode* blockHistory;
 
     // Original Player Position, Remove Block and Place Block coordinates
     mcpp::Coordinate removeBlock;
@@ -340,8 +340,10 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
         // Current z coordinate
         for (int j = basePoint.z; j < basePoint.z + col; ++j) {
 
-            if (maze[i][j]->getStatus() == true) {
-                
+            if (maze[i-basePoint.x][j-basePoint.z]->getStatus() == true) {
+                std::cout << i - basePoint.x << " ";
+                std::cout << j - basePoint.z << std::endl;
+
                 // Set placeWall to current detected coordinate
                 placeWall.x = i;
                 placeWall.z = j;
@@ -374,7 +376,7 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
         // Current z coordinate
         for (int j = basePoint.z; j < basePoint.z + col; ++j) {
 
-            if (maze[i][j]->getStatus() == true) {
+            if (maze[i-row][j-col]->getStatus() == true) {
                 removeBlock.x = i;
                 removeBlock.z = j;
                 removeBlock.y = mc.getHeight(i, j);
@@ -389,7 +391,7 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
 
 
 // RESTORE TERRAIN (Access coordinates and block id, then set depending on y)
-    while (Maze::getNext != nullptr) {
+    while (Maze::getNext() != nullptr) {
 
         blockHistory = getNext();
         

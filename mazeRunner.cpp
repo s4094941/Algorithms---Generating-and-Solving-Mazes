@@ -58,11 +58,11 @@ int main(int argc, char* argv[]) {
             }
             else if (mainMenuOption == "2") {
                 if (hasGenerated) {
-                    if (hasBuilt == true) {
+                    if (hasBuilt == false) {
                         maze->flattenTerrain(*basePoint);
                         maze->placeMaze(*basePoint);
                         hasBuilt = true;
-                    } else if (hasBuilt == false) {
+                    } else if (hasBuilt == true) {
                         maze->restoreTerrain(*basePoint);
                         maze->flattenTerrain(*basePoint);
                         maze->placeMaze(*basePoint);
