@@ -1,14 +1,13 @@
 #ifndef MAZENODE_H
 #define MAZENODE_H
 
-#include <mcpp/mcpp.h>
-
 class MazeNode {
     private:
         int row, col;
         int dirCount;
         bool up, down, left, right;
         bool isWall, explored;
+        bool isTerrain;
         MazeNode* prevNode;
 
     public:
@@ -17,6 +16,7 @@ class MazeNode {
 
         // Mutators
         void setWall(bool);
+        void setTerrain(bool);
         void setExplored(bool);
         void setPrevNode(MazeNode*);
 
@@ -32,6 +32,7 @@ class MazeNode {
         int getDirCount();
         bool getStatus();
         bool getWall();
+        bool getTerrain();
         MazeNode* getPrevNode();
 
         // Get a random direction from available directions
@@ -41,11 +42,7 @@ class MazeNode {
 
         // Print node
         void printNode();
-<<<<<<< HEAD
-        void placeNode(mcpp::Coordinate currentCoordinates, mcpp::BlockType blockID);
-=======
         // void placeNode();
->>>>>>> 5152ed46ac232279a44bc5cfaab4c5c007f31066
 };
 
 #endif // MAZENODE_H

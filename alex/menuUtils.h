@@ -28,6 +28,14 @@ void printGenerateMazeMenu() {
     cout << endl << "Enter Menu item to continue: " << endl;
 }
 
+void printGenerateRandMazeMenu() {
+    cout << endl << "---------- GENERATE RANDOM MAZE ---------" << endl;
+    cout << "1) Regular Mode" << endl;
+    cout << "2) Enhancement Mode" << endl;
+    cout << "3) Back" << endl;
+    cout << endl << "Enter Menu item to continue: " << endl;
+}
+
 void printSolveMazeMenu() {
     cout << endl << "------------- SOLVE MAZE -------------" << endl;
     cout << "1) Solve Manually" << endl;

@@ -1,16 +1,21 @@
 #ifndef MAZE_H
 #define MAZE_H
-#include "MazeNode.h"
+
+#include "alex/MazeNode.h"
+#include <mcpp/mcpp.h>
+using mcpp::Coordinate;
 
 class Maze {
     private:
         int row, col;
         bool testMode;
+        bool enhancementMode;
         // bool isBuilt;
         MazeNode*** maze;
 
         // Private methods
         void createGrid();  // TODO: Regenerate base grid (set walls/air)
+        void scanTerrain(Coordinate* basePoint);
 
         MazeNode* checkDirection(MazeNode*, int);
         MazeNode* getRandomStart();
@@ -21,9 +26,7 @@ class Maze {
 
     public:
         // Constructor
-        Maze(int, int, bool);
-
-        void setMode(bool);
+        Maze(int, int, bool, bool, Coordinate*);
 
         // Accessors
         int getRow();
@@ -35,13 +38,13 @@ class Maze {
         void buildMaze();
         void printMaze();
         // void placeMaze();
+        void solveManually(Coordinate* basePoint);
 
         // Destructor
         ~Maze();
 };
 
 #endif // MAZE_H
-
 
 // TODO: Check if user-generated maze if valid:
     // check edge of maze. If open areas != 1, invalid

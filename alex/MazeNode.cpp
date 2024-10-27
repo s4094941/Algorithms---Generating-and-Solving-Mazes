@@ -1,4 +1,4 @@
-#include "MazeNode.h"
+#include "alex/MazeNode.h"
 #include <cstdlib>
 #include <iostream>
 
@@ -13,6 +13,14 @@ void MazeNode::setWall (bool status) {
         explored = true;
     }
 }
+
+void MazeNode::setTerrain(bool status) {
+    this->isTerrain = status;
+    if (status) {
+        this->explored = true;
+    }
+}
+
 void MazeNode::setExplored(bool status) {
     explored = status;
     if (status == true) {
@@ -52,6 +60,11 @@ bool MazeNode::getStatus() {
 bool MazeNode::getWall() {
     return isWall;
 }
+
+bool MazeNode::getTerrain() {
+    return this->isTerrain;
+}
+
 MazeNode* MazeNode::getPrevNode() {
     if (prevNode != nullptr) { return prevNode; }
     return NULL;
@@ -98,21 +111,16 @@ int MazeNode::getTestDirection() {
 
 // Print Node
 void MazeNode::printNode() {
-    if (isWall) {
+    if (this->isTerrain) {
+        std::cout << '#';
+    }
+    else if (isWall) {
         std::cout << 'x';
-    } else if (explored) {
+    }
+    else if (explored) {
         std::cout << '.';
-    } else {
-        std::cout << dirCount;
     }
+    // else {
+    //     std::cout << dirCount;
+    // }
 }
-<<<<<<< HEAD
-
-void MazeNode::placeNode(mcpp::Coordinate currentCoordinates, mcpp::BlockType blockID) {
-    mcpp::MinecraftConnection mc;
-    if (isWall) {
-        // mc.setBlock();
-    }
-}
-=======
->>>>>>> 5152ed46ac232279a44bc5cfaab4c5c007f31066
