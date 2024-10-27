@@ -1,7 +1,7 @@
 #ifndef MAZE_H
 #define MAZE_H
 
-#include "MazeNode.h"
+#include "alex/MazeNode.h"
 #include <mcpp/mcpp.h>
 using mcpp::Coordinate;
 

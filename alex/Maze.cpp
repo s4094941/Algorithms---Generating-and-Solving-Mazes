@@ -1,4 +1,4 @@
-#include "Maze.h"
+#include "alex/Maze.h"
 using mcpp::MinecraftConnection;
 using mcpp::Coordinate;
 
@@ -48,6 +48,7 @@ void Maze::scanTerrain(Coordinate* basePoint) {
         for (int j = 0; j < this->col; j++) {
             if (mc.getHeight(basePoint->x, basePoint->z) != (mc.getHeight(basePoint->x + j, basePoint->z + i) - 1)) {
                 maze[i][j]->setTerrain(true);
+                
             }
         }
     }
@@ -141,7 +142,7 @@ MazeNode* Maze::checkDirection(MazeNode* curr, int dir) {
 
     MazeNode* next = maze[curr->getRow() + ros][curr->getCol() + cos];
     MazeNode* wall = maze[curr->getRow() + wros][curr->getCol() + wcos];
-    if (next->getStatus() == false && next->isWall() == false;) {
+    if (next->getStatus() == false) {
         next->setPrevNode(curr);
         wall->setExplored(true);
         curr=next;
@@ -226,11 +227,11 @@ void Maze::generateTestMaze() {
 // Generate maze using user input
 void Maze::buildMaze() {
     std::cout << "USER GENERATED MAZE:" << std::endl;
-    std::cout << "'x' for wall, '.' for empty space." <<
+    std::cout << "'x' for wall, '.' for empty space." << std::endl;
     std::cout << "Note: Entering q will fill the remaining structure with walls." << std::endl;
     std::cout << "Construct your [" << row << " x " << col << "] structure:" << std::endl;
     bool quitState = false;
-    char currChar = '';
+    char currChar = ' ';
     for (int i = 0; i < row; ++i) {
         for (int j = 0; j < col; ++j) {
             if (!quitState) {
