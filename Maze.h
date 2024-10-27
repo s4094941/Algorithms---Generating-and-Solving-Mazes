@@ -1,6 +1,8 @@
 #ifndef MAZE_H
 #define MAZE_H
 #include "MazeNode.h"
+#include <mcpp/mcpp.h>
+#include <memory>
 
 class Maze {
     private:
@@ -19,9 +21,21 @@ class Maze {
         void generateTestMaze();
         void generateRandomMaze();
 
+        struct blockNode {
+            mcpp::Coordinate blockLocation;
+            mcpp::BlockType blockID;
+            std::unique_ptr<blockNode> next;
+
+            //Constructor before node is initialized
+            blockNode (mcpp::Coordinate initializeLocation, mcpp::BlockType initalizeID)
+            : blockLocation(initializeLocation), blockID(initalizeID), next(nullptr) {}
+        };
+        std::unique_ptr<blockNode> newestNode;
+        blockNode* currentNode;
+
     public:
         // Constructor
-        Maze(int, int, bool);
+        Maze(int, int, bool, mcpp::Coordinate);
 
         // Accessors
         int getRow();
@@ -32,7 +46,18 @@ class Maze {
         void createMaze();
         void buildMaze();
         void printMaze();
-        // void placeMaze();
+
+        // Create Maze (Flatten, Place, Restore)
+        mcpp::Coordinate flattenTerrain(int row, int col);
+        void placeMaze(int row, int col, mcpp::Coordinate basePoint);
+        void restoreTerrain(int row, int col, mcpp::Coordinate basePoint);
+
+        // Constructor
+        Maze() : newestNode(nullptr), currentNode(nullptr) {}
+        void addNode(mcpp::Coordinate blockLocation, mcpp::BlockType blockID); 
+        blockNode* getNext(); 
+
+
 
         // Destructor
         ~Maze();

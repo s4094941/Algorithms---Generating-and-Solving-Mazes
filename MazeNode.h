@@ -1,6 +1,8 @@
 #ifndef MAZENODE_H
 #define MAZENODE_H
 
+#include <mcpp/mcpp.h>
+
 class MazeNode {
     private:
         int row, col;
@@ -38,8 +40,7 @@ class MazeNode {
 
         // Print node
         void printNode();
-        // void placeNode();
-
+        void placeNode(mcpp::Coordinate currentCoordinates, mcpp::BlockType blockID);
 };
 
 #endif // MAZENODE_H

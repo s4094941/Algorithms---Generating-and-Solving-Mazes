@@ -3,9 +3,10 @@
 #include <cstdlib>
 
 // Construct maze with x rows and y columns
-Maze::Maze(int x, int y, bool testMode) {
+Maze::Maze(int x, int y, bool testMode, mcpp::Coordinate playerPos) {
     row = x;
     col = y;
+    //this -> playerPos = playerPos;
     this->testMode = testMode;
     srand(time(0));
 
@@ -234,6 +235,192 @@ int Maze::getCol() {
 bool Maze::getMode() {
     return testMode;
 }
+
+mcpp::Coordinate Maze::flattenTerrain(int row, int col) {
+/*
+ * Create Loop to check every block within the coordinates
+ * If y coordinate is too high, store block ID and coordinates
+ * If y coordinate is too low, add a block where the players feet are, and store coordinates.
+*/
+    
+    mcpp::MinecraftConnection mc;
+    blockNode* blockHistory;
+
+    // Original Player Position, Remove Block and Place Block coordinates
+    mcpp::Coordinate playerPos;
+    mcpp::Coordinate removeBlock;
+    mcpp::Coordinate addBlock;
+
+    // Remove/Add Block
+    mcpp::BlockType const AIR(0);
+    mcpp::BlockType tempPlacement(0);
+
+    // Original Player Position, (Bottom Left Corner)
+    playerPos = mc.getPlayerPosition();
+
+
+    // i = Current x coordinate
+    for (int i = playerPos.x; i < playerPos.x + row; ++i) {
+        removeBlock.x = i;
+        addBlock.x = i;
+
+        // j = Current z coordinate
+        for (int j = playerPos.z; j < playerPos.z + col; ++j) {
+            removeBlock.z = j;
+            addBlock.z = j;
+
+            // If statement for too high (Repeat until y coordinate = player)
+            if (mc.getHeight(i, j) > playerPos.y - 1) {
+
+                while (mc.getHeight(i, j) > playerPos.y - 1) {
+                    removeBlock.y = mc.getHeight(i, j);
+
+                    addNode(removeBlock, mc.getBlock(removeBlock));
+
+                    mc.setBlock(removeBlock, AIR);
+                }
+            }
+
+            // If statement for too low
+            if (mc.getHeight(i, j) < playerPos.y - 1) {
+                addBlock.y = mc.getHeight(i, j) + 1;
+
+                while (mc.getHeight(i,j) < playerPos.y - 1) {
+                    tempPlacement = mc.getBlock(addBlock);
+
+                    mc.setBlock(addBlock, tempPlacement);
+
+                    // Add the new block to linked list
+                    addNode(addBlock, mc.getBlock(addBlock));
+
+                    // CHANGE TO ADDBLOCK.Y += 1 (VERIFY LATER)
+                    addBlock.y = mc.getHeight(i, j) + 1;
+                }
+                
+            }
+        }
+    }
+
+    return playerPos;
+}
+
+void Maze::placeMaze(int row, int col, mcpp::Coordinate basePoint) {
+/*
+ * Begin Building Maze
+ * If alphabet (x), place
+ * If symbol (.), do nothing
+ * [Test cases for other character done by generation?]
+*/
+    mcpp::Coordinate placeWall;
+    mcpp::BlockType const ACACIA_WOOD_PLANKS(5,4);
+    mcpp::MinecraftConnection mc;
+
+   // Begin loops (i = x, j = z) : Go through array putting ACACIA_WOOD_PLANKS for each TRUE.
+    // Current x coordinate
+    for (int i = basePoint.x; i < basePoint.x + row; ++i) {
+
+        // Current z coordinate
+        for (int j = basePoint.z; j < basePoint.z + col; ++j) {
+
+            if (maze[i][j]->getStatus() == true) {
+                
+                // Set placeWall to current detected coordinate
+                placeWall.x = i;
+                placeWall.z = j;
+
+                // Place a 3 block high wall
+                for (int k = 0; k < 3; ++k) {
+                    mc.setBlock(placeWall, ACACIA_WOOD_PLANKS);
+                    placeWall.y = basePoint.y + 1;
+                }
+                
+                // Reset placeWall.y to player height
+                placeWall.y = basePoint.y;
+            }
+        }
+    }
+}
+
+void Maze::restoreTerrain(int row, int col, mcpp::Coordinate basePoint) {
+
+    mcpp::MinecraftConnection mc;
+    mcpp::Coordinate removeBlock;
+    mcpp::BlockType const AIR(0);
+    blockNode* blockHistory;
+    
+
+
+// REMOVE MAZE (Look through Jonas array, remove if wall)
+    for (int i = basePoint.x; i < basePoint.x + row; ++i) {
+
+        // Current z coordinate
+        for (int j = basePoint.z; j < basePoint.z + col; ++j) {
+
+            if (maze[i][j]->getStatus() == true) {
+                removeBlock.x = i;
+                removeBlock.z = j;
+                removeBlock.y = mc.getHeight(i, j);
+
+                for (int k = 0; k < 3; ++k) {
+                    mc.setBlock(removeBlock, AIR);
+                    removeBlock.y = removeBlock.y - 1;
+                }
+            }
+        }
+    }
+
+
+// RESTORE TERRAIN (Access coordinates and block id, then set depending on y)
+    while (Maze::getNext != nullptr) {
+
+        blockHistory = getNext();
+        
+        // ACCESS LINKED LIST
+        // If block is above, place | Otherwise, remove
+        if (blockHistory->blockLocation.y >= basePoint.y) {
+            mc.setBlock(blockHistory->blockLocation, blockHistory->blockID);
+        } else if (blockHistory->blockLocation.y < basePoint.y) {
+            mc.setBlock(blockHistory->blockLocation, AIR);
+        }
+    }
+}
+
+
+void Maze::addNode(mcpp::Coordinate blockLocation, mcpp::BlockType blockID) {
+    auto newNode = std::make_unique<blockNode>(blockLocation, blockID);
+
+    // If there are nodes in the list, link the new node to the current newestNode
+    if (newestNode) {
+        newNode->next = std::move(newestNode);
+    }
+
+    // Move the new node to newestNode
+    newestNode = std::move(newNode);
+
+    // Reset currentNode to the new newestNode
+    currentNode = newestNode.get();
+}
+
+
+
+Maze::blockNode* Maze::getNext() {
+    if (!currentNode) {
+                            // adjust later to only have 1 return
+        return nullptr; // No current node, return null
+    }
+
+    // Save the current node to return
+    blockNode* placeNode = currentNode; 
+
+    // Advance to the next node
+    currentNode = currentNode->next.get(); 
+    
+    // Return the saved node
+    return placeNode; 
+}
+
+
+
 
 // Destructor
 Maze::~Maze() {

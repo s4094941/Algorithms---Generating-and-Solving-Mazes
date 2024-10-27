@@ -120,7 +120,7 @@ void buildMaze(int xLength, int zWidth, char** mazeArray, bool mode) {
 
 
                 // Place a 2 block high wall
-                for (int k = 0; k < 3; ++k) {
+                for (int k = 0; k < 2; ++k) {
                     mc.setBlock(placeWall, ACACIA_WOOD_PLANKS);
                     placeWall.y = playerPos.y + 1;
                 }
@@ -131,6 +131,7 @@ void buildMaze(int xLength, int zWidth, char** mazeArray, bool mode) {
             } else {
                 // Space for cases where (.) will need an action
             }
+
         }
     }
 

@@ -97,3 +97,10 @@ void MazeNode::printNode() {
         std::cout << dirCount;
     }
 }
+
+void MazeNode::placeNode(mcpp::Coordinate currentCoordinates, mcpp::BlockType blockID) {
+    mcpp::MinecraftConnection mc;
+    if (isWall) {
+        // mc.setBlock();
+    }
+}
