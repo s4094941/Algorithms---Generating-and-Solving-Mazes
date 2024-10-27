@@ -59,13 +59,13 @@ int main(int argc, char* argv[]) {
             else if (mainMenuOption == "2") {
                 if (hasGenerated) {
                     if (hasBuilt == true) {
-                        Maze::flattenTerrain();
-                        Maze::placeMaze();
+                        maze->flattenTerrain(*basePoint);
+                        maze->placeMaze(*basePoint);
                         hasBuilt = true;
                     } else if (hasBuilt == false) {
-                        Maze::restoreTerrain();
-                        Maze::flattenTerrain();
-                        Maze::placeMaze();
+                        maze->restoreTerrain(*basePoint);
+                        maze->flattenTerrain(*basePoint);
+                        maze->placeMaze(*basePoint);
                     }
                 }
                 else {
@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
                 curState = ST_Creators;
             }
             else if (mainMenuOption == "5") {
-                Maze::restoreTerrain();
+                maze->restoreTerrain(*basePoint);
                 curState = ST_Exit;
             }
             else if (!cin.eof()) {

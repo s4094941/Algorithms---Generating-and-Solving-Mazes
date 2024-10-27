@@ -50,9 +50,9 @@ class Maze {
         void printMaze();
 
         // Create Maze (Flatten, Place, Restore)
-        mcpp::Coordinate flattenTerrain(int row, int col);
-        void placeMaze(int row, int col, mcpp::Coordinate basePoint);
-        void restoreTerrain(int row, int col, mcpp::Coordinate basePoint);
+        void flattenTerrain(mcpp::Coordinate basepoint);
+        void placeMaze(mcpp::Coordinate basePoint);
+        void restoreTerrain(mcpp::Coordinate basePoint);
 
         // Constructor
         Maze() : newestNode(nullptr), currentNode(nullptr) {}

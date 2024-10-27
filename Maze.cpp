@@ -260,7 +260,7 @@ bool Maze::getMode() {
     return testMode;
 }
 
-void Maze::flattenTerrain(int row, int col, mcpp::Coordinate basePoint) {
+void Maze::flattenTerrain(mcpp::Coordinate basePoint) {
 /*
  * Create Loop to check every block within the coordinates
  * If y coordinate is too high, store block ID and coordinates
@@ -322,7 +322,7 @@ void Maze::flattenTerrain(int row, int col, mcpp::Coordinate basePoint) {
     }
 }
 
-void Maze::placeMaze(int row, int col, mcpp::Coordinate basePoint) {
+void Maze::placeMaze(mcpp::Coordinate basePoint) {
 /*
  * Begin Building Maze
  * If alphabet (x), place
@@ -359,7 +359,7 @@ void Maze::placeMaze(int row, int col, mcpp::Coordinate basePoint) {
     }
 }
 
-void Maze::restoreTerrain(int row, int col, mcpp::Coordinate basePoint) {
+void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
 
     mcpp::MinecraftConnection mc;
     mcpp::Coordinate removeBlock;
