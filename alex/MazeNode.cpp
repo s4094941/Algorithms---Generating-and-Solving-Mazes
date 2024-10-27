@@ -13,6 +13,14 @@ void MazeNode::setWall (bool status) {
         explored = true;
     }
 }
+
+void MazeNode::setTerrain(bool status) {
+    this->isTerrain = status;
+    if (status) {
+        this->explored = true;
+    }
+}
+
 void MazeNode::setExplored(bool status) {
     explored = status;
     if (status == true) {
@@ -52,6 +60,11 @@ bool MazeNode::getStatus() {
 bool MazeNode::getWall() {
     return isWall;
 }
+
+bool MazeNode::getTerrain() {
+    return this->isTerrain;
+}
+
 MazeNode* MazeNode::getPrevNode() {
     if (prevNode != nullptr) { return prevNode; }
     return NULL;
@@ -100,9 +113,14 @@ int MazeNode::getTestDirection() {
 void MazeNode::printNode() {
     if (isWall) {
         std::cout << 'x';
-    } else if (explored) {
+    }
+    else if (explored) {
         std::cout << '.';
-    } else {
+    }
+    else if (this->isTerrain) {
+        std::cout << "";
+    }
+    else {
         std::cout << dirCount;
     }
 }

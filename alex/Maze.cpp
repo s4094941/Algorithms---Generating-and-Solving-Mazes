@@ -47,7 +47,7 @@ void Maze::scanTerrain(Coordinate* basePoint) {
     for (int i = 0; i < this->row; i++) {
         for (int j = 0; j < this->col; j++) {
             if (mc.getHeight(basePoint->x, basePoint->z) != (mc.getHeight(basePoint->x + j, basePoint->z + i) - 1)) {
-                maze[i][j]->setWall(true);
+                maze[i][j]->setTerrain(true);
             }
         }
     }
@@ -58,7 +58,7 @@ void Maze::createGrid() {
         if (i % 2 != 0) {
             for (int j = 0; j < col; ++j) {
                 if (j % 2 != 0) {
-                    if (!maze[i][j]->getWall()) {
+                    if (!maze[i][j]->getTerrain()) {
                         // set as unexplored node
                         maze[i][j]->setWall(false);
                         // check top row
