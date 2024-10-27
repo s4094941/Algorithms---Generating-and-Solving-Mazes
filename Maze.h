@@ -37,7 +37,7 @@ class Maze {
 
     public:
         // Constructor
-        Maze(int, int, bool, mcpp::Coordinate);
+        Maze(int, int, bool);
 
         // Accessors
         int getRow();
