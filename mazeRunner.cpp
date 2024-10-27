@@ -58,8 +58,15 @@ int main(int argc, char* argv[]) {
             }
             else if (mainMenuOption == "2") {
                 if (hasGenerated) {
-                    // Call building maze function
-                    hasBuilt = true;
+                    if (hasBuilt == true) {
+                        Maze::flattenTerrain();
+                        Maze::placeMaze();
+                        hasBuilt = true;
+                    } else if (hasBuilt == false) {
+                        Maze::restoreTerrain();
+                        Maze::flattenTerrain();
+                        Maze::placeMaze();
+                    }
                 }
                 else {
                     cout << "Cannot build a maze without generating a maze ..."
@@ -74,6 +81,7 @@ int main(int argc, char* argv[]) {
                 curState = ST_Creators;
             }
             else if (mainMenuOption == "5") {
+                Maze::restoreTerrain();
                 curState = ST_Exit;
             }
             else if (!cin.eof()) {
