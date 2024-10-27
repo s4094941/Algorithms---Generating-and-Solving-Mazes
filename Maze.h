@@ -3,11 +3,8 @@
 
 #include "MazeNode.h"
 #include <mcpp/mcpp.h>
-<<<<<<< HEAD
 #include <memory>
-=======
 using mcpp::Coordinate;
->>>>>>> 5152ed46ac232279a44bc5cfaab4c5c007f31066
 
 class Maze {
     private:
@@ -51,7 +48,6 @@ class Maze {
         void createMaze();
         void buildMaze();
         void printMaze();
-<<<<<<< HEAD
 
         // Create Maze (Flatten, Place, Restore)
         mcpp::Coordinate flattenTerrain(int row, int col);
@@ -64,10 +60,8 @@ class Maze {
         blockNode* getNext(); 
 
 
-=======
         // void placeMaze();
         void solveManually(Coordinate* basePoint);
->>>>>>> 5152ed46ac232279a44bc5cfaab4c5c007f31066
 
         // Destructor
         ~Maze();

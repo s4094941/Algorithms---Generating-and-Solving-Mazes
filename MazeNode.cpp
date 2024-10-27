@@ -106,7 +106,6 @@ void MazeNode::printNode() {
         std::cout << dirCount;
     }
 }
-<<<<<<< HEAD
 
 void MazeNode::placeNode(mcpp::Coordinate currentCoordinates, mcpp::BlockType blockID) {
     mcpp::MinecraftConnection mc;
@@ -114,5 +113,3 @@ void MazeNode::placeNode(mcpp::Coordinate currentCoordinates, mcpp::BlockType bl
         // mc.setBlock();
     }
 }
-=======
->>>>>>> 5152ed46ac232279a44bc5cfaab4c5c007f31066

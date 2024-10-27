@@ -41,11 +41,8 @@ class MazeNode {
 
         // Print node
         void printNode();
-<<<<<<< HEAD
         void placeNode(mcpp::Coordinate currentCoordinates, mcpp::BlockType blockID);
-=======
         // void placeNode();
->>>>>>> 5152ed46ac232279a44bc5cfaab4c5c007f31066
 };
 
 #endif // MAZENODE_H

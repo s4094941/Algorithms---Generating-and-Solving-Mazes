@@ -260,7 +260,7 @@ bool Maze::getMode() {
     return testMode;
 }
 
-mcpp::Coordinate Maze::flattenTerrain(int row, int col) {
+void Maze::flattenTerrain(int row, int col) {
 /*
  * Create Loop to check every block within the coordinates
  * If y coordinate is too high, store block ID and coordinates
@@ -324,8 +324,6 @@ mcpp::Coordinate Maze::flattenTerrain(int row, int col) {
             }
         }
     }
-
-    return playerPos;
 }
 
 void Maze::placeMaze(int row, int col, mcpp::Coordinate basePoint) {
