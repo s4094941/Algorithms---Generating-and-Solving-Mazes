@@ -57,48 +57,6 @@ x.x...x...x...x...x...x...x...x
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 **End Printing Maze**
 
-
-------------- MAIN MENU -------------
-1) Generate Maze
-2) Build Maze in MineCraft
-3) Solve Maze
-4) Show Team Information
-5) Exit
-
-Enter Menu item to continue: 
-
-------------- MAIN MENU -------------
-1) Generate Maze
-2) Build Maze in MineCraft
-3) Solve Maze
-4) Show Team Information
-5) Exit
-
-Enter Menu item to continue: 
-
-------------- SOLVE MAZE -------------
-1) Solve Manually
-2) Show Escape Route
-3) Back
-
-Enter Menu item to continue: 
-Maze ready to Solve...
-
-------------- SOLVE MAZE -------------
-1) Solve Manually
-2) Show Escape Route
-3) Back
-
-Enter Menu item to continue: 
-// TODO: Enter step information here
-
-------------- SOLVE MAZE -------------
-1) Solve Manually
-2) Show Escape Route
-3) Back
-
-Enter Menu item to continue: 
-
 ------------- MAIN MENU -------------
 1) Generate Maze
 2) Build Maze in MineCraft
