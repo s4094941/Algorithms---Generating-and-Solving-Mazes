@@ -94,6 +94,41 @@ int main(int argc, char* argv[]) {
                 printGenerateMazeMenu();
                 cin >> generateMenuOption;
                 if (generateMenuOption == "1") {
+                    cout << "In Minecraft, navigate to where you need the maze"
+                        << endl << "to be built in Minecraft and type - done:" 
+                            << endl;
+                    cin >> doneStr;
+                    if (doneStr == "done") {
+                        cout << "Enter the length and width of maze:" << endl;
+                        cin >> length >> width;
+                        cout << "Enter the maze structure:" << endl;
+                        // read maze structure here
+                        // cin >> 
+                        cout << "Maze read successfully" << endl;
+                        cout << "**Printing Maze**" << endl;
+                        cout << "BasePoint: (" << basePoint->x << ", " << 
+                            basePoint->y << ", " << basePoint->z << ")" << 
+                                endl;
+                        cout << "Structure:" << endl;
+                        // print maze entered by user here
+                        // cout << 
+                        cout << "**End Printing Maze**" << endl;
+                        
+                        if (basePoint != nullptr) {
+                            delete basePoint;
+                        }
+                        basePoint = new Coordinate(mc.getPlayerPosition());
+
+                        if (maze != nullptr) {
+                            delete maze;
+                        }
+                        maze = new Maze(length, width, mode);
+                        hasGenerated = true;
+                        curState = ST_Main;
+                    }
+                    else {
+                        cout << "Type \'done\' exactly" << endl;
+                    }
                     curState = ST_Main;
                 }
                 else if (generateMenuOption == "2") {
@@ -114,7 +149,14 @@ int main(int argc, char* argv[]) {
                             delete maze;
                         }
                         maze = new Maze(length, width, mode);
+                        cout << "Maze generated successfully" << endl;
+                        cout << "**Printing Maze**" << endl;
+                        cout << "BasePoint: (" << basePoint->x << ", " << 
+                            basePoint->y << ", " << basePoint->z << ")" << 
+                                endl;
+                        cout << "Structure:" << endl;
                         maze->createMaze();
+                        cout << "**End Printing Maze**" << endl;
                         hasGenerated = true;
                         curState = ST_Main;
                     }
