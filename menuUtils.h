@@ -48,4 +48,62 @@ void printExitMessage() {
     cout << endl << "The End!" << endl << endl;
 }
 
+void printNotGeneratedMessage() {
+    cout << "Cannot build a maze without generating a maze ..." << endl;
+}
+
+void printInputError1To5Message() {
+    cout << "Input Error: Enter a number between 1 and 5 ..." << endl;
+}
+
+void printInputError1To3Message() {
+    cout << "Input Error: Enter a number between 1 and 3 ..." << endl;
+}
+
+void printNavigateMessage() {
+    cout << "In Minecraft, navigate to where you need the maze" << endl << 
+        "to be built in Minecraft and type - done:" << endl;
+}
+
+void printLengthAndWidthMessage() {
+    cout << "Enter the length and width of maze:" << endl;
+}
+
+void printMazeStructureMessage() {
+    cout << "Enter the maze structure:" << endl;
+}
+
+void printMazeReadMessage() {
+    cout << "Maze read successfully" << endl;
+}
+
+void printStartMazeMessage() {
+    cout << "**Printing Maze**" << endl;
+}
+
+void printStructureMessage() {
+    cout << "Structure:" << endl;
+}
+
+void printEndMazeMessage() {
+    cout << "**End Printing Maze**" << endl;
+}
+
+void printInputErrorDoneMessage() {
+    cout << "Type \'done\' exactly" << endl;
+}
+
+void printMazeGeneratedMessage() {
+    cout << "Maze generated successfully" << endl;
+}
+
+void printMazeReadyMessage() {
+    cout << "Maze ready to Solve..." << endl;
+}
+
+void printNotBuiltMessage() {
+    cout << "Cannot place player in a maze without " << "building a maze ..." 
+        << endl;
+}
+
 #endif // MENUUTILS_H

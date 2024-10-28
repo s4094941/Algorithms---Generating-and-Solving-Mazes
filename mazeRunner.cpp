@@ -70,8 +70,7 @@ int main(int argc, char* argv[]) {
                     }
                 }
                 else {
-                    cout << "Cannot build a maze without generating a maze ..."
-                        << endl;
+                    printNotGeneratedMessage();
                 }
                 curState = ST_Main;
             }
@@ -86,33 +85,30 @@ int main(int argc, char* argv[]) {
                 curState = ST_Exit;
             }
             else if (!cin.eof()) {
-                cout << "Input Error: Enter a number between 1 and 5 ..." 
-                    << endl;
+                printInputError1To5Message();
             }
 
             if (curState == ST_GetMaze) {
                 printGenerateMazeMenu();
                 cin >> generateMenuOption;
                 if (generateMenuOption == "1") {
-                    cout << "In Minecraft, navigate to where you need the maze"
-                        << endl << "to be built in Minecraft and type - done:" 
-                            << endl;
+                    printNavigateMessage();
                     cin >> doneStr;
                     if (doneStr == "done") {
-                        cout << "Enter the length and width of maze:" << endl;
+                        printLengthAndWidthMessage();
                         cin >> length >> width;
-                        cout << "Enter the maze structure:" << endl;
+                        printMazeStructureMessage();
                         // read maze structure here
                         // cin >> 
-                        cout << "Maze read successfully" << endl;
-                        cout << "**Printing Maze**" << endl;
+                        printMazeReadMessage();
+                        printStartMazeMessage();
                         cout << "BasePoint: (" << basePoint->x << ", " << 
                             basePoint->y << ", " << basePoint->z << ")" << 
                                 endl;
-                        cout << "Structure:" << endl;
+                        printStructureMessage();
                         // print maze entered by user here
                         // cout << 
-                        cout << "**End Printing Maze**" << endl;
+                        printEndMazeMessage();
                         
                         if (basePoint != nullptr) {
                             delete basePoint;
@@ -127,17 +123,15 @@ int main(int argc, char* argv[]) {
                         curState = ST_Main;
                     }
                     else {
-                        cout << "Type \'done\' exactly" << endl;
+                        printInputErrorDoneMessage();
                     }
                     curState = ST_Main;
                 }
                 else if (generateMenuOption == "2") {
-                    cout << "In Minecraft, navigate to where you need the maze"
-                        << endl << "to be built in Minecraft and type - done:" 
-                            << endl;
+                    printNavigateMessage();
                     cin >> doneStr;
                     if (doneStr == "done") {
-                        cout << "Enter the length and width of maze:" << endl;
+                        printLengthAndWidthMessage();
                         cin >> length >> width;
                         
                         if (basePoint != nullptr) {
@@ -149,27 +143,26 @@ int main(int argc, char* argv[]) {
                             delete maze;
                         }
                         maze = new Maze(length, width, mode);
-                        cout << "Maze generated successfully" << endl;
-                        cout << "**Printing Maze**" << endl;
+                        printMazeGeneratedMessage();
+                        printStartMazeMessage();
                         cout << "BasePoint: (" << basePoint->x << ", " << 
                             basePoint->y << ", " << basePoint->z << ")" << 
                                 endl;
-                        cout << "Structure:" << endl;
+                        printMazeStructureMessage();
                         maze->createMaze();
-                        cout << "**End Printing Maze**" << endl;
+                        printEndMazeMessage();
                         hasGenerated = true;
                         curState = ST_Main;
                     }
                     else {
-                        cout << "Type \'done\' exactly" << endl;
+                        printInputErrorDoneMessage();
                     }
                 }
                 else if (generateMenuOption == "3") {
                     curState = ST_Main;
                 }
                 else if (!cin.eof()) {
-                    cout << "Input Error: Enter a number between 1 and 3 ..." 
-                        << endl;
+                    printInputError1To3Message();
                 }
             }
             else if (curState == ST_SolveMaze) {
@@ -177,12 +170,11 @@ int main(int argc, char* argv[]) {
                 cin >> solveMenuOption;
                 if (solveMenuOption == "1") {
                     if (hasGenerated && hasBuilt) {
-                        cout << "Maze ready to Solve..." << endl;
+                        printMazeReadyMessage();
                         maze->solveManually(basePoint);
                     }
                     else {
-                        cout << "Cannot place player in a maze without " 
-                            << "building a maze ..." << endl;
+                        printNotBuiltMessage();
                     }
                 }
                 else if (solveMenuOption == "2") {
@@ -191,16 +183,14 @@ int main(int argc, char* argv[]) {
                         agent.rightHandFollow(mode);
                     }
                     else {
-                        cout << "Cannot solve a maze without building a maze " 
-                            << "..." << endl;
+                        printNotBuiltMessage();
                     }
                 }
                 else if (solveMenuOption == "3") {
                     curState = ST_Main;
                 }
                 else if (!cin.eof()) {
-                    cout << "Input Error: Enter a number between 1 and 3 ..." 
-                        << endl;
+                    printInputError1To3Message();
                 }
             }
             else if (curState == ST_Creators) {
