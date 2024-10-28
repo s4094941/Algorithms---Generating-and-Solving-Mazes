@@ -168,6 +168,7 @@ void Maze::generateRandomMaze() {
             currNode = checkDirection(currNode, dir);
         }
     }
+    printMaze();
 }
 
 // Generate maze based on test rules
@@ -202,6 +203,7 @@ void Maze::generateTestMaze() {
             currNode = checkDirection(currNode, dir);
         }
     }
+    printMaze();
 }
 
 // Generate maze using user input
@@ -234,7 +236,7 @@ void Maze::buildMaze() {
 
         }
     }
-    std::cout << "Maze generated." << std::endl;
+    printMaze();
     // TODO: CHECK VALIDITY OF USER-GENERATED MAZE
 }
 
@@ -294,6 +296,7 @@ void Maze::flattenTerrain(mcpp::Coordinate basePoint) {
 
                 while (mc.getHeight(i, j) > basePoint.y - 1) {
                     removeBlock.y = mc.getHeight(i, j);
+                    std::cout << "remove" << std::endl;
 
                     addNode(removeBlock, mc.getBlock(removeBlock));
 
@@ -303,18 +306,18 @@ void Maze::flattenTerrain(mcpp::Coordinate basePoint) {
 
             // If statement for too low
             if (mc.getHeight(i, j) < basePoint.y - 1) {
-                addBlock.y = mc.getHeight(i, j) + 1;
+                addBlock.y = mc.getHeight(i,j);
 
                 while (mc.getHeight(i,j) < basePoint.y - 1) {
                     tempPlacement = mc.getBlock(addBlock);
-
+                    addBlock.y = mc.getHeight(i, j) + 1;
+                    std::cout << "tempPlacement" << std::endl;
                     mc.setBlock(addBlock, tempPlacement);
 
                     // Add the new block to linked list
                     addNode(addBlock, mc.getBlock(addBlock));
 
                     // CHANGE TO ADDBLOCK.Y += 1 (VERIFY LATER)
-                    addBlock.y = mc.getHeight(i, j) + 1;
                 }
                 
             }
@@ -323,6 +326,7 @@ void Maze::flattenTerrain(mcpp::Coordinate basePoint) {
 }
 
 void Maze::placeMaze(mcpp::Coordinate basePoint) {
+    std::cout << "Building Maze" << std::endl;
 /*
  * Begin Building Maze
  * If alphabet (x), place
@@ -340,7 +344,7 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
         // Current z coordinate
         for (int j = basePoint.z; j < basePoint.z + col; ++j) {
 
-            if (maze[i-basePoint.x][j-basePoint.z]->getStatus() == true) {
+            if (maze[i-basePoint.x][j-basePoint.z]->getWall() == true) {
                 std::cout << i - basePoint.x << " ";
                 std::cout << j - basePoint.z << std::endl;
 
@@ -351,7 +355,7 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
                 // Place a 3 block high wall
                 for (int k = 0; k < 3; ++k) {
                     mc.setBlock(placeWall, ACACIA_WOOD_PLANKS);
-                    placeWall.y = basePoint.y + 1;
+                    ++placeWall.y;
                 }
                 
                 // Reset placeWall.y to player height
@@ -376,7 +380,7 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
         // Current z coordinate
         for (int j = basePoint.z; j < basePoint.z + col; ++j) {
 
-            if (maze[i-row][j-col]->getStatus() == true) {
+            if (maze[i-basePoint.x][j-basePoint.z]->getWall() == true) {
                 removeBlock.x = i;
                 removeBlock.z = j;
                 removeBlock.y = mc.getHeight(i, j);
@@ -397,7 +401,7 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
         
         // ACCESS LINKED LIST
         // If block is above, place | Otherwise, remove
-        if (blockHistory->blockLocation.y >= basePoint.y) {
+        if (blockHistory->blockLocation.y > basePoint.y) {
             mc.setBlock(blockHistory->blockLocation, blockHistory->blockID);
         } else if (blockHistory->blockLocation.y < basePoint.y) {
             mc.setBlock(blockHistory->blockLocation, AIR);

@@ -60,6 +60,7 @@ int main(int argc, char* argv[]) {
                 if (hasGenerated) {
                     if (hasBuilt == false) {
                         maze->flattenTerrain(*basePoint);
+                        cout << "test" << endl;
                         maze->placeMaze(*basePoint);
                         hasBuilt = true;
                     } else if (hasBuilt == true) {
@@ -113,6 +114,7 @@ int main(int argc, char* argv[]) {
                             delete maze;
                         }
                         maze = new Maze(length, width, mode);
+                        maze->createMaze();
                         hasGenerated = true;
                         curState = ST_Main;
                     }
