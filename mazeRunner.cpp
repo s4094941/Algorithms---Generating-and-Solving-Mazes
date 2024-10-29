@@ -81,7 +81,6 @@ int main(int argc, char* argv[]) {
                 curState = ST_Creators;
             }
             else if (mainMenuOption == "5") {
-                maze->restoreTerrain(*basePoint);
                 curState = ST_Exit;
             }
             else if (!cin.eof()) {
@@ -198,6 +197,9 @@ int main(int argc, char* argv[]) {
                 curState = ST_Main;
             }
             else if (curState == ST_Exit) {
+                if (hasGenerated && hasBuilt) {
+                    maze->restoreTerrain(*basePoint);
+                }
                 printExitMessage();
             }
         }

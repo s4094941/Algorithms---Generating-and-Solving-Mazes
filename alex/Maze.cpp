@@ -1,9 +1,9 @@
-#include "alex/Maze.h"
+#include "Maze.h"
 using mcpp::MinecraftConnection;
 using mcpp::Coordinate;
 
 // Construct maze with x rows and y columns
-Maze::Maze(int x, int y, bool testMode, bool enhancementmode, Coordinate* 
+Maze::Maze(int x, int y, bool testMode, bool enhancementMode, Coordinate 
                 basePoint) {
     row = x;
     col = y;
@@ -36,19 +36,20 @@ Maze::Maze(int x, int y, bool testMode, bool enhancementmode, Coordinate*
         }
     }
 
-    if (enhancementMode) {
+    if (this->enhancementMode) {
         this->scanTerrain(basePoint);
     }
 }
 
-void Maze::scanTerrain(Coordinate* basePoint) {
+void Maze::scanTerrain(Coordinate basePoint) {
     MinecraftConnection mc;
 
+    // using heightmap to store all heights is faster than looking for specific heights with getHeight()
+    mcpp::HeightMap heightMap = mc.getHeights(basePoint, Coordinate(basePoint.x + col, basePoint.y, basePoint.z + row));
     for (int i = 0; i < this->row; i++) {
         for (int j = 0; j < this->col; j++) {
-            if (mc.getHeight(basePoint->x, basePoint->z) != (mc.getHeight(basePoint->x + j, basePoint->z + i) - 1)) {
+            if (heightMap.get_worldspace(Coordinate(basePoint.x + j, basePoint.y, basePoint.z + i)) - 1 != heightMap.get_worldspace(basePoint) && heightMap.get_worldspace(basePoint) != heightMap.get_worldspace(Coordinate(basePoint.x + j, basePoint.y, basePoint.z + i))) {
                 maze[i][j]->setTerrain(true);
-                
             }
         }
     }
@@ -87,34 +88,56 @@ MazeNode* Maze::getRandomStart() {
     int x = 1;
     int y = 1;
     MazeNode* start;
+    // int dirSide = 0;
+    bool startFound = false;
+    srand(time(0));
 
-    // Random odd number between 1 and row - 2
-    x = (rand() % ((row - 1) / 2)) * 2 + 1;
 
-    if (x == 1 || x == row - 2) {
-        y = (rand() % ((col - 1) / 2)) * 2 + 1;
-        // CASE: TOP ROW
-        if (x == 1 && !maze[0][y]->getTerrain()) {
-            maze[0][y]->setWall(false);
-            maze[0][y]->setExplored(true);
-        } else if (!maze[row - 1][y]->getTerrain()) {
-        // CASE: BOTTOM ROW
-            maze[row - 1][y]->setWall(false);
-            maze[row - 1][y]->setExplored(true);
-        }
-    } else {
-        // random between 0 or 1 (start or end)
-        y = rand() % 2;
-        // CASE: LEFT
-        if (y == 0 && !maze[x][0]->getTerrain()) {
-            y = 1;
-            maze[x][0]->setWall(false);
-            maze[x][0]->setExplored(true);
-        } else if (y == 1 && !maze[x][col - 1]->getTerrain()) {
-        // CASE: RIGHT
-            y = col - 2;
-            maze[x][col - 1]->setWall(false);
-            maze[x][col - 1]->setExplored(true);
+    // assume that if the obstable/ unflattened terrain's is fully in the maze then the maximum size is row - 2 col - 2
+    // assume that there cannot be obstacles/ unflattened terrain covering the whole maze border (otherwise no entry/exit can be found infi loop)
+    while (!startFound) {
+        x = (rand() % ((row - 1) / 2)) * 2 + 1;
+
+        if (x == 1 || x == row - 2) {
+            y = (rand() % ((col - 1) / 2)) * 2 + 1;
+            // CASE: TOP ROW
+            if (x == 1) {
+                if (maze[0][y]->getTerrain() == false) {
+                    maze[0][y]->setWall(false);
+                    maze[0][y]->setExplored(true);
+                    startFound = true;
+                }
+                
+            } else {
+            // CASE: BOTTOM ROW
+                if (maze[row - 1][y]->getTerrain() == false) {
+                    maze[row - 1][y]->setWall(false);
+                    maze[row - 1][y]->setExplored(true);
+                    startFound = true;
+                }
+                
+            }
+        } else {
+            // random between 0 or 1 (start or end)
+            y = rand() % 2;
+            // CASE: LEFT
+            if (y == 0) {
+                if (maze[x][0]->getTerrain() == false) {
+                    maze[x][0]->setWall(false);
+                    maze[x][0]->setExplored(true);
+                    startFound = true;
+                }
+                y = 1;
+                
+            } else if (y == 1) {
+            // CASE: RIGHT
+                y = col - 2;
+                if (maze[x][col - 1]->getTerrain() == false) {
+                    maze[x][col - 1]->setWall(false);
+                    maze[x][col - 1]->setExplored(true);
+                    startFound = true;
+                }
+            }
         }
     }
     start = maze[x][y];
@@ -142,7 +165,7 @@ MazeNode* Maze::checkDirection(MazeNode* curr, int dir) {
 
     MazeNode* next = maze[curr->getRow() + ros][curr->getCol() + cos];
     MazeNode* wall = maze[curr->getRow() + wros][curr->getCol() + wcos];
-    if (next->getStatus() == false) {
+    if (next->getStatus() == false && next->getTerrain() == false) {
         next->setPrevNode(curr);
         wall->setExplored(true);
         curr=next;
@@ -162,7 +185,7 @@ void Maze::createMaze() {
 // Generate maze randomly
 void Maze::generateRandomMaze() {
     // Set wallStatus to false for all nodes where x and y are odd
-    createGrid();
+    // createGrid();
 
     // Random generation. Begin at random node adjacent to side wall. Check 2 blocks in available directions. If unexplored, new node becomes current. Loop.
     // If no available directions, backtrack and check again. If current node = dummy node, end loop.

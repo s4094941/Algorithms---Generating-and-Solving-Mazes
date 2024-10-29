@@ -1,4 +1,4 @@
-#include "alex/MazeNode.h"
+#include "MazeNode.h"
 #include <cstdlib>
 #include <iostream>
 
@@ -112,7 +112,7 @@ int MazeNode::getTestDirection() {
 // Print Node
 void MazeNode::printNode() {
     if (this->isTerrain) {
-        std::cout << '#';
+        std::cout << ' ';
     }
     else if (isWall) {
         std::cout << 'x';
@@ -120,7 +120,7 @@ void MazeNode::printNode() {
     else if (explored) {
         std::cout << '.';
     }
-    // else {
-    //     std::cout << dirCount;
-    // }
+    else {
+        std::cout << dirCount;
+    }
 }

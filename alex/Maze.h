@@ -1,7 +1,7 @@
 #ifndef MAZE_H
 #define MAZE_H
 
-#include "alex/MazeNode.h"
+#include "MazeNode.h"
 #include <mcpp/mcpp.h>
 using mcpp::Coordinate;
 
@@ -14,19 +14,21 @@ class Maze {
         MazeNode*** maze;
 
         // Private methods
-        void createGrid();  // TODO: Regenerate base grid (set walls/air)
-        void scanTerrain(Coordinate* basePoint);
+          // TODO: Regenerate base grid (set walls/air)
+        void scanTerrain(Coordinate basePoint);
 
         MazeNode* checkDirection(MazeNode*, int);
         MazeNode* getRandomStart();
 
         // Generate maze based on testMode
         void generateTestMaze();
-        void generateRandomMaze();
+        
 
     public:
         // Constructor
-        Maze(int, int, bool, bool, Coordinate*);
+        Maze(int, int, bool, bool, Coordinate);
+        void createGrid();
+        void generateRandomMaze();
 
         // Accessors
         int getRow();
