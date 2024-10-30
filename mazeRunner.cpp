@@ -104,6 +104,10 @@ int main(int argc, char* argv[]) {
                     if (doneStr == "done") {
                         printLengthAndWidthMessage();
                         cin >> length >> width;
+                        
+                        if (maze != nullptr) {
+                            delete maze;
+                        }
                         maze = new Maze(length, width, mode);
 
                         printMazeStructureMessage();
@@ -117,15 +121,13 @@ int main(int argc, char* argv[]) {
                         printStructureMessage();
 
                         printEndMazeMessage();
+                        maze->printMaze();
                         
                         if (basePoint != nullptr) {
                             delete basePoint;
                         }
                         basePoint = new Coordinate(mc.getPlayerPosition());
 
-                        if (maze != nullptr) {
-                            delete maze;
-                        }
                         
                         hasGenerated = true;
                         curState = ST_Main;
