@@ -1,6 +1,9 @@
+#include <thread>
 #include "Maze.h"
 using mcpp::MinecraftConnection;
 using mcpp::Coordinate;
+using std::this_thread::sleep_for;
+using std::chrono::milliseconds;
 
 // Construct maze with x rows and y columns
 Maze::Maze(int x, int y, bool testMode) {
@@ -270,9 +273,8 @@ void Maze::flattenTerrain(mcpp::Coordinate basePoint) {
 */
     
     mcpp::MinecraftConnection mc;
-    // blockNode* blockHistory;
 
-    // Original Player Position, Remove Block and Place Block coordinates
+    // Remove Block and Place Block coordinates
     mcpp::Coordinate removeBlock;
     mcpp::Coordinate addBlock;
 
@@ -280,46 +282,36 @@ void Maze::flattenTerrain(mcpp::Coordinate basePoint) {
     mcpp::BlockType const AIR(0);
     mcpp::BlockType tempPlacement(0);
 
+    // i = Current z coordinate
+    for (int i = basePoint.z; i < basePoint.z + col; ++i) {
+        removeBlock.z = i;
+        addBlock.z = i;
 
-    // i = Current x coordinate
-    for (int i = basePoint.x; i < basePoint.x + row; ++i) {
-        removeBlock.x = i;
-        addBlock.x = i;
+        // j = Current x coordinate
+        for (int j = basePoint.x; j < basePoint.x + row; ++j) {
+            removeBlock.x = j;
+            addBlock.x = j;
 
-        // j = Current z coordinate
-        for (int j = basePoint.z; j < basePoint.z + col; ++j) {
-            removeBlock.z = j;
-            addBlock.z = j;
+            // If too high, destroy until reaching player's feet, and add destroyed blocks to linked list
+            if (mc.getHeight(j, i) > basePoint.y - 1) {
 
-            // If statement for too high (Repeat until y coordinate = player)
-            if (mc.getHeight(i, j) > basePoint.y - 1) {
-
-                while (mc.getHeight(i, j) > basePoint.y - 1) {
-                    removeBlock.y = mc.getHeight(i, j);
-                    std::cout << "remove" << std::endl;
-
+                while (mc.getHeight(j, i) > basePoint.y - 1) {
+                    removeBlock.y = mc.getHeight(j, i);
                     addNode(removeBlock, mc.getBlock(removeBlock));
-
                     mc.setBlock(removeBlock, AIR);
                 }
             }
 
-            // If statement for too low
-            if (mc.getHeight(i, j) < basePoint.y - 1) {
-                addBlock.y = mc.getHeight(i,j);
+            // If too low, add a block (using the block being built upon) and add the block to linked list
+            if (mc.getHeight(j, i) < basePoint.y - 1) {
+                addBlock.y = mc.getHeight(j, i);
 
-                while (mc.getHeight(i,j) < basePoint.y - 1) {
+                while (mc.getHeight(j, i) < basePoint.y - 1) {
                     tempPlacement = mc.getBlock(addBlock);
-                    addBlock.y = mc.getHeight(i, j) + 1;
-                    std::cout << "tempPlacement" << std::endl;
+                    addBlock.y = mc.getHeight(j, i) + 1;
                     mc.setBlock(addBlock, tempPlacement);
-
-                    // Add the new block to linked list
-                    addNode(addBlock, mc.getBlock(addBlock));
-
-                    // CHANGE TO ADDBLOCK.Y += 1 (VERIFY LATER)
+                    addNode(addBlock, tempPlacement);
                 }
-                
             }
         }
     }
@@ -335,43 +327,47 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
 */
     mcpp::Coordinate placeWall;
     mcpp::Coordinate entrance;
+    mcpp::Coordinate editBlocks;
+    mcpp::BlockType tempPlacement;
     mcpp::BlockType const ACACIA_WOOD_PLANKS(5,4);
     mcpp::BlockType const BLUE_CARPET(171,11);
+    mcpp::BlockType const AIR (0);
     
     mcpp::MinecraftConnection mc;
     bool entranceLocated = false;
 
-   // Begin loops (i = x, j = z) : Go through array putting ACACIA_WOOD_PLANKS for each TRUE.
+   // Begin loops (j = x, i = z) : Go through array putting ACACIA_WOOD_PLANKS for each TRUE.
     // Current x coordinate
-    for (int i = basePoint.x; i < basePoint.x + row; ++i) {
+    for (int i = basePoint.z; i < basePoint.z + col; ++i) {
 
         // Current z coordinate
-        for (int j = basePoint.z; j < basePoint.z + col; ++j) {
+        for (int j = basePoint.x; j < basePoint.x + row; ++j) {
 
-            if (maze[i-basePoint.x][j-basePoint.z]->getWall() == true) {
+            if (maze[j-basePoint.x][i-basePoint.z]->getWall() == true) {
                 // Set placeWall to current detected coordinate
-                placeWall.x = i;
+                placeWall.z = i;
                 placeWall.y = basePoint.y;
-                placeWall.z = j;
+                placeWall.x = j;
 
                 // Place a 3 block high wall
                 for (int k = 0; k < 3; ++k) {
                     mc.setBlock(placeWall, ACACIA_WOOD_PLANKS);
                     ++placeWall.y;
+                    sleep_for(milliseconds(50));
                 }
             }
         }
     }
 
-        // Find the entrance
-    // Checks Left then Right side
+    // Finding the entrance...
+    // Checks each side before setting carpet location one block outside of the entrance.
     for (int i = 0; i < row; ++i && !entranceLocated) {
         if (maze[i][0]->getWall() == false) {
             entrance.x = basePoint.x + i;
             entrance.y = basePoint.y;
             entrance.z = basePoint.z - 1;
             entranceLocated = true;
-        } else if (maze[i][col - 1]->getWall() == false) {
+        } else if (maze[i][row - 1]->getWall() == false) {
             entrance.x = basePoint.x + i;
             entrance.y = basePoint.y;
             entrance.z = basePoint.z + col;
@@ -380,19 +376,44 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
     }
 
     for (int j = 0; j < col; ++j && !entranceLocated) {
-        if (maze[0][j]->getWall() == false) {  // Top side
-            entrance.x = basePoint.x - 1; // Set carpet position outside
+        if (maze[0][j]->getWall() == false) {
+            entrance.x = basePoint.x - 1;
             entrance.y = basePoint.y;
             entrance.z = basePoint.z + j;
             entranceLocated = true;
-        } else if (maze[row - 1][j]->getWall() == false) {  // Bottom side
-            entrance.x = basePoint.x + row; // Set carpet position outside
+        } else if (maze[row - 1][j]->getWall() == false) {
+            entrance.x = basePoint.x + row;
             entrance.y = basePoint.y;
             entrance.z = basePoint.z + j;
             entranceLocated = true;
         }
     }
 
+
+
+    // Preparing Terrain for Blue Carpet
+    if (mc.getHeight(entrance.x, entrance.z) > basePoint.y - 1) {
+        editBlocks = entrance;
+        while (mc.getHeight(entrance.x, entrance.z) > basePoint.y - 1) {
+            editBlocks.y = mc.getHeight(entrance.x, entrance.z);
+            addNode(editBlocks, mc.getBlock(editBlocks));
+            mc.setBlock(editBlocks, AIR);
+        }
+    }
+
+    if (mc.getHeight(entrance.x, entrance.z) < basePoint.y - 1) {
+        editBlocks = entrance;
+        editBlocks.y = mc.getHeight(entrance.x, entrance.y);
+        while (mc.getHeight(entrance.x, entrance.z) < basePoint.y - 1) {
+            tempPlacement = mc.getBlock(editBlocks);
+            editBlocks.y = mc.getHeight(entrance.x, entrance.z) + 1;
+            mc.setBlock(editBlocks, tempPlacement);
+
+            // Add the new block to linked list
+            addNode(editBlocks, tempPlacement);
+        }
+    }
+    sleep_for(milliseconds(50));
     mc.setBlock(entrance, BLUE_CARPET);
     addNode(entrance, BLUE_CARPET);
 }
@@ -406,25 +427,26 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
     blockNode* blockHistory;
     
 // REMOVE MAZE (Look through Jonas array, remove if wall)
-    for (int i = basePoint.x; i < basePoint.x + row; ++i) {
+    for (int i = basePoint.z; i < basePoint.z + col; ++i) {
 
         // Current z coordinate
-        for (int j = basePoint.z; j < basePoint.z + col; ++j) {
+        for (int j = basePoint.x; j < basePoint.x + row; ++j) {
 
-            if (maze[i-basePoint.x][j-basePoint.z]->getWall() == true) {
-                removeBlock.x = i;
-                removeBlock.z = j;
-                removeBlock.y = mc.getHeight(i, j);
+            if (maze[j-basePoint.x][i-basePoint.z]->getWall() == true) {
+                removeBlock.z = i;
+                removeBlock.x = j;
+                removeBlock.y = mc.getHeight(j, i);
 
                 for (int k = 0; k < 3; ++k) {
                     mc.setBlock(removeBlock, AIR);
                     removeBlock.y = removeBlock.y - 1;
+                    sleep_for(milliseconds(50));
                 }
             }
         }
     }
 
-// RESTORE TERRAIN (Access coordinates and block id, then set depending on y)
+// RESTORE TERRAIN (Access coordinates and block id, then add/remove depending on y)
     blockHistory = getNext();
     while (blockHistory != nullptr) {
         
@@ -438,9 +460,9 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
             mc.setBlock(blockHistory->blockLocation, AIR);
         }
         blockHistory = getNext();
+        sleep_for(milliseconds(50));
     }
 }
-
 
 void Maze::addNode(mcpp::Coordinate blockLocation, mcpp::BlockType blockID) {
     auto newNode = std::make_unique<blockNode>(blockLocation, blockID);
@@ -457,17 +479,13 @@ void Maze::addNode(mcpp::Coordinate blockLocation, mcpp::BlockType blockID) {
     currentNode = newestNode.get();
 }
 
-
-
 Maze::blockNode* Maze::getNext() {
     blockNode* placeNode = nullptr;
-
+    // If there is a node, get next, if not, return nullptr
     if (currentNode) {
         placeNode = currentNode; 
         currentNode = currentNode->next.get(); 
     }
-
-    // Return the saved node
     return placeNode; 
 }
 
