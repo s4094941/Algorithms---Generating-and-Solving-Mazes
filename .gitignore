@@ -36,3 +36,7 @@
 *.dSYM
 *.dSYM/
 .vscode/
+
+# Windows specific
+Agent
+Maze
