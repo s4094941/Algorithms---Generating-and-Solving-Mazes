@@ -104,9 +104,11 @@ int main(int argc, char* argv[]) {
                     if (doneStr == "done") {
                         printLengthAndWidthMessage();
                         cin >> length >> width;
+                        maze = new Maze(length, width, mode);
+
                         printMazeStructureMessage();
-                        // read maze structure here
-                        // cin >> 
+                        maze->buildMaze();
+
                         printMazeReadMessage();
                         printStartMazeMessage();
                         cout << "BasePoint: (" << basePoint->x << ", " << 
@@ -114,8 +116,6 @@ int main(int argc, char* argv[]) {
                                 endl;
                         printStructureMessage();
 
-                        maze->buildMaze();
-                        
                         printEndMazeMessage();
                         
                         if (basePoint != nullptr) {
@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
                         if (maze != nullptr) {
                             delete maze;
                         }
-                        maze = new Maze(length, width, mode);
+                        
                         hasGenerated = true;
                         curState = ST_Main;
                     }
