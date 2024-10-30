@@ -113,8 +113,9 @@ int main(int argc, char* argv[]) {
                             basePoint->y << ", " << basePoint->z << ")" << 
                                 endl;
                         printStructureMessage();
-                        // print maze entered by user here
-                        // cout << 
+
+                        maze->buildMaze();
+                        
                         printEndMazeMessage();
                         
                         if (basePoint != nullptr) {
