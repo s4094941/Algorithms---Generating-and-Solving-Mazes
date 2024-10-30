@@ -60,7 +60,7 @@ void Maze::createGrid() {
         if (i % 2 != 0) {
             for (int j = 0; j < col; ++j) {
                 if (j % 2 != 0) {
-                    if (!maze[i][j]->getTerrain()) {
+                    if (maze[i][j]->getTerrain() == false) {
                         // set as unexplored node
                         maze[i][j]->setWall(false);
                         // check top row
@@ -93,7 +93,7 @@ MazeNode* Maze::getRandomStart() {
     srand(time(0));
 
 
-    // assume that if the obstable/ unflattened terrain's is fully in the maze then the maximum size is row - 2 col - 2
+    // assume that if the obstable/ unflattened terrain's is fully in the maze then the maximum size is row - 2 col - 2 bbut on one side can be either row - 1 or col - 1
     // assume that there cannot be obstacles/ unflattened terrain covering the whole maze border (otherwise no entry/exit can be found infi loop)
     while (!startFound) {
         x = (rand() % ((row - 1) / 2)) * 2 + 1;
