@@ -296,3 +296,93 @@ Maze::~Maze() {
 // TODO: Remove occurrences of multiple return commands
 // TODO: Remove continue, break, goto, next
 // TODO: Create checkUp, checkDown, checkLeft, checkRight commands
+
+
+
+/*
+// determine whether maze can have air corners
+
+- Get exit. Scan outer perimeter of maze, and determine if only one non-corner exit is available. Set as start point, and set prev to nullptr
+- Add checked/visited bool to MazeNode
+- Add resetNode function to MazeNode. Set availableDirections to 4, mark all directions as false.
+- for all  nodes in maze, resetNode();
+- Go through maze until returns to start point
+    - check direction. If air && unchecked, newNode = currNode.
+    - If no available nodes, curr = prevNode.
+    - if check finds an explored node, then a loop has been found, and maze is invalid.
+- Test for stragglers.
+    - check through all nodes. If any air blocks are unchecked, then maze is invalid. 
+*/
+
+// NEW =========================================================================================
+void Maze::checkValidity() {
+    bool valid = true;
+    MazeNode* startNode = nullptr;
+
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            maze[i][j]->resetNode();
+        }
+    }
+
+    // CHECK CORNERS //
+    if (maze[0][0]            ->getWall() == false      // Top left
+    ||  maze[0][col - 1]      ->getWall() == false      // Top right
+    ||  maze[row - 1][0]      ->getWall() == false      // Bottom left
+    ||  maze[row - 1][col - 1]->getWall() == false) {   // Bottom right
+            valid = false;
+    }
+
+    // CHECK UPPER EDGE
+    if (valid) {
+        for (int i = 1; i < col - 1; ++i) {
+            if (maze[0][i]->getWall() == false) {
+                if (startNode == nullptr) {
+                    startNode = maze[0][i];
+                } else {
+                    valid = false;
+                }
+            }
+        }
+    }
+    // CHECK LEFT EDGE
+    if (valid) {
+        for (int i = 1; i < row - 1; ++i) {
+            if (maze[i][0]->getWall() == false) {
+                if (startNode == nullptr) {
+                    startNode = maze[i][0];
+                } else {
+                    valid = false;
+                }
+            }
+        }
+    }
+    // CHECK LOWER EDGE
+    if (valid) {
+        for (int i = 1; i < col - 1; ++i) {
+            if (maze[row - 1][i]->getWall() == false) {
+                if (startNode == nullptr) {
+                    startNode = maze[row - 1][i];
+                } else {
+                    valid = false;
+                }
+            }
+        }
+    }
+    // CHECK RIGHT EDGE
+    if (valid) {
+        for (int i = 1; i < row - 1; ++i) {
+            if (maze[i][col - 1]->getWall() == false) {
+                if (startNode == nullptr) {
+                    startNode = maze[i][col - 1];
+                } else {
+                    valid = false;
+                }
+            }
+        }
+    }
+
+    //- Get exit. Scan outer perimeter of maze, and determine if only one non-corner exit is available. Set as start point, and set prev to nullptr
+
+}
+// NEW =========================================================================================
