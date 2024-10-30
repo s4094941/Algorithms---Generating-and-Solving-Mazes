@@ -46,19 +46,19 @@ void Agent::rightHandFollow(bool mode) {
     // If testing mode
     if (mode) {
         if (mc.getBlock(Coordinate(this->startLoc.x + 1, this->startLoc.y, 
-                this->startLoc.z))  != Blocks::ACACIA_WOOD_PLANK) {
+                this->startLoc.z)) != Blocks::ACACIA_WOOD_PLANK) {
             orientation = X_PLUS;
         }
         else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
-                this->startLoc.z + 1))  != Blocks::ACACIA_WOOD_PLANK) {
+                this->startLoc.z + 1)) != Blocks::ACACIA_WOOD_PLANK) {
             orientation = Z_PLUS;
         }
         else if (mc.getBlock(Coordinate(this->startLoc.x - 1, this->startLoc.y,
-                this->startLoc.z))  != Blocks::ACACIA_WOOD_PLANK) {
+                this->startLoc.z)) != Blocks::ACACIA_WOOD_PLANK) {
             orientation = X_MINUS;
         }
         else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
-                this->startLoc.z + 1))  != Blocks::ACACIA_WOOD_PLANK) {
+                this->startLoc.z + 1)) != Blocks::ACACIA_WOOD_PLANK) {
             orientation = Z_MINUS;
         }
         else {
@@ -71,19 +71,19 @@ void Agent::rightHandFollow(bool mode) {
     }
     else {
         if (mc.getBlock(Coordinate(this->startLoc.x + 1, this->startLoc.y, 
-                this->startLoc.z))  != Blocks::ACACIA_WOOD_PLANK) {
+                this->startLoc.z)) != Blocks::ACACIA_WOOD_PLANK) {
             orientation = X_PLUS;
         }
         else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
-                this->startLoc.z - 1))  != Blocks::ACACIA_WOOD_PLANK) {
+                this->startLoc.z - 1)) != Blocks::ACACIA_WOOD_PLANK) {
             orientation = Z_MINUS;
         }
         else if (mc.getBlock(Coordinate(this->startLoc.x - 1, this->startLoc.y,
-                this->startLoc.z))  != Blocks::ACACIA_WOOD_PLANK) {
+                this->startLoc.z)) != Blocks::ACACIA_WOOD_PLANK) {
             orientation = X_MINUS;
         }
         else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
-                this->startLoc.z + 1))  != Blocks::ACACIA_WOOD_PLANK) {
+                this->startLoc.z + 1)) != Blocks::ACACIA_WOOD_PLANK) {
             orientation = Z_PLUS;
         }
         else {
@@ -139,7 +139,8 @@ void Agent::rightHandFollow(bool mode) {
                 foundXPlusDir = true;
             }
             else if (mc.getBlock(Coordinate(this->startLoc.x, 
-                    this->startLoc.y, this->startLoc.z - 1)) != Blocks::ACACIA_WOOD_PLANK) {
+                    this->startLoc.y, this->startLoc.z - 1)) != 
+                        Blocks::ACACIA_WOOD_PLANK) {
                 foundZMinusDir = true;
             }
             else if (mc.getBlock(Coordinate(this->startLoc.x - 1, 
