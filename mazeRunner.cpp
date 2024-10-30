@@ -59,14 +59,14 @@ int main(int argc, char* argv[]) {
             else if (mainMenuOption == "2") {
                 if (hasGenerated) {
                     if (hasBuilt == false) {
-                        cout << "Flattening Terrain";
+                        cout << "Flattening Terrain" << endl;
                         maze->flattenTerrain(*basePoint);
                         cout << "Placing Maze" << endl;
                         maze->placeMaze(*basePoint);
-                        cout << "Building Complete";
+                        cout << "Building Complete" << endl;
                         hasBuilt = true;
                     } else if (hasBuilt == true) {
-                        cout << "Rebuilding Maze";
+                        cout << "Rebuilding Maze" << endl;
                         maze->restoreTerrain(*basePoint);
                         maze->flattenTerrain(*basePoint);
                         maze->placeMaze(*basePoint);
