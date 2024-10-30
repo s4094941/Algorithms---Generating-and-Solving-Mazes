@@ -131,6 +131,7 @@ int main(int argc, char* argv[]) {
                         
                         hasGenerated = true;
                         curState = ST_Main;
+                        std::cout << "END OF USER-GENERATED TEST" << std::endl;
                     }
                     else {
                         printInputErrorDoneMessage();
