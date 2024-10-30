@@ -334,8 +334,12 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
  * [Test cases for other character done by generation?]
 */
     mcpp::Coordinate placeWall;
+    mcpp::Coordinate entrance;
     mcpp::BlockType const ACACIA_WOOD_PLANKS(5,4);
+    mcpp::BlockType const BLUE_CARPET(171,11);
+    
     mcpp::MinecraftConnection mc;
+    bool entranceLocated = false;
 
    // Begin loops (i = x, j = z) : Go through array putting ACACIA_WOOD_PLANKS for each TRUE.
     // Current x coordinate
@@ -345,11 +349,9 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
         for (int j = basePoint.z; j < basePoint.z + col; ++j) {
 
             if (maze[i-basePoint.x][j-basePoint.z]->getWall() == true) {
-                std::cout << i - basePoint.x << " ";
-                std::cout << j - basePoint.z << std::endl;
-
                 // Set placeWall to current detected coordinate
                 placeWall.x = i;
+                placeWall.y = basePoint.y;
                 placeWall.z = j;
 
                 // Place a 3 block high wall
@@ -357,12 +359,42 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
                     mc.setBlock(placeWall, ACACIA_WOOD_PLANKS);
                     ++placeWall.y;
                 }
-                
-                // Reset placeWall.y to player height
-                placeWall.y = basePoint.y;
             }
         }
     }
+
+        // Find the entrance
+    // Checks Left then Right side
+    for (int i = 0; i < row; ++i && !entranceLocated) {
+        if (maze[i][0]->getWall() == false) {
+            entrance.x = basePoint.x + i;
+            entrance.y = basePoint.y;
+            entrance.z = basePoint.z - 1;
+            entranceLocated = true;
+        } else if (maze[i][col - 1]->getWall() == false) {
+            entrance.x = basePoint.x + i;
+            entrance.y = basePoint.y;
+            entrance.z = basePoint.z + col;
+            entranceLocated = true;
+        }
+    }
+
+    for (int j = 0; j < col; ++j && !entranceLocated) {
+        if (maze[0][j]->getWall() == false) {  // Top side
+            entrance.x = basePoint.x - 1; // Set carpet position outside
+            entrance.y = basePoint.y;
+            entrance.z = basePoint.z + j;
+            entranceLocated = true;
+        } else if (maze[row - 1][j]->getWall() == false) {  // Bottom side
+            entrance.x = basePoint.x + row; // Set carpet position outside
+            entrance.y = basePoint.y;
+            entrance.z = basePoint.z + j;
+            entranceLocated = true;
+        }
+    }
+
+    mc.setBlock(entrance, BLUE_CARPET);
+    addNode(entrance, BLUE_CARPET);
 }
 
 void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
@@ -370,10 +402,9 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
     mcpp::MinecraftConnection mc;
     mcpp::Coordinate removeBlock;
     mcpp::BlockType const AIR(0);
+    mcpp::BlockType const BLUE_CARPET(171,11);
     blockNode* blockHistory;
     
-
-
 // REMOVE MAZE (Look through Jonas array, remove if wall)
     for (int i = basePoint.x; i < basePoint.x + row; ++i) {
 
@@ -393,19 +424,20 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
         }
     }
 
-
 // RESTORE TERRAIN (Access coordinates and block id, then set depending on y)
-    while (Maze::getNext() != nullptr) {
-
-        blockHistory = getNext();
+    blockHistory = getNext();
+    while (blockHistory != nullptr) {
         
         // ACCESS LINKED LIST
         // If block is above, place | Otherwise, remove
-        if (blockHistory->blockLocation.y > basePoint.y) {
+        if (blockHistory->blockID == BLUE_CARPET) {
+            mc.setBlock(blockHistory->blockLocation, AIR);
+        } else if (blockHistory->blockLocation.y >= basePoint.y) {
             mc.setBlock(blockHistory->blockLocation, blockHistory->blockID);
         } else if (blockHistory->blockLocation.y < basePoint.y) {
             mc.setBlock(blockHistory->blockLocation, AIR);
         }
+        blockHistory = getNext();
     }
 }
 
@@ -428,17 +460,13 @@ void Maze::addNode(mcpp::Coordinate blockLocation, mcpp::BlockType blockID) {
 
 
 Maze::blockNode* Maze::getNext() {
-    if (!currentNode) {
-                            // adjust later to only have 1 return
-        return nullptr; // No current node, return null
+    blockNode* placeNode = nullptr;
+
+    if (currentNode) {
+        placeNode = currentNode; 
+        currentNode = currentNode->next.get(); 
     }
 
-    // Save the current node to return
-    blockNode* placeNode = currentNode; 
-
-    // Advance to the next node
-    currentNode = currentNode->next.get(); 
-    
     // Return the saved node
     return placeNode; 
 }

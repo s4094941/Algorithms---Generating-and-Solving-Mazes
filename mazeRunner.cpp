@@ -59,11 +59,14 @@ int main(int argc, char* argv[]) {
             else if (mainMenuOption == "2") {
                 if (hasGenerated) {
                     if (hasBuilt == false) {
+                        cout << "Flattening Terrain";
                         maze->flattenTerrain(*basePoint);
-                        cout << "test" << endl;
+                        cout << "Placing Maze" << endl;
                         maze->placeMaze(*basePoint);
+                        cout << "Building Complete";
                         hasBuilt = true;
                     } else if (hasBuilt == true) {
+                        cout << "Rebuilding Maze";
                         maze->restoreTerrain(*basePoint);
                         maze->flattenTerrain(*basePoint);
                         maze->placeMaze(*basePoint);
@@ -91,6 +94,11 @@ int main(int argc, char* argv[]) {
                 printGenerateMazeMenu();
                 cin >> generateMenuOption;
                 if (generateMenuOption == "1") {
+                    if (hasBuilt == true) {
+                        cout << "Fixing Terrain\n";
+                        maze->restoreTerrain(*basePoint);
+                        hasBuilt = false;
+                    }
                     printNavigateMessage();
                     cin >> doneStr;
                     if (doneStr == "done") {
@@ -127,6 +135,11 @@ int main(int argc, char* argv[]) {
                     curState = ST_Main;
                 }
                 else if (generateMenuOption == "2") {
+                    if (hasBuilt == true) {
+                        cout << "Fixing Terrain\n";
+                        maze->restoreTerrain(*basePoint);
+                        hasBuilt = false;
+                    }
                     printNavigateMessage();
                     cin >> doneStr;
                     if (doneStr == "done") {
