@@ -29,6 +29,7 @@ class Maze {
         Maze(int, int, bool, bool, Coordinate);
         void createGrid();
         void generateRandomMaze();
+        void checkUnexploredArea();
 
         // Accessors
         int getRow();
