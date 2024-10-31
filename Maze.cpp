@@ -543,37 +543,9 @@ void Maze::solveManually(Coordinate* basePoint) {
     bool foundRandAir = false;
     Coordinate airLoc(0, 0, 0);
 
-    // Temporariliy for testing
-    // Coordinate basePoint(4848, 71, 4369);
-    // Coordinate basePoint(115, 74, 153);
-    // Coordinate basePoint(150, 74, 137);
-    // const int zLen = 7;
-    // const int xLen = 6;
-    // char maze[zLen][xLen] = {
-    //     {"x.xxx"},
-    //     {"x.x.x"},
-    //     {"x.x.x"},
-    //     {"x.x.x"},
-    //     {"x.x.x"},
-    //     {"x...x"},
-    //     {"xxxxx"}
-    // };
-    // const int zLen = 9;
-    // const int xLen = 10;
-    // char maze[zLen][xLen] = {
-    //     {"xxxxx.xxx"},
-    //     {"x.x...x.x"},
-    //     {"x.x.xxx.x"},
-    //     {"x.x.x...x"},
-    //     {"x.x.x.x.x"},
-    //     {"x...x.x.x"},
-    //     {"x.xxxxx.x"},
-    //     {"xxxxxxxxx"}
-    // };
-
     if (this->testMode) {
-        airLoc.z += this->col - 2;
-        airLoc.x += this->row - 2;
+        airLoc.z += this->row - 2 + basePoint->z;
+        airLoc.x += this->col - 2 + basePoint->x;
     }
     else {
         for (int i = 0; i < this->col; i++) {

@@ -104,7 +104,7 @@ int main(int argc, char* argv[]) {
                     if (doneStr == "done") {
                         printLengthAndWidthMessage();
                         cin >> length >> width;
-                        
+
                         if (maze != nullptr) {
                             delete maze;
                         }
@@ -115,6 +115,11 @@ int main(int argc, char* argv[]) {
 
                         printMazeReadMessage();
                         printStartMazeMessage();
+
+                        if (basePoint != nullptr) {
+                            delete basePoint;
+                        }
+                        basePoint = new Coordinate(mc.getPlayerPosition());
                         cout << "BasePoint: (" << basePoint->x << ", " << 
                             basePoint->y << ", " << basePoint->z << ")" << 
                                 endl;
@@ -123,10 +128,7 @@ int main(int argc, char* argv[]) {
                         printEndMazeMessage();
                         maze->printMaze();
                         
-                        if (basePoint != nullptr) {
-                            delete basePoint;
-                        }
-                        basePoint = new Coordinate(mc.getPlayerPosition());
+                        
 
                         
                         hasGenerated = true;

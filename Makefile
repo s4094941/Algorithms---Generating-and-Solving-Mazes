@@ -3,7 +3,7 @@
 all: mazeRunner
 
 clean:
-	rm -f mazeRunner *.o
+	rm -f mazeRunner Agent Maze MazeNode *.o
 
 mazeRunner: Maze.o MazeNode.o Agent.o mazeRunner.o
 	g++ -Wall -Werror -std=c++17 -g -O -o $@ $^ -lmcpp
