@@ -521,8 +521,8 @@ Maze::~Maze() {
 
 /*
  * Input: A pointer to a Coordinate object, to dynamically update basePoint 
- * when the user generates multiple mazes in different locations, in a single 
- * running session.
+ *        when the user generates multiple mazes in different locations, in a 
+ *        single running session.
  * 
  * Brief: In normal mode, this method will teleport the player to a random 
  *        location within the maze, avoiding walls, by counting all the air 
@@ -543,6 +543,7 @@ void Maze::solveManually(Coordinate* basePoint) {
     bool foundRandAir = false;
     Coordinate airLoc(0, 0, 0);
 
+    // If -testing mode flag is enabled
     if (this->testMode) {
         airLoc.z += this->row - 2 + basePoint->z;
         airLoc.x += this->col - 2 + basePoint->x;
@@ -550,26 +551,33 @@ void Maze::solveManually(Coordinate* basePoint) {
     else {
         for (int i = 0; i < this->col; i++) {
             for (int j = 0; j < this->row; j++) {
-                if (maze[i][j]->getStatus()) {
+                // If each MazeNode object is a '.'/air block
+                if (this->maze[i][j]->getStatus()) {
                     airCounter++;
                 }
             }
         }
 
+        // Make it run randomly each execution
         srand(time(0));
         randAir = rand() % airCounter + 1;
+        // Reset the airCounter to count again, until randAir has been reached
         airCounter = 0;
         for (int i = 0; (i < this->col) && !foundRandAir; i++) {
             for (int j = 0; (j < this->row) && !foundRandAir; j++) {
-                if (maze[i][j]->getStatus()) {
+                if (this->maze[i][j]->getStatus()) {
                     airCounter++;
                 }
 
+                // Once the random air block has been found set the coordinates
                 if (airCounter == randAir) {
                     airLoc.z = i + basePoint->z;
                     airLoc.x = j + basePoint->x;
 
-                    // Break out of both loops when found to avoid redundant checking
+                    /*
+                     * Break out of both loops when found to avoid redundant 
+                     * checking
+                     */
                     foundRandAir = true;
                 }
             }

@@ -15,6 +15,7 @@ Agent::~Agent() {
 }
 
 /* Input: A bool mode which tells the method to run as testing or normal mode
+ *
  * Brief: In normal mode, this method starts by initialising the lime carpet 
  *        orientation such that it checks its surrounding blocks anti-clockwise
  *        until it reaches the first air block. Then it enters a double loop 
@@ -164,7 +165,7 @@ void Agent::rightHandFollow(bool mode) {
             }
             /*
              * For completion, this check has been added to all the respective 
-             * current orientations, however there will always be a wall here.
+             * current orientations, however there will always be a wall here
              */
             else if (mc.getBlock(Coordinate(this->startLoc.x + 1, 
                     this->startLoc.y, this->startLoc.z)) != Blocks::ACACIA_WOOD_PLANK) {
