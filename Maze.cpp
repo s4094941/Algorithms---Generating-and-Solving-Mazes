@@ -6,9 +6,9 @@ using std::this_thread::sleep_for;
 using std::chrono::milliseconds;
 
 // Construct maze with x rows and y columns
-Maze::Maze(int x, int y, bool testMode) {
-    row = x;
-    col = y;
+Maze::Maze(int length, int width, bool testMode) {
+    col = length;
+    row = width;
     //this -> playerPos = playerPos;
     this->testMode = testMode;
     srand(time(0));
@@ -211,7 +211,6 @@ void Maze::generateTestMaze() {
 
 // Generate maze using user input
 void Maze::buildMaze() {
-    std::cout << "USER GENERATED MAZE:" << std::endl;
     std::cout << "'x' for wall, '.' for empty space.";
     std::cout << "Note: Entering q will fill the remaining structure with walls." << std::endl;
     std::cout << "Construct your [" << row << " x " << col << "] structure:" << std::endl;
@@ -237,7 +236,7 @@ void Maze::buildMaze() {
                 maze[i][j]->setWall(true);
             }
 
-        }
+        }\
     }
     printMaze();
     // TODO: CHECK VALIDITY OF USER-GENERATED MAZE
