@@ -3,9 +3,9 @@
 #include <cstdlib>
 
 // Construct maze with x rows and y columns
-Maze::Maze(int x, int y, bool testMode) {
-    row = x;
-    col = y;
+Maze::Maze(int length, int width, bool testMode) {
+    col = length;
+    row = width;
     this->testMode = testMode;
     srand(time(0));
 
