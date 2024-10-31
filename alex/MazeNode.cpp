@@ -112,7 +112,7 @@ int MazeNode::getTestDirection() {
 // Print Node
 void MazeNode::printNode() {
     if (this->isTerrain) {
-        std::cout << ' ';
+        std::cout << '#';
     }
     else if (isWall) {
         std::cout << 'x';

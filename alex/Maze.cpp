@@ -1,6 +1,9 @@
 #include "Maze.h"
 using mcpp::MinecraftConnection;
 using mcpp::Coordinate;
+using mcpp::HeightMap;
+
+//TODO Change rows and cols to match canvas after Jonas has changed his
 
 // Construct maze with x rows and y columns
 Maze::Maze(int x, int y, bool testMode, bool enhancementMode, Coordinate 
@@ -36,20 +39,46 @@ Maze::Maze(int x, int y, bool testMode, bool enhancementMode, Coordinate
         }
     }
 
+    // If user selects enhancement mode option from the menu
     if (this->enhancementMode) {
         this->scanTerrain(basePoint);
     }
 }
 
+/*
+ * Input: A Coodinate basePoint which will be the starting point for checking 
+ *        for terrain/obstacles
+ * 
+ * Brief: This method will scan the area based on the dimensions of the maze
+ *        and set each MazeNode's isTerrain data member to true if it can find 
+ *        terrain/obstacles that are 2 or more blocks higher than the basePoint
+ */
+
+// TODO: Change what needs to be changed after Jonas has switched the rows and cols
+
 void Maze::scanTerrain(Coordinate basePoint) {
     MinecraftConnection mc;
-
-    // using heightmap to store all heights is faster than looking for specific heights with getHeight()
-    mcpp::HeightMap heightMap = mc.getHeights(basePoint, Coordinate(basePoint.x + col, basePoint.y, basePoint.z + row));
+    /*
+     * Using heightmap to store all heights is faster than looking for specific
+     * heights with getHeight()
+     */
+    HeightMap heightMap = mc.getHeights(basePoint, Coordinate(basePoint.x + 
+        this->col, basePoint.y, basePoint.z + this->row));
     for (int i = 0; i < this->row; i++) {
         for (int j = 0; j < this->col; j++) {
-            if (heightMap.get_worldspace(Coordinate(basePoint.x + j, basePoint.y, basePoint.z + i)) - 1 != heightMap.get_worldspace(basePoint) && heightMap.get_worldspace(basePoint) != heightMap.get_worldspace(Coordinate(basePoint.x + j, basePoint.y, basePoint.z + i))) {
-                maze[i][j]->setTerrain(true);
+            /*
+             * Check to see if the blocks are 2 or more blocks above the 
+             * basePoint
+             */
+            if (heightMap.get_worldspace(Coordinate(basePoint.x + j, 
+                    basePoint.y, basePoint.z + i)) - 1 != 
+                    heightMap.get_worldspace(basePoint) && 
+                    heightMap.get_worldspace(basePoint) != 
+                    heightMap.get_worldspace(Coordinate(basePoint.x + j, 
+                    basePoint.y, basePoint.z + i))) {
+
+                // Cannot possibly be explored anymore
+                this->maze[i][j]->setTerrain(true);
             }
         }
     }
@@ -60,7 +89,11 @@ void Maze::createGrid() {
         if (i % 2 != 0) {
             for (int j = 0; j < col; ++j) {
                 if (j % 2 != 0) {
-                    if (maze[i][j]->getTerrain() == false) {
+                    /*
+                     * For enchancement 1 check the terrain first before 
+                     * creating the grid with air blocks
+                     */
+                    if (!maze[i][j]->getTerrain()) {
                         // set as unexplored node
                         maze[i][j]->setWall(false);
                         // check top row
@@ -71,9 +104,11 @@ void Maze::createGrid() {
                         if (i == row - 2) {
                             maze[i][j]->markDown();
                         }
+                        // check first col
                         if (j == 1) {
                             maze[i][j]->markLeft();
                         }
+                        // check last col
                         if (j == col - 2) {
                             maze[i][j]->markRight();
                         }
@@ -85,13 +120,11 @@ void Maze::createGrid() {
 }
 
 MazeNode* Maze::getRandomStart() {
-    int x = 1;
-    int y = 1;
+    int x = 0;
+    int y = 0;
     MazeNode* start;
-    // int dirSide = 0;
     bool startFound = false;
     srand(time(0));
-
 
     // assume that if the obstable/ unflattened terrain's is fully in the maze then the maximum size is row - 2 col - 2 bbut on one side can be either row - 1 or col - 1
     // assume that there cannot be obstacles/ unflattened terrain covering the whole maze border (otherwise no entry/exit can be found infi loop)
@@ -102,7 +135,7 @@ MazeNode* Maze::getRandomStart() {
             y = (rand() % ((col - 1) / 2)) * 2 + 1;
             // CASE: TOP ROW
             if (x == 1) {
-                if (maze[0][y]->getTerrain() == false) {
+                if (!maze[0][y]->getTerrain()) {
                     maze[0][y]->setWall(false);
                     maze[0][y]->setExplored(true);
                     startFound = true;
@@ -110,7 +143,7 @@ MazeNode* Maze::getRandomStart() {
                 
             } else {
             // CASE: BOTTOM ROW
-                if (maze[row - 1][y]->getTerrain() == false) {
+                if (!maze[row - 1][y]->getTerrain()) {
                     maze[row - 1][y]->setWall(false);
                     maze[row - 1][y]->setExplored(true);
                     startFound = true;
@@ -122,7 +155,7 @@ MazeNode* Maze::getRandomStart() {
             y = rand() % 2;
             // CASE: LEFT
             if (y == 0) {
-                if (maze[x][0]->getTerrain() == false) {
+                if (!maze[x][0]->getTerrain()) {
                     maze[x][0]->setWall(false);
                     maze[x][0]->setExplored(true);
                     startFound = true;
@@ -132,7 +165,7 @@ MazeNode* Maze::getRandomStart() {
             } else if (y == 1) {
             // CASE: RIGHT
                 y = col - 2;
-                if (maze[x][col - 1]->getTerrain() == false) {
+                if (!maze[x][col - 1]->getTerrain()) {
                     maze[x][col - 1]->setWall(false);
                     maze[x][col - 1]->setExplored(true);
                     startFound = true;
@@ -209,6 +242,27 @@ void Maze::generateRandomMaze() {
                 currNode->markRight();
             }
             currNode = checkDirection(currNode, dir);
+        }
+    }
+
+    // Cleaup if requred to fill in any maze wall blocks
+    if (this->enhancementMode) {
+        this->checkUnexploredArea();
+    }
+}
+
+/*
+ * Brief: This method is responsible for filling in any blocks within the maze 
+ *        that have been left unexplored due to obstacles or terrain 
+ */
+void Maze::checkUnexploredArea() {
+    for (int i = 0; i < this->row; i++) {
+        for (int j = 0; j < this->col; j++) {
+            if (!this->maze[i][j]->getStatus() && !this->maze[i][j]->getWall() 
+                    && !this->maze[i][j]->getTerrain()) {
+
+                this->maze[i][j]->setWall(true);
+            }
         }
     }
 }
@@ -354,34 +408,6 @@ void Maze::solveManually(Coordinate* basePoint) {
     bool foundRandAir = false;
     Coordinate airLoc(0, 0, 0);
 
-    // Temporariliy for testing
-    // Coordinate basePoint(4848, 71, 4369);
-    // Coordinate basePoint(115, 74, 153);
-    // Coordinate basePoint(150, 74, 137);
-    // const int zLen = 7;
-    // const int xLen = 6;
-    // char maze[zLen][xLen] = {
-    //     {"x.xxx"},
-    //     {"x.x.x"},
-    //     {"x.x.x"},
-    //     {"x.x.x"},
-    //     {"x.x.x"},
-    //     {"x...x"},
-    //     {"xxxxx"}
-    // };
-    // const int zLen = 9;
-    // const int xLen = 10;
-    // char maze[zLen][xLen] = {
-    //     {"xxxxx.xxx"},
-    //     {"x.x...x.x"},
-    //     {"x.x.xxx.x"},
-    //     {"x.x.x...x"},
-    //     {"x.x.x.x.x"},
-    //     {"x...x.x.x"},
-    //     {"x.xxxxx.x"},
-    //     {"xxxxxxxxx"}
-    // };
-
     if (this->testMode) {
         airLoc.z += this->row - 2;
         airLoc.x += this->col - 2;
@@ -389,7 +415,7 @@ void Maze::solveManually(Coordinate* basePoint) {
     else {
         for (int i = 0; i < this->row; i++) {
             for (int j = 0; j < this->col; j++) {
-                if (maze[i][j]->getStatus()) {
+                if (this->maze[i][j]->getStatus()) {
                     airCounter++;
                 }
             }
@@ -400,7 +426,7 @@ void Maze::solveManually(Coordinate* basePoint) {
         airCounter = 0;
         for (int i = 0; (i < this->row) && !foundRandAir; i++) {
             for (int j = 0; (j < this->col) && !foundRandAir; j++) {
-                if (maze[i][j]->getStatus()) {
+                if (this->maze[i][j]->getStatus()) {
                     airCounter++;
                 }
 

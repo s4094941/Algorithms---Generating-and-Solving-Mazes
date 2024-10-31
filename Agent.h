@@ -31,6 +31,10 @@ class Agent {
     private:
         MinecraftConnection mc;
         Coordinate startLoc;
+
+        void halfSecDelay();
+        void stepOutput(int stepCounter);
+        void setStartOrientation(agentOrientation currOrientation);
 };
 
 #endif // ASSIGN3_AGENT_H

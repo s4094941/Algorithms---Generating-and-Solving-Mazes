@@ -56,21 +56,19 @@ int main(int argc, char* argv[]) {
             if (mainMenuOption == "1") {
                 curState = ST_GetMaze;
             }
+            // Build Maze in Minecraft
             else if (mainMenuOption == "2") {
                 if (hasGenerated) {
-                    if (hasBuilt == false) {
-                        cout << "Flattening Terrain" << endl;
-                        maze->flattenTerrain(*basePoint);
-                        cout << "Placing Maze" << endl;
-                        maze->placeMaze(*basePoint);
-                        cout << "Building Complete" << endl;
-                        hasBuilt = true;
-                    } else if (hasBuilt == true) {
+                    if (hasBuilt) {
                         cout << "Rebuilding Maze" << endl;
                         maze->restoreTerrain(*basePoint);
-                        maze->flattenTerrain(*basePoint);
-                        maze->placeMaze(*basePoint);
                     }
+                    cout << "Flattening Terrain" << endl;
+                    maze->flattenTerrain(*basePoint);
+                    cout << "Placing Maze" << endl;
+                    maze->placeMaze(*basePoint);
+                    cout << "Building Complete" << endl;
+                    hasBuilt = true;
                 }
                 else {
                     printNotGeneratedMessage();
@@ -104,7 +102,7 @@ int main(int argc, char* argv[]) {
                     if (doneStr == "done") {
                         printLengthAndWidthMessage();
                         cin >> length >> width;
-                        
+
                         if (maze != nullptr) {
                             delete maze;
                         }
@@ -115,6 +113,11 @@ int main(int argc, char* argv[]) {
 
                         printMazeReadMessage();
                         printStartMazeMessage();
+
+                        if (basePoint != nullptr) {
+                            delete basePoint;
+                        }
+                        basePoint = new Coordinate(mc.getPlayerPosition());
                         cout << "BasePoint: (" << basePoint->x << ", " << 
                             basePoint->y << ", " << basePoint->z << ")" << 
                                 endl;
@@ -123,10 +126,7 @@ int main(int argc, char* argv[]) {
                         printEndMazeMessage();
                         maze->printMaze();
                         
-                        if (basePoint != nullptr) {
-                            delete basePoint;
-                        }
-                        basePoint = new Coordinate(mc.getPlayerPosition());
+                        
 
                         
                         hasGenerated = true;
