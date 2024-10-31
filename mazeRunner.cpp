@@ -102,9 +102,15 @@ int main(int argc, char* argv[]) {
                     if (doneStr == "done") {
                         printLengthAndWidthMessage();
                         cin >> length >> width;
+                        
+                        if (maze != nullptr) {
+                            delete maze;
+                        }
+                        maze = new Maze(length, width, mode);
+
                         printMazeStructureMessage();
-                        // read maze structure here
-                        // cin >> 
+                        maze->buildMaze();
+
                         printMazeReadMessage();
                         printStartMazeMessage();
                         cout << "BasePoint: (" << basePoint->x << ", " << 
@@ -112,21 +118,18 @@ int main(int argc, char* argv[]) {
                                 endl;
                         printStructureMessage();
 
-                        maze->buildMaze();
-                        
                         printEndMazeMessage();
+                        maze->printMaze();
                         
                         if (basePoint != nullptr) {
                             delete basePoint;
                         }
                         basePoint = new Coordinate(mc.getPlayerPosition());
 
-                        if (maze != nullptr) {
-                            delete maze;
-                        }
-                        maze = new Maze(length, width, mode);
+                        
                         hasGenerated = true;
                         curState = ST_Main;
+                        std::cout << "END OF USER-GENERATED TEST" << std::endl;
                     }
                     else {
                         printInputErrorDoneMessage();

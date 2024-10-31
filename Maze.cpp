@@ -572,12 +572,12 @@ void Maze::solveManually(Coordinate* basePoint) {
     // };
 
     if (this->testMode) {
-        airLoc.z += this->row - 2;
-        airLoc.x += this->col - 2;
+        airLoc.z += this->col - 2;
+        airLoc.x += this->row - 2;
     }
     else {
-        for (int i = 0; i < this->row; i++) {
-            for (int j = 0; j < this->col; j++) {
+        for (int i = 0; i < this->col; i++) {
+            for (int j = 0; j < this->row; j++) {
                 if (maze[i][j]->getStatus()) {
                     airCounter++;
                 }
@@ -587,8 +587,8 @@ void Maze::solveManually(Coordinate* basePoint) {
         srand(time(0));
         randAir = rand() % airCounter + 1;
         airCounter = 0;
-        for (int i = 0; (i < this->row) && !foundRandAir; i++) {
-            for (int j = 0; (j < this->col) && !foundRandAir; j++) {
+        for (int i = 0; (i < this->col) && !foundRandAir; i++) {
+            for (int j = 0; (j < this->row) && !foundRandAir; j++) {
                 if (maze[i][j]->getStatus()) {
                     airCounter++;
                 }
