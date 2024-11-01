@@ -15,6 +15,8 @@ void MazeNode::setWall (bool status) {
 }
 
 void MazeNode::setTerrain(bool status) {
+    // Set wall to false as it was initialised to true by default
+    this->isWall = false;
     this->isTerrain = status;
     if (status) {
         this->explored = true;
@@ -111,11 +113,11 @@ int MazeNode::getTestDirection() {
 
 // Print Node
 void MazeNode::printNode() {
-    if (this->isTerrain) {
-        std::cout << '#';
-    }
-    else if (isWall) {
+    if (isWall) {
         std::cout << 'x';
+    }
+    else if (this->isTerrain) {
+        std::cout << '#';
     }
     else if (explored) {
         std::cout << '.';

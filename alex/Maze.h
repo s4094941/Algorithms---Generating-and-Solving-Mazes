@@ -4,6 +4,7 @@
 #include "MazeNode.h"
 #include <mcpp/mcpp.h>
 using mcpp::Coordinate;
+using mcpp::BlockType;
 
 class Maze {
     private:
@@ -22,6 +23,18 @@ class Maze {
 
         // Generate maze based on testMode
         void generateTestMaze();
+
+        struct blockNode {
+            mcpp::Coordinate blockLocation;
+            mcpp::BlockType blockID;
+            std::unique_ptr<blockNode> next;
+
+            //Constructor before node is initialized
+            blockNode (mcpp::Coordinate initializeLocation, mcpp::BlockType initalizeID)
+            : blockLocation(initializeLocation), blockID(initalizeID), next(nullptr) {}
+        };
+        std::unique_ptr<blockNode> newestNode;
+        blockNode* currentNode;
         
 
     public:
@@ -30,6 +43,14 @@ class Maze {
         void createGrid();
         void generateRandomMaze();
         void checkUnexploredArea();
+
+        void placeMaze(Coordinate basePoint);
+        void restoreTerrain(Coordinate basePoint);
+
+        Maze() : newestNode(nullptr), currentNode(nullptr) {}
+        void addNode(Coordinate blockLocation, BlockType blockID);
+        blockNode* getNext();
+        
 
         // Accessors
         int getRow();

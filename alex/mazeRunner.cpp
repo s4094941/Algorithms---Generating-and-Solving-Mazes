@@ -1,11 +1,14 @@
 #include "menuUtils.h"
 #include "Maze.h"
 #include "Agent.h"
+#include <thread>
 using std::cin;
 using std::string;
 using std::exception;
 using std::cout;
 using std::endl;
+using std::this_thread::sleep_for;
+using std::chrono::milliseconds;
 
 int main() {
     MinecraftConnection mc;
@@ -13,6 +16,9 @@ int main() {
     maze.createGrid();
     maze.generateRandomMaze();
     maze.printMaze();
+    // maze.placeMaze(mc.getPlayerPosition());
+    // sleep_for(milliseconds(5000));
+    // maze.restoreTerrain(mc.getPlayerPosition());
 
     return EXIT_SUCCESS;
 }
