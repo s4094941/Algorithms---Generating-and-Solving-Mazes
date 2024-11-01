@@ -104,3 +104,20 @@ void MazeNode::printNode() {
         std::cout << '.';
     }
 }
+
+
+// NEW STUFF =================================================
+void MazeNode::resetNode() {
+    up = false;
+    down = false;
+    left = false;
+    right = false;
+    explored = false;
+    prevNode = nullptr;
+    dirCount = 4;
+    explored = false;
+}
+
+void MazeNode::printSides() {
+    std::cout << dirCount;
+}

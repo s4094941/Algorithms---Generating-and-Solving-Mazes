@@ -19,6 +19,12 @@ class Maze {
         void generateTestMaze();
         void generateRandomMaze();
 
+        // NEW STUFF =================================================
+        void resetAll();
+        void checkEdge(MazeNode*);
+        MazeNode* findStartPoint();
+        // END NEW =================================================
+
     public:
         // Constructor
         Maze(int, int, bool);
@@ -38,6 +44,11 @@ class Maze {
 
         // Destructor
         ~Maze();
+
+        // NEW STUFF =================================================
+        void checkValidity();
+        void printAllSides();
+        // END NEW =================================================
 };
 
 #endif // MAZE_H
