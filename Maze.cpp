@@ -488,9 +488,6 @@ Maze::blockNode* Maze::getNext() {
     return placeNode; 
 }
 
-
-
-
 // Destructor
 Maze::~Maze() {
     for (int i = 0; i < row; ++i) {
@@ -548,8 +545,8 @@ void Maze::solveManually(Coordinate* basePoint) {
         airLoc.x += this->col - 2 + basePoint->x;
     }
     else {
-        for (int i = 0; i < this->col; i++) {
-            for (int j = 0; j < this->row; j++) {
+        for (int i = 0; i < this->row; i++) {
+            for (int j = 0; j < this->col; j++) {
                 // If each MazeNode object is a '.'/air block
                 if (this->maze[i][j]->getStatus()) {
                     airCounter++;
@@ -562,8 +559,8 @@ void Maze::solveManually(Coordinate* basePoint) {
         randAir = rand() % airCounter + 1;
         // Reset the airCounter to count again, until randAir has been reached
         airCounter = 0;
-        for (int i = 0; (i < this->col) && !foundRandAir; i++) {
-            for (int j = 0; (j < this->row) && !foundRandAir; j++) {
+        for (int i = 0; (i < this->row) && !foundRandAir; i++) {
+            for (int j = 0; (j < this->col) && !foundRandAir; j++) {
                 if (this->maze[i][j]->getStatus()) {
                     airCounter++;
                 }

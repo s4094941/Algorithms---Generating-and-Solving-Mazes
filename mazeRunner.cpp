@@ -120,7 +120,7 @@ int main(int argc, char* argv[]) {
                         basePoint = new Coordinate(mc.getPlayerPosition());
                         cout << "BasePoint: (" << basePoint->x << ", " << 
                             basePoint->y << ", " << basePoint->z << ")" << 
-                                endl;
+                            endl;
                         printStructureMessage();
 
                         printEndMazeMessage();
@@ -163,7 +163,7 @@ int main(int argc, char* argv[]) {
                         printStartMazeMessage();
                         cout << "BasePoint: (" << basePoint->x << ", " << 
                             basePoint->y << ", " << basePoint->z << ")" << 
-                                endl;
+                            endl;
                         printMazeStructureMessage();
                         maze->createMaze();
                         printEndMazeMessage();
