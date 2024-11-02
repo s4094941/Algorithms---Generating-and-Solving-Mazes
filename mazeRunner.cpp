@@ -105,10 +105,11 @@ int main(int argc, char* argv[]) {
 
                         if (maze != nullptr) {
                             delete maze;
+                            maze = nullptr;
                         }
                         maze = new Maze(length, width, mode);
 
-                        printMazeStructureMessage();
+                        printEnterStructureMessage();
                         maze->buildMaze();
 
                         printMazeReadMessage();
@@ -116,6 +117,7 @@ int main(int argc, char* argv[]) {
 
                         if (basePoint != nullptr) {
                             delete basePoint;
+                            basePoint = nullptr;
                         }
                         basePoint = new Coordinate(mc.getPlayerPosition());
                         cout << "BasePoint: (" << basePoint->x << ", " << 
@@ -152,11 +154,13 @@ int main(int argc, char* argv[]) {
                         
                         if (basePoint != nullptr) {
                             delete basePoint;
+                            basePoint = nullptr;
                         }
                         basePoint = new Coordinate(mc.getPlayerPosition());
 
                         if (maze != nullptr) {
                             delete maze;
+                            maze = nullptr;
                         }
                         maze = new Maze(length, width, mode);
                         printMazeGeneratedMessage();
@@ -164,7 +168,7 @@ int main(int argc, char* argv[]) {
                         cout << "BasePoint: (" << basePoint->x << ", " << 
                             basePoint->y << ", " << basePoint->z << ")" << 
                             endl;
-                        printMazeStructureMessage();
+                        printStructureMessage();
                         maze->createMaze();
                         printEndMazeMessage();
                         hasGenerated = true;
@@ -190,7 +194,8 @@ int main(int argc, char* argv[]) {
                         maze->solveManually(basePoint);
                     }
                     else {
-                        printNotBuiltMessage();
+                        printNotBuiltMessagePlace();
+                        curState = ST_Main;
                     }
                 }
                 else if (solveMenuOption == "2") {
@@ -199,7 +204,8 @@ int main(int argc, char* argv[]) {
                         agent.rightHandFollow(mode);
                     }
                     else {
-                        printNotBuiltMessage();
+                        printNotBuiltMessageEscape();
+                        curState = ST_Main;
                     }
                 }
                 else if (solveMenuOption == "3") {
@@ -227,10 +233,12 @@ int main(int argc, char* argv[]) {
 
     if (basePoint != nullptr) {
         delete basePoint;
+        basePoint = nullptr;
     }
 
     if (maze != nullptr) {
         delete maze;
+        maze = nullptr;
     }
 
     return EXIT_SUCCESS;

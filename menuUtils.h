@@ -69,7 +69,7 @@ void printLengthAndWidthMessage() {
     cout << "Enter the length and width of maze:" << endl;
 }
 
-void printMazeStructureMessage() {
+void printEnterStructureMessage() {
     cout << "Enter the maze structure:" << endl;
 }
 
@@ -101,8 +101,13 @@ void printMazeReadyMessage() {
     cout << "Maze ready to Solve..." << endl;
 }
 
-void printNotBuiltMessage() {
-    cout << "Cannot place player in a maze without " << "building a maze ..." 
+void printNotBuiltMessagePlace() {
+    cout << "Cannot place player in a maze without building a maze ..." 
+        << endl;
+}
+
+void printNotBuiltMessageEscape() {
+    cout << "Cannot solve a maze without building a maze ..." 
         << endl;
 }
 
