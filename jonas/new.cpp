@@ -111,7 +111,26 @@ void Maze::checkValidity() {
 
     }
 
+    // While !complete
+        // checkConnections
+
 }
+
+/*
+checkConnections
+    begin at startPoint
+    check node up 1, if so, next
+        mark up on curr
+            mark down on next
+            mark explored on next
+            curr = next
+
+    check node left 1, if so, next
+    check node right 1, if so, next = curr
+    check node down 1, if so, next = curr
+        if no available node
+*/
+
 
 // mazeNode.h ==============================================
 private:
