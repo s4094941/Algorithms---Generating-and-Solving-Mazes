@@ -281,33 +281,33 @@ void Maze::flattenTerrain(mcpp::Coordinate basePoint) {
     mcpp::BlockType const AIR(0);
     mcpp::BlockType tempPlacement(0);
 
-    // i = Current z coordinate
-    for (int i = basePoint.z; i < basePoint.z + col; ++i) {
-        removeBlock.z = i;
-        addBlock.z = i;
+    // i = Current x coordinate
+    for (int i = basePoint.x; i < basePoint.x + col; ++i) {
+        removeBlock.x = i;
+        addBlock.x = i;
 
-        // j = Current x coordinate
-        for (int j = basePoint.x; j < basePoint.x + row; ++j) {
-            removeBlock.x = j;
-            addBlock.x = j;
+        // j = Current z coordinate
+        for (int j = basePoint.z; j < basePoint.z + row; ++j) {
+            removeBlock.z = j;
+            addBlock.z = j;
 
             // If too high, destroy until reaching player's feet, and add destroyed blocks to linked list
-            if (mc.getHeight(j, i) > basePoint.y - 1) {
-
-                while (mc.getHeight(j, i) > basePoint.y - 1) {
-                    removeBlock.y = mc.getHeight(j, i);
+            if (mc.getHeight(i, j) > basePoint.y - 1) {
+                
+                while (mc.getHeight(i, j) > basePoint.y - 1) {
+                    removeBlock.y = mc.getHeight(i, j);
                     addNode(removeBlock, mc.getBlock(removeBlock));
                     mc.setBlock(removeBlock, AIR);
                 }
             }
 
             // If too low, add a block (using the block being built upon) and add the block to linked list
-            if (mc.getHeight(j, i) < basePoint.y - 1) {
-                addBlock.y = mc.getHeight(j, i);
+            if (mc.getHeight(i, j) < basePoint.y - 1) {
+                addBlock.y = mc.getHeight(i, j);
 
-                while (mc.getHeight(j, i) < basePoint.y - 1) {
+                while (mc.getHeight(i, j) < basePoint.y - 1) {
                     tempPlacement = mc.getBlock(addBlock);
-                    addBlock.y = mc.getHeight(j, i) + 1;
+                    addBlock.y = mc.getHeight(i, j) + 1;
                     mc.setBlock(addBlock, tempPlacement);
                     addNode(addBlock, tempPlacement);
                 }
@@ -316,6 +316,8 @@ void Maze::flattenTerrain(mcpp::Coordinate basePoint) {
     }
 }
 
+
+// PLACE MAZE ADJUSTMENT - AS Z INCREASES, BUILD DOWNWARDS, AS X INCREASES, BUILD TO THE RIGHT
 void Maze::placeMaze(mcpp::Coordinate basePoint) {
     std::cout << "Building Maze" << std::endl;
 /*
@@ -335,18 +337,18 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
     mcpp::MinecraftConnection mc;
     bool entranceLocated = false;
 
-   // Begin loops (j = x, i = z) : Go through array putting ACACIA_WOOD_PLANKS for each TRUE.
+   // Begin loops (i = x, j = z) : Go through array putting ACACIA_WOOD_PLANKS for each TRUE.
     // Current x coordinate
-    for (int i = basePoint.z; i < basePoint.z + col; ++i) {
+    for (int i = basePoint.x; i < basePoint.x + col; ++i) {
 
         // Current z coordinate
-        for (int j = basePoint.x; j < basePoint.x + row; ++j) {
+        for (int j = basePoint.z; j < basePoint.z + row; ++j) {
 
-            if (maze[j-basePoint.x][i-basePoint.z]->getWall() == true) {
+            if (maze[j-basePoint.z][i-basePoint.x]->getWall()) {
                 // Set placeWall to current detected coordinate
-                placeWall.z = i;
+                placeWall.x = i;
                 placeWall.y = basePoint.y;
-                placeWall.x = j;
+                placeWall.z = j;
 
                 // Place a 3 block high wall
                 for (int k = 0; k < 3; ++k) {
@@ -360,28 +362,28 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
 
     // Finding the entrance...
     // Checks each side before setting carpet location one block outside of the entrance.
-    for (int i = 0; i < row; ++i && !entranceLocated) {
-        if (maze[i][0]->getWall() == false) {
+    for (int i = 0; i < col; ++i && !entranceLocated) {
+        if (!maze[0][i]->getWall()) {
             entrance.x = basePoint.x + i;
             entrance.y = basePoint.y;
             entrance.z = basePoint.z - 1;
             entranceLocated = true;
-        } else if (maze[i][row - 1]->getWall() == false) {
+        } else if (!maze[col - 1][i]->getWall()) {
             entrance.x = basePoint.x + i;
             entrance.y = basePoint.y;
-            entrance.z = basePoint.z + col;
+            entrance.z = basePoint.z + row;
             entranceLocated = true;
         }
     }
 
-    for (int j = 0; j < col; ++j && !entranceLocated) {
-        if (maze[0][j]->getWall() == false) {
+    for (int j = 0; j < row; ++j && !entranceLocated) {
+        if (!maze[j][0]->getWall()) {
             entrance.x = basePoint.x - 1;
             entrance.y = basePoint.y;
             entrance.z = basePoint.z + j;
             entranceLocated = true;
-        } else if (maze[row - 1][j]->getWall() == false) {
-            entrance.x = basePoint.x + row;
+        } else if (!maze[j][col - 1]->getWall()) {
+            entrance.x = basePoint.x + col;
             entrance.y = basePoint.y;
             entrance.z = basePoint.z + j;
             entranceLocated = true;
@@ -426,15 +428,15 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
     blockNode* blockHistory;
     
 // REMOVE MAZE (Look through Jonas array, remove if wall)
-    for (int i = basePoint.z; i < basePoint.z + col; ++i) {
+    for (int i = basePoint.x; i < basePoint.x + col; ++i) {
 
         // Current z coordinate
-        for (int j = basePoint.x; j < basePoint.x + row; ++j) {
+        for (int j = basePoint.z; j < basePoint.z + row; ++j) {
 
-            if (maze[j-basePoint.x][i-basePoint.z]->getWall() == true) {
-                removeBlock.z = i;
-                removeBlock.x = j;
-                removeBlock.y = mc.getHeight(j, i);
+            if (maze[j-basePoint.z][i-basePoint.x]->getWall() == true) {
+                removeBlock.x = i;
+                removeBlock.z = j;
+                removeBlock.y = mc.getHeight(i, j);
 
                 for (int k = 0; k < 3; ++k) {
                     mc.setBlock(removeBlock, AIR);
