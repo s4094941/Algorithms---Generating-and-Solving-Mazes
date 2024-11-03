@@ -4,6 +4,7 @@
 #include "MazeNode.h"
 #include <mcpp/mcpp.h>
 #include <memory>
+#include <thread>
 using mcpp::Coordinate;
 
 class Maze {

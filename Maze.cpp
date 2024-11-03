@@ -1,4 +1,3 @@
-#include <thread>
 #include "Maze.h"
 using mcpp::MinecraftConnection;
 using mcpp::Coordinate;
