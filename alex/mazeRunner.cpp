@@ -16,9 +16,9 @@ int main() {
     maze.createGrid();
     maze.generateRandomMaze();
     maze.printMaze();
-    // maze.placeMaze(mc.getPlayerPosition());
-    // sleep_for(milliseconds(5000));
-    // maze.restoreTerrain(mc.getPlayerPosition());
+    maze.placeMaze(mc.getPlayerPosition());
+    sleep_for(milliseconds(10000));
+    maze.restoreTerrain(mc.getPlayerPosition());
 
     return EXIT_SUCCESS;
 }
