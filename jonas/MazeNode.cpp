@@ -100,7 +100,7 @@ int MazeNode::getTestDirection() {
 // Print Node
 void MazeNode::printNode() {
     if (explored) {
-        std::cout << 'o'
+        std::cout << 'o';
     } else if (isWall) {
         std::cout << 'x';
     } else {

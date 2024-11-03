@@ -51,7 +51,7 @@ class Maze {
         // void placeMaze();
 
         void resetAll();
-        void floodFill(MazeNode*);
+        void floodFill();
 
         // Destructor
         ~Maze();

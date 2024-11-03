@@ -163,18 +163,18 @@ MazeNode* Maze::findStartPoint() {
 
 // Returns a pointer to the node directly adjacent in a particular direction to the argument provided
 MazeNode* Maze::getNodeUp(MazeNode* n) {
-    return maze[n->getRow() - 1][n->getCol()]
+    return maze[n->getRow() - 1][n->getCol()];
 }
 MazeNode* Maze::getNodeLeft(MazeNode* n) {
-    return maze[n->getRow()][n->getCol() - 1]
+    return maze[n->getRow()][n->getCol() - 1];
 }
 
 MazeNode* Maze::getNodeDown(MazeNode* n) {
-    return maze[n->getRow() + 1][n->getCol()]
+    return maze[n->getRow() + 1][n->getCol()];
 }
 
 MazeNode* Maze::getNodeRight(MazeNode* n) {
-    return maze[n->getRow()][n->getCol() + 1]
+    return maze[n->getRow()][n->getCol() + 1];
 }
 
 // Check whether the node directly adjacent in a particular direction to the provided argument is an unexplored, non-wall node
@@ -185,34 +185,34 @@ bool Maze::checkNodeUp(MazeNode* n) {
     && getNodeUp(n)->getStatus() == false) {
         nodeAvailable = true;
     }
-    return nodeAvailable
+    return nodeAvailable;
 }
 bool Maze::checkNodeLeft(MazeNode* n) {
     bool nodeAvailable = false;
     if (n->getCol() != 0
-    && getNodeLeft(n)->getWall == false
-    && getNodeLeft(n)->getStatus == false) {
+    && getNodeLeft(n)->getWall() == false
+    && getNodeLeft(n)->getStatus() == false) {
         nodeAvailable = true;
     }
-    return nodeAvailable
+    return nodeAvailable;
 }
 bool Maze::checkNodeDown(MazeNode* n) {
     bool nodeAvailable = false;
     if (n->getRow() != row - 1
-    && getNodeDown(n)->getWall == false
-    && getNodeDown(n)->getStatus == false) {
+    && getNodeDown(n)->getWall() == false
+    && getNodeDown(n)->getStatus() == false) {
         nodeAvailable = true;
     }
-    return nodeAvailable
+    return nodeAvailable;
 }
 bool Maze::checkNodeRight(MazeNode* n) {
     bool nodeAvailable = false;
     if (n->getCol() != col - 1
-    && getNodeRight(n)->getWall == false
-    && getNodeRight(n)->getStatus == false) {
+    && getNodeRight(n)->getWall() == false
+    && getNodeRight(n)->getStatus() == false) {
         nodeAvailable = true;
     }
-    return nodeAvailable
+    return nodeAvailable;
 }
 
 // Flood fills using the argument as a starting point. "Marked" nodes are labeled as explored
@@ -230,26 +230,26 @@ void Maze::floodFill(MazeNode* startPoint) {
    stack.push(startPoint);
    startPoint->setExplored(true);
 
-    while (stack.empty() = false) {
+    while (stack.empty() == false) {
         // Set current node to the top of the stack, then pop it off the top of the stack, since it won't need to be checked again.
         // Check nodes in each direction, adding them to the stack and marking them if they are unexplored, non-wall nodes.
         MazeNode* curr = stack.top();
         stack.pop();
 
         // Check each direciton
-        if (checkNodeUp(curr) = true) {
+        if (checkNodeUp(curr) == true) {
             getNodeUp(curr)->setExplored(true);
             stack.push(getNodeUp(curr));
         }
-        if (checkNodeLeft(curr) = true) {
+        if (checkNodeLeft(curr) == true) {
             getNodeLeft(curr)->setExplored(true);
             stack.push(getNodeLeft(curr));
         }
-        if (checkNodeDown(curr) = true) {
+        if (checkNodeDown(curr) == true) {
             getNodeDown(curr)->setExplored(true);
             stack.push(getNodeDown(curr));
         }
-        if (checkNodeRight(curr) = true) {
+        if (checkNodeRight(curr) == true) {
             getNodeRight(curr)->setExplored(true);
             stack.push(getNodeRight(curr));
         }
