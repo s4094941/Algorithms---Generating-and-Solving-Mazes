@@ -10,10 +10,15 @@ using std::endl;
 using std::this_thread::sleep_for;
 using std::chrono::milliseconds;
 
+// assume that the obstacles/unflattened terrain do not obstruct all the maze border blocks as well as the starting point (from recursive backtracking)
+// assume that the obstacles/unflattened terrain do not have isolations within them otherwise a flood fill approach (E3) or similar would be required
+
 int main() {
     MinecraftConnection mc;
-    Maze maze(9, 9, false, true, mc.getPlayerTilePosition());
+    Maze maze(15, 11, false, true, mc.getPlayerTilePosition());
     maze.createGrid();
+    maze.printMaze();
+    cout << endl;
     maze.generateRandomMaze();
     maze.printMaze();
     maze.placeMaze(mc.getPlayerPosition());
