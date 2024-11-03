@@ -26,8 +26,9 @@ int main (void) {
         //maze.printMaze();
     } else if (mode == 3) {
         maze.buildMaze();
-        maze.checkValidity();
-        //maze.printMaze();
+        maze.floodFill();
+        std::cout << std::endl << std::endl;
+        maze.printMaze();
     }
 
     return EXIT_SUCCESS;
