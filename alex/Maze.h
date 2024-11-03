@@ -3,8 +3,10 @@
 
 #include "MazeNode.h"
 #include <mcpp/mcpp.h>
+#include <vector>
 using mcpp::Coordinate;
 using mcpp::BlockType;
+using std::vector;
 
 class Maze {
     private:
@@ -13,6 +15,9 @@ class Maze {
         bool enhancementMode;
         // bool isBuilt;
         MazeNode*** maze;
+
+        // For E1
+        std::vector<Coordinate> mazeBlocks;
 
         // Private methods
           // TODO: Regenerate base grid (set walls/air)
