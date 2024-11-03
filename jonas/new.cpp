@@ -11,6 +11,16 @@ private:
     void checkConnections();
     void findIsolatedNode();
 
+    MazeNode* getNodeUp(MazeNode*);
+    MazeNode* getNodeLeft(MazeNode*);
+    MazeNode* getNodeDown(MazeNode*);
+    MazeNode* getNodeRight(MazeNode*);
+
+    bool checkNodeUp(MazeNode*);
+    bool checkNodeLeft(MazeNode*);
+    bool checkNodeDown(MazeNode*);
+    bool checkNodeRight(MazeNode*);
+
 public:
     void correctGrid();
     void checkValidity();
@@ -191,6 +201,125 @@ void findIsolatedNode() {
     }
 }
 
+// Returns a pointer to the node directly adjacent in a particular direction
+MazeNode* Maze::getNodeUp(MazeNode* n) {
+    return maze[n->getRow() - 1][n->getCol()]
+}
+MazeNode* Maze::getNodeLeft(MazeNode* n) {
+    return maze[n->getRow()][n->getCol() - 1]
+}
+
+MazeNode* Maze::getNodeDown(MazeNode* n) {
+    return maze[n->getRow() + 1][n->getCol()]
+}
+
+MazeNode* Maze::getNodeRight(MazeNode* n) {
+    return maze[n->getRow()][n->getCol() + 1]
+}
+
+// Check whether the node directly adjacent in a particular direction is an unexplored, non-wall node
+bool Maze::checkNodeUp(MazeNode* n) {
+    bool nodeAvailable = false;
+    if (n->getRow() != 0
+    && getNodeUp(n)->getWall() == false
+    && getNodeUp(n)->getStatus() == false) {
+        nodeAvailable = true;
+    }
+    return nodeAvailable
+}
+bool Maze::checkNodeLeft(MazeNode* n) {
+    bool nodeAvailable = false;
+    if (getNodeLeft(n)->getWall == false
+     && getNodeLeft(n)->getStatus == false) {
+        nodeAvailable = true;
+    }
+    return nodeAvailable
+}
+bool Maze::checkNodeDown(MazeNode* n) {
+    bool nodeAvailable = false;
+    if (getNodeDown(n)->getWall == false
+     && getNodeDown(n)->getStatus == false) {
+        nodeAvailable = true;
+    }
+    return nodeAvailable
+}
+bool Maze::checkNodeRight(MazeNode* n) {
+    bool nodeAvailable = false;
+    if (getNodeRight(n)->getWall == false
+     && getNodeRight(n)->getStatus == false) {
+        nodeAvailable = true;
+    }
+    return nodeAvailable
+}
+
+
+void Maze::floodFill(MazeNode* startPoint) {
+    MazeNode* curr = startPoint;
+    curr->setExplored(true);
+    bool filled = false;
+
+    // TEST CASE FOR OPENING, BUT NO CONNECTED NODES
+    if (curr->getRow() == 0) {
+        // if current is on row 0, check down, if not a wall, make curr, else filled = true
+        if (getNodeDown(curr)->getWall == false) {
+            getNodeDown(curr)->setPrevNode(curr);
+            curr = getNodeDown(curr);
+            curr->setExplored(true);
+        } else {
+            filled = true;
+        }
+    } else if (curr->getCol() == 0) {
+        // else if current is on column 0, check right, if not a wall, make curr, else filled = true
+        if (getNodeRight(curr)->getWall == false) {
+            getNodeRight(curr)->setPrevNode(curr);
+            curr = getNodeRight(curr);
+            curr->setExplored(true);
+        } else {
+            filled = true;
+        }
+    } else if (curr->getRow() == row - 1) {
+        // else if current is on row row - 1, check up, if not a wall, make curr, else filled = true
+        if (getNodeUp(curr)->getWall == false) {
+            getNodeUp(curr)->setPrevNode(curr);
+            curr = getNodeUp(curr);
+            curr->setExplored(true);
+        } else {
+            filled = true;
+        }
+    } else if (curr->getCol() == col - 1) {
+        // else if current is on column column - 1, check left, if not a wall, make curr, else filled = true
+        if (getNodeLeft(curr)->getWall == false) {
+            getNodeLeft(curr)->setPrevNode(curr);
+            curr = getNodeLeft(curr);
+            curr->setExplored(true);
+        } else {
+            filled = true;
+        }
+    }
+
+    while (curr != nullptr && filled != false) {
+        if (checkNodeUp(curr) == true) {
+            getNodeUp(curr)->setPrevNode(curr);
+            curr = getNodeUp(curr);
+            curr->setExplored(true);
+        } else if (checkNodeLeft(curr) == true) {
+            getNodeLeft(curr)->setPrevNode(curr);
+            curr = getNodeLeft(curr);
+            curr->setExplored(true);
+        } else if (checkNodeDown(curr) == true) {
+            getNodeDown(curr)->setPrevNode(curr);
+            curr = getNodeDown(curr);
+            curr->setExplored(true);
+        } else if (checkNodeRight(curr) == true) {
+            getNodeRight(curr)->setPrevNode(curr);
+            curr = getNodeRight(curr);
+            curr->setExplored(true);
+        } else {
+            curr = curr->getPrevNode();
+        }
+    }
+}
+
 
 
 void Maze::checkValidity() {
@@ -251,6 +380,7 @@ void MazeNode::resetNode() {
         Maze follows correct structure (air nodes are only available in [odd][odd] positions
         Isolated node is not in an even position (will only check for isolated nodes in [odd][odd] positions)
         If isolated node is connected to an isolated path, maze follows correct convention (each turn is only possible 2 nodes away)
+        All corners are correctly filled as walls
 
 
     FIXES:

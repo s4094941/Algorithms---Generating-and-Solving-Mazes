@@ -2,6 +2,7 @@
 #define MAZE_H
 #include "MazeNode.h"
 
+
 class Maze {
     private:
         int row, col;
@@ -19,11 +20,18 @@ class Maze {
         void generateTestMaze();
         void generateRandomMaze();
 
-        // NEW STUFF =================================================
-        void resetAll();
+        MazeNode* getNodeUp(MazeNode*);
+        MazeNode* getNodeLeft(MazeNode*);
+        MazeNode* getNodeDown(MazeNode*);
+        MazeNode* getNodeRight(MazeNode*);
+
+        bool checkNodeUp(MazeNode*);
+        bool checkNodeLeft(MazeNode*);
+        bool checkNodeDown(MazeNode*);
+        bool checkNodeRight(MazeNode*);
+
         void checkEdge(MazeNode*);
         MazeNode* findStartPoint();
-        // END NEW =================================================
 
     public:
         // Constructor
@@ -42,14 +50,14 @@ class Maze {
         void printMaze();
         // void placeMaze();
 
+        void resetAll();
+        void floodFill();
+
         // Destructor
         ~Maze();
-
-        // NEW STUFF =================================================
-        void checkValidity();
-        void printAllSides();
-        // END NEW =================================================
 };
+
+
 
 #endif // MAZE_H
 

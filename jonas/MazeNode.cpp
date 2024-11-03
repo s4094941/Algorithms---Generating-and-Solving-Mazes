@@ -1,6 +1,7 @@
 #include "MazeNode.h"
 #include <cstdlib>
 #include <iostream>
+#include <stack>
 
 // Constructor
 MazeNode::MazeNode(int r, int c) : row(r), col(c), dirCount(4), up(false), down(false), left(false), right(false),
@@ -98,7 +99,9 @@ int MazeNode::getTestDirection() {
 
 // Print Node
 void MazeNode::printNode() {
-    if (isWall) {
+    if (explored) {
+        std::cout << 'o';
+    } else if (isWall) {
         std::cout << 'x';
     } else {
         std::cout << '.';
@@ -106,7 +109,6 @@ void MazeNode::printNode() {
 }
 
 
-// NEW STUFF =================================================
 void MazeNode::resetNode() {
     up = false;
     down = false;
@@ -116,8 +118,4 @@ void MazeNode::resetNode() {
     prevNode = nullptr;
     dirCount = 4;
     explored = false;
-}
-
-void MazeNode::printSides() {
-    std::cout << dirCount;
 }

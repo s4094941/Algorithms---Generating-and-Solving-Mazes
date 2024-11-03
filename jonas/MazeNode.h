@@ -41,10 +41,7 @@ class MazeNode {
         void printNode();
         // void placeNode();
 
-
-        // NEW STUFF =================================================
         void resetNode();
-        void printSides();
 
 };
 
