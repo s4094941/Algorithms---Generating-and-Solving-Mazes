@@ -2,6 +2,10 @@
 #define ASSIGN3_AGENT_H
 
 #include <mcpp/mcpp.h>
+#include <queue>
+#include <unordered_set>
+#include <unordered_map>
+#include <algorithm>
 using mcpp::MinecraftConnection;
 using mcpp::Coordinate;
 
@@ -22,11 +26,21 @@ enum agentOrientation {
     Z_MINUS
 };
 
+struct HashCoordinate {
+    size_t operator()(const Coordinate& coord) const {
+        return (std::hash<int>()(coord.x) ^ (std::hash<int>()(coord.y) << 1) ^ (std::hash<int>()(coord.z) << 2));
+    }
+};
+
 class Agent {
     public:
         Agent(Coordinate startLoc);
         ~Agent();
         void rightHandFollow(bool mode);
+
+        // Enhancement
+        void BFS();
+        void showShortestPath();
 
     private:
         MinecraftConnection mc;
@@ -35,6 +49,10 @@ class Agent {
         void halfSecDelay();
         void stepOutput(int stepCounter);
         void setStartOrientation(agentOrientation currOrientation);
+
+        // Enhancement
+        bool isNotWall(const mcpp::Coordinate& coord);
+        std::vector<mcpp::Coordinate> shortestPath;
 };
 
 #endif // ASSIGN3_AGENT_H

@@ -32,7 +32,8 @@ void printSolveMazeMenu() {
     cout << endl << "------------- SOLVE MAZE -------------" << endl;
     cout << "1) Solve Manually" << endl;
     cout << "2) Show Escape Route" << endl;
-    cout << "3) Back" << endl;
+    cout << "3) Ehancement 2 - Find the Shortest Path" << endl;
+    cout << "4) Back" << endl;
     cout << endl << "Enter Menu item to continue: " << endl;
 }
 

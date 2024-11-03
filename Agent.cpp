@@ -261,3 +261,91 @@ void Agent::rightHandFollow(bool mode) {
     this->halfSecDelay();
     this->stepOutput(stepCounter);
 }
+
+bool Agent::isNotWall(const mcpp::Coordinate& neighbourCoord) {
+    // Walkable = true by default | Comparison to check for walls
+    bool walkable = true;
+    mcpp::BlockType const ACACIA_WOOD_PLANKS(5,4);
+
+    // If there is a wall, walkable = false
+    if (mc.getBlock(neighbourCoord) == ACACIA_WOOD_PLANKS) {
+        walkable = false;
+    }
+
+    return walkable;
+}
+
+void Agent::BFS() {
+    // Player Position / Temp Coordinate for neighbouring Nodes / Temp Coordinate for player position
+    mcpp::Coordinate playerPos = mc.getPlayerPosition();
+    mcpp::Coordinate neighbourNode;
+    mcpp::Coordinate currentNode;
+    
+    // Queue of nodes
+    std::queue<mcpp::Coordinate> mazeNodes;
+
+    // Visited coordinates (must all be unique) | Previous Coordinates
+    std::unordered_set<mcpp::Coordinate, HashCoordinate> visited;
+    std::unordered_map<mcpp::Coordinate, mcpp::Coordinate , HashCoordinate> previous;
+
+    // Comparison
+    mcpp::BlockType const BLUE_CARPET(171,11);
+
+    // Iterate a each node in every direction to detect unexplored nodes
+    std::vector<mcpp::Coordinate> directions = {
+        MOVE_ZPLUS,    
+        MOVE_ZMINUS,   
+        MOVE_XPLUS,    
+        MOVE_XMINUS    
+    };
+
+    // Add first/player coordinate to the queue and visited for loop functionality
+    mazeNodes.push(playerPos);
+    visited.insert(playerPos);
+
+    // Loop while there are nodes to explore, {{and currentNode doesn't have a blue carpet}} ADD THIS LATER
+    while (!mazeNodes.empty() && mc.getBlock(currentNode) != BLUE_CARPET) {
+        // Checks start of queue, and removes the start of queue node
+        currentNode = mazeNodes.front();
+        mazeNodes.pop();
+        
+        // Loop to check every direction
+        for (const mcpp::Coordinate& currentDirection : directions) {
+            neighbourNode = currentNode;
+            neighbourNode.x = neighbourNode.x + currentDirection.x;
+            neighbourNode.z = neighbourNode.z + currentDirection.z;
+
+            // Note: Change to a function to decrease line size as suggested
+            // If not wall, insert to queue and visited, and add the previous 'path'
+            if (isNotWall(neighbourNode) && visited.find(neighbourNode) == visited.end()) {
+                mazeNodes.push(neighbourNode);
+                visited.insert(neighbourNode);
+                previous[neighbourNode] = currentNode;
+            }
+        }
+    }
+
+    // Once blue carpet is found, trace back and get path
+    // While the current coordinates aren't the starting point, add to the vector
+    while (currentNode != playerPos) {
+        shortestPath.push_back(currentNode);
+        currentNode = previous[currentNode]; 
+    }
+
+    // Add the starting point
+    shortestPath.push_back(playerPos);
+
+    // Reverse the vector so that the player position is first, for function functionality
+    std::reverse(shortestPath.begin(), shortestPath.end());
+}
+
+void Agent::showShortestPath() {
+    mcpp::BlockType const LIME_CARPET(171,5);
+    mcpp::BlockType const AIR (0);
+    // Iterates through the vector, placing a lime carpet to show the path
+    for (unsigned int i = 0; i < shortestPath.size() - 1; ++i) {
+        mc.setBlock(shortestPath[i], LIME_CARPET);
+        sleep_for(milliseconds(500));
+        mc.setBlock(shortestPath[i], AIR);
+    }
+}

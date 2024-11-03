@@ -60,7 +60,6 @@ class Maze {
         void addNode(mcpp::Coordinate blockLocation, mcpp::BlockType blockID); 
         blockNode* getNext(); 
 
-
         // void placeMaze();
         void solveManually(Coordinate* basePoint);
 

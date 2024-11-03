@@ -489,6 +489,8 @@ Maze::blockNode* Maze::getNext() {
     return placeNode; 
 }
 
+
+
 // Destructor
 Maze::~Maze() {
     for (int i = 0; i < row; ++i) {
