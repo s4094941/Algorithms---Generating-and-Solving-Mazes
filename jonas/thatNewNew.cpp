@@ -52,6 +52,7 @@ private:
 
     void checkEdge(MazeNode*);
     MazeNode* findStartPoint();
+    MazeNode* correctNodePos(MazeNode*);
     MazeNode* probeDirection(MazeNode*, int, bool&);
     void checkBothDirections(MazeNode*, MazeNode*, int );
 
@@ -227,6 +228,40 @@ bool Maze::checkNodeRight(MazeNode* n) {
     }
 
     return nodeAvailable;
+}
+
+MazeNode* Maze::correctNodePos(MazeNode* node) {
+    if (node->getRow() % 2 == 0) {
+        if (checkNodeUp(node)) {
+            node = getNodeUp(node);
+        } else if (checkNodeDown(node)) {
+            node = getNodeDown(isolatedNode);
+        } else {
+            if (node->getRow() > 1) {
+                node = getNodeUp(node);
+                node->setWall(false);
+            } else {
+                node = getNodeDown(node);
+                node->setWall(false);
+            }
+        }
+    } else if (node->getCol() % 2 == 0)  {
+        if (checkNodeLeft(node)) {
+            node = getNodeLeft(node);
+        } else if (checkNodeRight(node)){
+            node = getNodeRight(node);
+        } else {
+            if (node->getCol() > 1) {
+                node = getNodeLeft(node);
+                node->setWall(false);
+            } else {
+                node = getNodeRight(node);
+                node->setWall(false);
+            }
+        }
+    } 
+
+    return node;
 }
 
 // Flood fills using the argument as a starting point. "Marked" nodes are labeled as explored

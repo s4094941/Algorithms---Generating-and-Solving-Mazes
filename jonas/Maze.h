@@ -32,6 +32,7 @@ class Maze {
 
         void checkEdge(MazeNode*);
         MazeNode* findStartPoint();
+        MazeNode* correctNodePos(MazeNode*);
         MazeNode* probeDirection(MazeNode*, int, bool&);
         void checkBothDirections(MazeNode*, MazeNode*, int );
         void printAllDirections();
