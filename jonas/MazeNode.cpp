@@ -14,6 +14,11 @@ void MazeNode::setWall (bool status) {
         explored = false;
     }
 }
+void MazeNode::checkWall() {
+    if (isWall) {
+        explored = true;
+    }
+}
 void MazeNode::setExplored(bool status) {
     explored = status;
     if (status == true) {
@@ -52,6 +57,18 @@ bool MazeNode::getStatus() {
 }
 bool MazeNode::getWall() {
     return isWall;
+}
+bool MazeNode::getUp() {
+    return up;
+}
+bool MazeNode::getDown() {
+    return down;
+}
+bool MazeNode::getLeft() {
+    return left;
+}
+bool MazeNode::getRight() {
+    return right;
 }
 MazeNode* MazeNode::getPrevNode() {
     if (prevNode != nullptr) { return prevNode; }

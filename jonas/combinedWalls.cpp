@@ -2,8 +2,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <stack>
-#include <vector>
-#include <algorithm>
 
 // Construct maze with x rows and y columns
 Maze::Maze(int length, int width, bool testMode) {
@@ -12,9 +10,6 @@ Maze::Maze(int length, int width, bool testMode) {
     this->testMode = testMode;
     srand(time(0));
 
-    std::random_device rd;
-    gen.seed(rd());
-    
     if (row < 3) {
         row = 3;
          std::cout << "Invalid row value. Defaulting to 3" << std::endl;
@@ -307,7 +302,6 @@ Maze::~Maze() {
 // NEW =================================================================================
 // NEW =================================================================================
 
-// Resets all variables to their base values, except row, column, and wall values
 void Maze::resetAll() {
     for (int i = 0; i < row; ++i) {
         for (int j = 0; j < col; ++j) {
@@ -398,114 +392,90 @@ MazeNode* Maze::findStartPoint() {
 
 
 // Returns a pointer to the node directly adjacent in a particular direction to the argument provided
-MazeNode* Maze::getNodeUp(MazeNode* n, int count) {
-    return maze[n->getRow() - count][n->getCol()];
+MazeNode* Maze::getNodeUp(MazeNode* n) {
+    return maze[n->getRow() - 1][n->getCol()];
 }
-MazeNode* Maze::getNodeLeft(MazeNode* n, int count) {
-    return maze[n->getRow()][n->getCol() - count];
-}
-
-MazeNode* Maze::getNodeDown(MazeNode* n, int count) {
-    return maze[n->getRow() + count][n->getCol()];
+MazeNode* Maze::getNodeLeft(MazeNode* n) {
+    return maze[n->getRow()][n->getCol() - 1];
 }
 
-MazeNode* Maze::getNodeRight(MazeNode* n, int count) {
-    return maze[n->getRow()][n->getCol() + count];
+MazeNode* Maze::getNodeDown(MazeNode* n) {
+    return maze[n->getRow() + 1][n->getCol()];
+}
+
+MazeNode* Maze::getNodeRight(MazeNode* n) {
+    return maze[n->getRow()][n->getCol() + 1];
 }
 
 // Check whether the node directly adjacent in a particular direction to the provided argument is an unexplored, non-wall node
-bool Maze::checkNodeUp(MazeNode* n, int count) {
+bool Maze::checkNodeUp(MazeNode* n) {
     bool nodeAvailable = false;
-
+    
     if (n->getRow() != 0) {
-        if (getNodeUp(n, count)->getWall()   == false
-         && getNodeUp(n, count)->getStatus() == false) {
-            nodeAvailable = true;
+        if (n->getWall() == false) {
+            if (getNodeUp(n)->getWall() == false && getNodeUp(n)->getStatus() == false) {
+                nodeAvailable = true;
+            }
+        } else {
+            if (getNodeUp(n)->getWall() == true) {
+                nodeAvailable = true;
+            }
         }
     }
-
     return nodeAvailable;
 }
-bool Maze::checkNodeDown(MazeNode* n, int count) {
+
+bool Maze::checkNodeDown(MazeNode* n) {
     bool nodeAvailable = false;
+    
     if (n->getRow() != row - 1) {
-        if (getNodeDown(n, count)->getWall() == false
-         && getNodeDown(n, count)->getStatus() == false) {
-            nodeAvailable = true;
+        if (n->getWall() == false) { 
+            if (getNodeDown(n)->getWall() == false && getNodeDown(n)->getStatus() == false) {
+                nodeAvailable = true;
+            }
+        } else {
+            if (getNodeDown(n)->getWall() == true) {
+                nodeAvailable = true; 
+            }
         }
     }
-
     return nodeAvailable;
 }
-bool Maze::checkNodeLeft(MazeNode* n, int count) {
-    bool nodeAvailable = false;
 
+bool Maze::checkNodeLeft(MazeNode* n) {
+    bool nodeAvailable = false;
+    
     if (n->getCol() != 0) {
-        if (getNodeLeft(n, count)->getWall()   == false
-         && getNodeLeft(n, count)->getStatus() == false) {
-            nodeAvailable = true;
+        if (n->getWall() == false) { 
+            if (getNodeLeft(n)->getWall() == false && getNodeLeft(n)->getStatus() == false) {
+                nodeAvailable = true; 
+            }
+        } else {
+            if (getNodeLeft(n)->getWall() == true) {
+                nodeAvailable = true; 
+            }
         }
     }
-
     return nodeAvailable;
 }
-bool Maze::checkNodeRight(MazeNode* n, int count) {
+
+bool Maze::checkNodeRight(MazeNode* n) {
     bool nodeAvailable = false;
+
     if (n->getCol() != col - 1) {
-        if (getNodeRight(n, count)->getWall() == false
-         && getNodeRight(n, count)->getStatus() == false) {
-            nodeAvailable = true;
+        if (n->getWall() == false) {
+            if (getNodeRight(n)->getWall() == false
+            && getNodeRight(n)->getStatus() == false) {
+                nodeAvailable = true; // Right node is a path and unexplored
+            }
+        } else {
+            if (getNodeRight(n)->getWall() == true) {
+                nodeAvailable = true;
+            }
         }
     }
-
     return nodeAvailable;
 }
-
-// // Check whether the node directly adjacent in a particular direction to the provided argument is an unexplored, WALL
-// bool Maze::checkWallUp(MazeNode* n) {
-//     bool nodeAvailable = false;
-
-//     if (n->getRow() > 0) {
-//         if (getNodeUp(n)->getWall() == false && getNodeUp(n)->getStatus() == false) {
-//             nodeAvailable = true;
-//         }
-//     }
-
-//     return nodeAvailable;
-// }
-// bool Maze::checkWallDown(MazeNode* n) {
-//     bool nodeAvailable = false;
-
-//     if (n->getRow() < row - 1) {
-//         if (getNodeDown(n)->getWall() == false && getNodeDown(n)->getStatus() == false) {
-//             nodeAvailable = true;
-//         }
-//     }
-
-//     return nodeAvailable;
-// }
-// bool Maze::checkWallLeft(MazeNode* n) {
-//     bool nodeAvailable = false;
-
-//     if (n->getCol() > 0) {
-//         if (getNodeLeft(n)->getWall() == false && getNodeLeft(n)->getStatus() == false) {
-//             nodeAvailable = true;
-//         }
-//     }
-
-//     return nodeAvailable;
-// }
-// bool Maze::checkWallRight(MazeNode* n) {
-//     bool nodeAvailable = false;
-
-//     if (n->getCol() < row - 1) {
-//         if (getNodeRight(n)->getWall() == false && getNodeRight(n)->getStatus() == false) {
-//             nodeAvailable = true;
-//         }
-//     }
-
-//     return nodeAvailable;
-// }
 
 // Returns the first instance of a non-wall unexplored node.
 MazeNode* Maze::findIsolatedNode() {
@@ -527,29 +497,29 @@ MazeNode* Maze::correctNodePos(MazeNode* node) {
 
     // Check if the node is in an even row
     if (node->getRow() % 2 == 0) {
-        if (checkNodeUp(node, 1)) {
-            node = getNodeUp(node, 1);
-        } else if (checkNodeDown(node, 1)) {
-            node = getNodeDown(node, 1);
+        if (checkNodeUp(node)) {
+            node = getNodeUp(node);
+        } else if (checkNodeDown(node)) {
+            node = getNodeDown(node);
         } else if (node->getRow() > 1) {
-            node = getNodeUp(node, 1); // Move up if possible
+            node = getNodeUp(node); // Move up if possible
             node->setWall(false);
         } else if (node->getRow() < row - 2) {
-            node = getNodeDown(node, 1); // Move down if possible
+            node = getNodeDown(node); // Move down if possible
             node->setWall(false);
         }
     } 
     // Check if the node is in an even column
     else if (node->getCol() % 2 == 0) {
-        if (checkNodeLeft(node, 1)) {
-            node = getNodeLeft(node, 1);
-        } else if (checkNodeRight(node, 1)) {
-            node = getNodeRight(node, 1);
+        if (checkNodeLeft(node)) {
+            node = getNodeLeft(node);
+        } else if (checkNodeRight(node)) {
+            node = getNodeRight(node);
         } else if (node->getCol() > 1) {
-            node = getNodeLeft(node, 1); // Move left if possible
+            node = getNodeLeft(node); // Move left if possible
             node->setWall(false);
         } else if (node->getCol() < col - 2) {
-            node = getNodeRight(node, 1); // Move right if possible
+            node = getNodeRight(node); // Move right if possible
             node->setWall(false);
         }
     }
@@ -558,195 +528,151 @@ MazeNode* Maze::correctNodePos(MazeNode* node) {
     return node;
 }
 
-// Flood fills using the argument as a starting point. "Marked" nodes are labeled as explored
 void Maze::floodFill(MazeNode* startPoint) {
     std::stack<MazeNode*> stack;
    
-   stack.push(startPoint);
-   startPoint->setExplored(true);
+    // Initial marking of the start point
+    if (startPoint->getWall() == false) {
+        startPoint->setExplored(true);
+        stack.push(startPoint); // Only push if it’s a path
+    } else {
+        startPoint->markWall();
+        stack.push(startPoint); // Push wall nodes as well
+    }
 
-    while (stack.empty() == false) {
-        // Set current node to the top of the stack, then pop it off the top of the stack, since it won't need to be checked again.
-        // Check nodes in each direction, adding them to the stack and marking them if they are unexplored, non-wall nodes.
+    while (!stack.empty()) {
         MazeNode* curr = stack.top();
         stack.pop();
 
-        // Check each direciton
-        if (checkNodeUp(curr, 1) == true) {
-            getNodeUp(curr, 1)->setExplored(true);
-            stack.push(getNodeUp(curr, 1));
+        // Check each direction
+        // Up
+        if (checkNodeUp(curr) == true) {
+            MazeNode* upNode = getNodeUp(curr);
+            if (upNode->getWall() == false && !upNode->getStatus()) {
+                upNode->setExplored(true);
+                stack.push(upNode);
+            } else if (upNode->getWall() == true && !upNode->getStatus()) {
+                upNode->markWall();
+                stack.push(upNode);
+            }
         }
-        if (checkNodeDown(curr, 1) == true) {
-            getNodeDown(curr, 1)->setExplored(true);
-            stack.push(getNodeDown(curr, 1));
+        // Down
+        if (checkNodeDown(curr) == true) {
+            MazeNode* downNode = getNodeDown(curr);
+            if (downNode->getWall() == false && !downNode->getStatus()) {
+                downNode->setExplored(true);
+                stack.push(downNode);
+            } else if (downNode->getWall() == true && !downNode->getStatus()) {
+                downNode->markWall();
+                stack.push(downNode);
+            }
         }
-        if (checkNodeLeft(curr, 1) == true) {
-            getNodeLeft(curr, 1)->setExplored(true);
-            stack.push(getNodeLeft(curr, 1));
+        // Left
+        if (checkNodeLeft(curr) == true) {
+            MazeNode* leftNode = getNodeLeft(curr);
+            if (leftNode->getWall() == false && !leftNode->getStatus()) {
+                leftNode->setExplored(true);
+                stack.push(leftNode);
+            } else if (leftNode->getWall() == true && !leftNode->getStatus()) {
+                leftNode->markWall();
+                stack.push(leftNode);
+            }
         }
-        if (checkNodeRight(curr, 1) == true) {
-            getNodeRight(curr, 1)->setExplored(true);
-            stack.push(getNodeRight(curr, 1));
+        // Right
+        if (checkNodeRight(curr) == true) {
+            MazeNode* rightNode = getNodeRight(curr);
+            if (rightNode->getWall() == false && !rightNode->getStatus()) {
+                rightNode->setExplored(true);
+                stack.push(rightNode);
+            } else if (rightNode->getWall() == true && !rightNode->getStatus()) {
+                rightNode->markWall();
+                stack.push(rightNode);
+            }
         }
     }
 }
 
-// void Maze::floodFillWall(MazeNode* startPoint) {
-//     std::stack<MazeNode*> stack;
-//     stack.push(startPoint);
-//     startPoint->checkWall();
-
-//     while (stack.empty() == false) {
-//         // Set current node to the top of the stack, then pop it off the top of the stack, since it won't need to be checked again.
-//         // Check nodes in each direction, adding them to the stack and marking them if they are unexplored, non-wall nodes.
-//         MazeNode* curr = stack.top();
-//         stack.pop();
-
-//         // Check each direction
-//         if (checkWallUp(curr) == true) {
-//             getNodeUp(curr)->checkWall();
-//             stack.push(getNodeUp(curr));
-//         }
-//         if (checkWallDown(curr) == true) {
-//             getNodeDown(curr)->checkWall();
-//             stack.push(getNodeDown(curr));
-//         }
-//         if (checkWallLeft(curr) == true) {
-//             getNodeLeft(curr)->checkWall();
-//             stack.push(getNodeLeft(curr));
-//         }
-//         if (checkWallRight(curr) == true) {
-//             getNodeRight(curr)->checkWall();
-//             stack.push(getNodeRight(curr));
-//         }
-//     }
-// }
-
-
 // Randomly joins any isolated nodes to the main path
-void Maze::connectIsolatedNodes() {
+void Maze::connectIsolatedNodes () {
     resetAll();
-    std::cout << "Starting to connect isolated nodes...\n";
 
     floodFill(findStartPoint());
     MazeNode* isolatedNode = nullptr;
-
+    
     // Initial check to find any isolated nodes
     isolatedNode = findIsolatedNode();
-    std::cout << "Initial isolated node: " << (isolatedNode ? "(" + std::to_string(isolatedNode->getRow()) + ", " + std::to_string(isolatedNode->getCol()) + ")" : "None") << std::endl;
 
     // Loop until no nodes exist that are isolated from the main path
     while (isolatedNode) {
-        std::cout << "Correcting position for isolated node: (" << isolatedNode->getRow() << ", " << isolatedNode->getCol() << ")\n";
         isolatedNode = correctNodePos(isolatedNode);
         resetAll();
         floodFill(isolatedNode);
 
         bool connected = false;
-        while (!connected) {
+        while (connected == false) {
             if (isolatedNode->getDirCount() > 0) {
                 int dir = isolatedNode->getRandomDirection();
-                std::cout << "Attempting to probe direction " << dir << " from isolated node: (" << isolatedNode->getRow() << ", " << isolatedNode->getCol() << ")\n";
                 isolatedNode = probeDirection(isolatedNode, dir, connected);
-                std::cout << "Current node after probing: (" << isolatedNode->getRow() << ", " << isolatedNode->getCol() << "), Connected: " << std::boolalpha << connected << "\n";
             } else {
-                std::cout << "No more directions to explore, backtracking from: (" << isolatedNode->getRow() << ", " << isolatedNode->getCol() << ")\n";
                 isolatedNode = isolatedNode->getPrevNode();
             }
         }
 
-        std::cout << "Connected isolated node to main path. Resetting for next iteration...\n";
         resetAll();
         floodFill(findStartPoint());
         isolatedNode = findIsolatedNode();
-        std::cout << "Next isolated node: " << (isolatedNode ? "(" + std::to_string(isolatedNode->getRow()) + ", " + std::to_string(isolatedNode->getCol()) + ")" : "None") << std::endl;
     }
 
     resetAll();
-    printMaze();
+    floodFill(maze[0][0]);
 }
-
-
-MazeNode* Maze::probeDirection(MazeNode* curr, bool& connected) {
-    std::vector<int> dirList;
-    int dir;
-
-    // Add available directions to dirList and shuffle
-    if (curr->getUp()) dirList.push_back(0);
-    if (curr->getDown()) dirList.push_back(1);
-    if (curr->getLeft()) dirList.push_back(2);
-    if (curr->getRight()) dirList.push_back(3);
-
-    // Shuffle available directions to prevent loops
-    std::shuffle(dirList.begin(), dirList.end(), gen);
-
-    for (int i = 0; i < dirList.size(); ++i) {
-        if 
-    }
-
-
-
-
-
-
-    //get random direction
-    dir = dirList[rand() % curr->getDirCount()];
-
-
-
-}
-
 
 // checkDirection for connecting isolated nodes. 
 MazeNode* Maze::probeDirection(MazeNode* curr, int dir, bool& connected) {
-    
-    int ros, cos;
-    if (dir == 0) ros = -2;  // Up
-    if (dir == 1) ros = 2;   // Down
-    if (dir == 2) cos = -2;  // Left
-    if (dir == 3) cos = 2;   // Right
+    // IDEA: make tiers of checks. Only break wall if it cannot jump to another node first.
+    // Row offset and Column offset
+    int ros = 0;
+    int cos = 0;
 
-    int newRow = curr->getRow() + ros;
-    int newCol = curr->getCol() + cos;
-
-    // probably unnecessary since the directions are set
-    if (newRow < 0 || newRow >= row - 1 || newCol < 0 || newCol >= col - 1) {
-        return curr->getPrevNode();  // Backtrack if out of bounds
+    if (dir == 0) {
+        ros = -2;
+    } else if (dir == 1) {
+        ros = 2;
+    } else if (dir == 2) {
+        cos = -2;
+    } else if (dir == 3) {
+        cos = 2;
     }
 
-    MazeNode* next = maze[newRow][newCol];
-    MazeNode* wall = maze[curr->getRow() + ros / 2][curr->getCol() + cos / 2];
+    // Wall row offset and Wall column offset = half of the regular offset
+    int wros = ros / 2;
+    int wcos = cos / 2;
 
-    // 1. If next node is part of the main path, connect and mark as connected
-    if (!next->getWall() && !next->getStatus()) {
-        wall->setWall(false);       // Remove wall to create a connection
-        connected = true;           // Successfully connected to main path
-    }
-    // 2. If next node is in the isolated area, move forward only if unvisited
-    else if (!next->getWall() && next->getStatus() && !next->getPrevNode()) {
+    MazeNode* next = maze[curr->getRow() + ros][curr->getCol() + cos];
+    MazeNode* wall = maze[curr->getRow() + wros][curr->getCol() + wcos];
+
+    // if explored == false, then it is connected to the main path
+    if (next->getWall() == false && next->getStatus() == false) {
+        wall->setWall(false);
+        connected = true;
+    // if explored == true, it is part of the isolated path, set curr to next. Mark directions.
+    } else if (next->getWall() == false && next->getStatus() == true) {
         checkBothDirections(curr, next, dir);
-        next->setPrevNode(curr);    // Set previous node to avoid cycles
-        curr = next;
-    }
-    // 3. If next is a wall, break through as a last resort
-    else if (next->getWall() && !next->getStatus()) {
-        checkBothDirections(curr, next, dir);
-        wall->setWall(false);       // Break through the wall
-        next->setWall(false);
-        next->setExplored(true);
         next->setPrevNode(curr);
         curr = next;
-    }
-    // 4. If no progress is possible, mark as fully visited and backtrack
-    else {
-        curr->setExplored(true);     // Mark as fully visited to avoid revisiting
-        curr = curr->getPrevNode(); // Backtrack to previous node
+    // if wall, break, set to current.
+    } else if (next->getWall() == true) {
+        checkBothDirections(curr, next, dir);
+        next->setWall(false);
+        next->setExplored(true);
+        wall->setWall(false);
+        wall->setExplored(true);
+        next->setPrevNode(curr);
+        curr = next;
     }
 
     return curr;
 }
-
-
 
 void Maze::checkBothDirections(MazeNode* curr, MazeNode* next, int dir) {
     // CHECK UP

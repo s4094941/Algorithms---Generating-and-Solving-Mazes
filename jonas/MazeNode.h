@@ -15,6 +15,7 @@ class MazeNode {
 
         // Mutators
         void setWall(bool);
+        void checkWall();
         void setExplored(bool);
         void setPrevNode(MazeNode*);
 
@@ -30,6 +31,10 @@ class MazeNode {
         int getDirCount();
         bool getStatus();
         bool getWall();
+        bool getUp();
+        bool getDown();
+        bool getLeft();
+        bool getRight();
         MazeNode* getPrevNode();
 
         // Get a random direction from available directions

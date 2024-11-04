@@ -17,12 +17,35 @@
 private:
 
 public:
+    void checkWall();
     void resetNode();
+    bool getUp();
+    bool getDown();
+    bool getLeft();
+    bool getRight();
 //====================================================================================
 
 
 
 //=============== MazeNode.cpp =======================================================
+bool MazeNode::getUp() {
+    return up;
+}
+bool MazeNode::getDown() {
+    return down;
+}
+bool MazeNode::getLeft() {
+    return left;
+}
+bool MazeNode::getRight() {
+    return right;
+}
+void MazeNode::checkWall() {
+    if (isWall) {
+        explored = true;
+    }
+}
+
 void MazeNode::resetNode() {
     up = false;
     down = false;
@@ -50,6 +73,12 @@ private:
     bool checkNodeLeft(MazeNode*);
     bool checkNodeRight(MazeNode*);
 
+    bool checkWallUp(MazeNode*);
+    bool checkWallDown(MazeNode*);
+    bool checkWallLeft(MazeNode*);
+    bool checkWallRight(MazeNode*);
+
+
     void checkEdge(MazeNode*);
     MazeNode* findStartPoint();
     MazeNode* findIsolatedNode();
@@ -60,6 +89,7 @@ private:
 public:
     void resetAll();
     void floodFill(MazeNode*);
+    void floodFillWall(MazeNode*);
 
     void connectIsolatedNodes();
 
@@ -75,6 +105,9 @@ public:
 //=============== Maze.cpp ============================================================
 
 #include <stack>
+#include <vector>
+#include <algorithm>
+ADD IN CONSTRUCTOR
 
 // Resets all variables to their base values, except row, column, and wall values
 void Maze::resetAll() {
@@ -230,6 +263,52 @@ bool Maze::checkNodeRight(MazeNode* n) {
     return nodeAvailable;
 }
 
+// Check whether the node directly adjacent in a particular direction to the provided argument is an unexplored, WALL
+bool Maze::checkWallUp(MazeNode* n) {
+    bool nodeAvailable = false;
+
+    if (n->getRow() > 0) {
+        if (getNodeUp(n)->getWall() == false && getNodeUp(n)->getStatus() == false) {
+            nodeAvailable == true;
+        }
+    }
+
+    return nodeAvailable;
+}
+bool Maze::checkWallDown(MazeNode* n) {
+    bool nodeAvailable = false;
+
+    if (n->getRow() < row - 1) {
+        if (getNodeDown(n)->getWall() == false && getNodeDown(n)->getStatus() == false) {
+            nodeAvailable == true;
+        }
+    }
+
+    return nodeAvailable;
+}
+bool Maze::checkWallLeft(MazeNode* n) {
+    bool nodeAvailable = false;
+
+    if (n->getCol() > 0) {
+        if (getNodeLeft(n)->getWall() == false && getNodeLeft(n)->getStatus() == false) {
+            nodeAvailable == true;
+        }
+    }
+
+    return nodeAvailable;
+}
+bool Maze::checkWallRight(MazeNode* n) {
+    bool nodeAvailable = false;
+
+    if (n->getCol() < row - 1) {
+        if (getNodeRight(n)->getWall() == false && getNodeRight(n)->getStatus() == false) {
+            nodeAvailable == true;
+        }
+    }
+
+    return nodeAvailable;
+}
+
 // Returns the first instance of a non-wall unexplored node.
 MazeNode* Maze::findIsolatedNode() {
     MazeNode* node = nullptr;
@@ -277,7 +356,6 @@ MazeNode* Maze::correctNodePos(MazeNode* node) {
         }
     }
 
-    printMaze();
     std::cout << std::endl;
     return node;
 }
@@ -310,6 +388,37 @@ void Maze::floodFill(MazeNode* startPoint) {
         }
         if (checkNodeRight(curr) == true) {
             getNodeRight(curr)->setExplored(true);
+            stack.push(getNodeRight(curr));
+        }
+    }
+}
+
+void Maze::floodFillWall(MazeNode* startPoint) {
+    std::stack<MazeNode*> stack;
+    stack.push(startPoint);
+    startPoint->markWall();
+
+    while (stack.empty() == false) {
+        // Set current node to the top of the stack, then pop it off the top of the stack, since it won't need to be checked again.
+        // Check nodes in each direction, adding them to the stack and marking them if they are unexplored, non-wall nodes.
+        MazeNode* curr = stack.top();
+        stack.pop();
+
+        // Check each direction
+        if (checkWallUp(curr) == true) {
+            getNodeUp(curr)->markWall();
+            stack.push(getNodeUp(curr));
+        }
+        if (checkWallDown(curr) == true) {
+            getNodeDown(curr)->markWall();
+            stack.push(getNodeDown(curr));
+        }
+        if (checkWallLeft(curr) == true) {
+            getNodeLeft(curr)->markWall();
+            stack.push(getNodeLeft(curr));
+        }
+        if (checkWallRight(curr) == true) {
+            getNodeRight(curr)->markWall();
             stack.push(getNodeRight(curr));
         }
     }

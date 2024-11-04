@@ -1,7 +1,7 @@
 #ifndef MAZE_H
 #define MAZE_H
 #include "MazeNode.h"
-
+#include <random>
 
 class Maze {
     private:
@@ -9,6 +9,7 @@ class Maze {
         bool testMode;
         // bool isBuilt;
         MazeNode*** maze;
+        std::mt19937 gen;
 
         // Private methods
         void createGrid();  // TODO: Regenerate base grid (set walls/air)
@@ -20,15 +21,20 @@ class Maze {
         void generateTestMaze();
         void generateRandomMaze();
 
-        MazeNode* getNodeUp(MazeNode*);
-        MazeNode* getNodeDown(MazeNode*);
-        MazeNode* getNodeLeft(MazeNode*);
-        MazeNode* getNodeRight(MazeNode*);
+        MazeNode* getNodeUp(MazeNode*, int);
+        MazeNode* getNodeDown(MazeNode*, int);
+        MazeNode* getNodeLeft(MazeNode*, int);
+        MazeNode* getNodeRight(MazeNode*, int);
 
-        bool checkNodeUp(MazeNode*);
-        bool checkNodeDown(MazeNode*);
-        bool checkNodeLeft(MazeNode*);
-        bool checkNodeRight(MazeNode*);
+        bool checkNodeUp(MazeNode*, int);
+        bool checkNodeDown(MazeNode*, int);
+        bool checkNodeLeft(MazeNode*, int);
+        bool checkNodeRight(MazeNode*, int);
+
+        bool checkWallUp(MazeNode*);
+        bool checkWallDown(MazeNode*);
+        bool checkWallLeft(MazeNode*);
+        bool checkWallRight(MazeNode*);
 
         void checkEdge(MazeNode*);
         MazeNode* findStartPoint();
@@ -61,6 +67,8 @@ class Maze {
 
         void resetAll();
         void floodFill(MazeNode*);
+        void floodFillWall(MazeNode*);
+
 
         void connectIsolatedNodes();
 };

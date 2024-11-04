@@ -28,8 +28,6 @@ int main (void) {
     } else if (mode == 3) {
         maze.buildMaze();
         maze.connectIsolatedNodes();
-        std::cout << std::endl << std::endl;
-        maze.printMaze();
     }
 
     return EXIT_SUCCESS;
