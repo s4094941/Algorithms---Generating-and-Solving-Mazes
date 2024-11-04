@@ -26,7 +26,7 @@ int main (void) {
         //maze.printMaze();
     } else if (mode == 3) {
         maze.buildMaze();
-        maze.floodFill();
+        maze.connectIsolatedNodes();
         std::cout << std::endl << std::endl;
         maze.printMaze();
     }

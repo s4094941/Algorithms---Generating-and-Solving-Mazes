@@ -6,6 +6,7 @@
         If isolated node is connected to an isolated path, maze follows correct convention (each turn is only possible 2 nodes away)
         All corners are correctly filled as walls
         There must be at least one non-isolated node, not including the exit point
+        odd x even or even x odd node can exist, but even x even node cannot.
 
 
     FIXES:
@@ -52,12 +53,13 @@ private:
     void checkEdge(MazeNode*);
     MazeNode* findStartPoint();
     MazeNode* probeDirection(MazeNode*, int, bool&);
+    void checkBothDirections(MazeNode*, MazeNode*, int );
 
 public:
     void resetAll();
     void floodFill(MazeNode*);
 
-    //void findIsolatedNode(MazeNode*);
+    void connectIsolatedNodes();
 
 
 
@@ -269,11 +271,25 @@ void Maze::floodFill(MazeNode* startPoint) {
 
 }
 
-void Maze::findIsolatedNode (MazeNode* startPoint) {
+
+
+// iterate through maze array
+    // first non-filled node is an isolated node.
+        // Reset array, flood fill using isolated node
+            // using isolated node as a starting point, check to see if it aligns with odd x odd convention
+                // if not, check one block in each direction, and set to current if explored and not wall (if even x even / if even x odd / if odd x even)
+                // node can be assumed to be in odd x odd position
+            // check 2 blocks in random direction.
+                // if wall, break both new node and the wall between, set new node as current node. mark direction as checked for previous node and current node.
+                // If explored node, set to current node. mark direction as checked for previous node and current node.
+                // If unexplored node, break wall between and end loop.
+void Maze::connectIsolatedNodes () {
+    MazeNode* startPoint = findStartPoint();
     floodFill(startPoint);
     MazeNode* isolatedNode = nullptr;
-    bool connected = false;
+    //bool complete = false;
 
+    // Start completed loop here!!
     for (int i = 1; i < row - 1; ++i) {
         for (int j = 1; j < col - 1; ++j) {
             if (isolatedNode = nullptr
@@ -282,38 +298,40 @@ void Maze::findIsolatedNode (MazeNode* startPoint) {
             }
         }
     }
+    // Make node odd x odd. Even x odd or odd x even will always only have odd x odd connected. even x even cannot exist.
+    // IF EVEN ROW, CHECK UP OR DOWN
+    // IF EVEN COLUMN, CHECK LEFT OR RIGHT
 
     // repeat until isolatedNode = nullptr
-
-    if (isolatedNode == nullptr) {
-        std::cout << "No isolated nodes found." << std::endl;
-    }
 
     resetAll();
     // check edges? Might need to make an edge case for it if checks for the entrance (i.e. don't check the directino if it is on edge and wall == false)
     floodFill(isolatedNode);
 
+    // Need to separate joined and connected. There could be a case where two isolated nodes join.
+    bool connected = false;
     while (connected == false) {
-        int dir = isolatedNode->getRandomDirection();
+        // Check random direction.
+            // if explored node, then set as current and loop
+            // if wall node, set as currrent and loop.
+            // if unexplored non-wall node, set connected to true. Flood fill and check for more isolation.
+        if (isolatedNode->getDirCount() > 0) {
+            int dir = isolatedNode->getRandomDirection();
+        } else {
+            isolatedNode = isolatedNode->getPrevNode();
+        }
         
     }
-    delete connected;
+    // Once connected, reset all and flood fill again and check for more isolation. End once no isolation exists.
 
-
-
-    // iterate through maze array
-        // first non-filled node is an isolated node.
-            // Reset array, flood fill using isolated node
-                // using isolated node as a starting point, check to see if it aligns with odd x odd convention
-                    // if not, check one block in each direction, and set to current if explored and not wall (if even x even / if even x odd / if odd x even)
-                    // node can be assumed to be in odd x odd position
-                // check 2 blocks in random direction.
-                    // if wall, break both new node and the wall between, set new node as current node. mark direction as checked for previous node and current node.
-                    // If explored node, set to current node. mark direction as checked for previous node and current node.
-                    // If unexplored node, break wall between and end loop.
+    // IDEA: make tiers of checks. Only break wall if it cannot jump to another node first.
 }
 
 MazeNode* Maze::probeDirection(MazeNode* curr, int dir, bool& connected) {
+    // if explored == true, it is part of the isolated path, set curr to next. Mark directions.
+    // if explored == false, then it is connected to the main path
+    // if wall, break, set to current.
+
     // Row offset and Column offset
     int ros = 0;
     int cos = 0;
@@ -335,24 +353,22 @@ MazeNode* Maze::probeDirection(MazeNode* curr, int dir, bool& connected) {
     MazeNode* next = maze[curr->getRow() + ros][curr->getCol() + cos];
     MazeNode* wall = maze[curr->getRow() + wros][curr->getCol() + wcos];
 
-    if (next->getWall == false && next->getExplored == false) {
+    if (next->getWall() == false && next->getExplored() == false) {
         wall->setWall(false);
         connected = true;
-    } else if (next->getWall == false && next->getExplored == true) {
-        // check directions
+    } else if (next->getWall() == false && next->getExplored() == true) {
+        checkBothDirections(curr, next, dir);
+        next->setPrevNode(curr);
         curr = next;
-    } else if (next->getWall == true()) {
-        // check directions
+    } else if (next->getWall() == true()) {
+        checkBothDirections(curr, next, dir);
         next->setWall(false);
         next->setExplored(true);
         wall->setWall(false);
         wall->setExplored(true);
+        next->setPrevNode(curr);
+        curr = next;
     }
-
-    // if explored == true, it is part of the isolated path, set curr to next. Mark directions.
-    // if explored == false, then it is connected to the main path
-    // if wall, break, set to current.
-
 
     return curr;
 }
