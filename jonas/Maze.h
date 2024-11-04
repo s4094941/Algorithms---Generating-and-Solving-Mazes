@@ -21,17 +21,20 @@ class Maze {
         void generateRandomMaze();
 
         MazeNode* getNodeUp(MazeNode*);
-        MazeNode* getNodeLeft(MazeNode*);
         MazeNode* getNodeDown(MazeNode*);
+        MazeNode* getNodeLeft(MazeNode*);
         MazeNode* getNodeRight(MazeNode*);
 
         bool checkNodeUp(MazeNode*);
-        bool checkNodeLeft(MazeNode*);
         bool checkNodeDown(MazeNode*);
+        bool checkNodeLeft(MazeNode*);
         bool checkNodeRight(MazeNode*);
 
         void checkEdge(MazeNode*);
         MazeNode* findStartPoint();
+        MazeNode* probeDirection(MazeNode*, int, bool&);
+        void checkBothDirections(MazeNode*, MazeNode*, int );
+        void printAllDirections();
 
     public:
         // Constructor
@@ -50,11 +53,14 @@ class Maze {
         void printMaze();
         // void placeMaze();
 
-        void resetAll();
-        void floodFill();
-
         // Destructor
         ~Maze();
+        
+
+        void resetAll();
+        void floodFill(MazeNode*);
+
+        void connectIsolatedNodes();
 };
 
 
