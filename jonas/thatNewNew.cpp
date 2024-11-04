@@ -284,6 +284,8 @@ void Maze::floodFill(MazeNode* startPoint) {
                 // If explored node, set to current node. mark direction as checked for previous node and current node.
                 // If unexplored node, break wall between and end loop.
 void Maze::connectIsolatedNodes () {
+        std::cout << "connectIsolatedNodes" << std::endl;
+
     MazeNode* startPoint = findStartPoint();
     floodFill(startPoint);
     MazeNode* isolatedNode = nullptr;
@@ -292,7 +294,7 @@ void Maze::connectIsolatedNodes () {
     // Start completed loop here!!
     for (int i = 1; i < row - 1; ++i) {
         for (int j = 1; j < col - 1; ++j) {
-            if (isolatedNode = nullptr
+            if (isolatedNode == nullptr
             && maze[i][j]->getStatus() == false && maze[i][j]->getWall() == false) {
                 isolatedNode = maze[i][j];
             }
@@ -317,6 +319,7 @@ void Maze::connectIsolatedNodes () {
             // if unexplored non-wall node, set connected to true. Flood fill and check for more isolation.
         if (isolatedNode->getDirCount() > 0) {
             int dir = isolatedNode->getRandomDirection();
+            isolatedNode = probeDirection(isolatedNode, dir, connected);
         } else {
             isolatedNode = isolatedNode->getPrevNode();
         }
@@ -353,14 +356,14 @@ MazeNode* Maze::probeDirection(MazeNode* curr, int dir, bool& connected) {
     MazeNode* next = maze[curr->getRow() + ros][curr->getCol() + cos];
     MazeNode* wall = maze[curr->getRow() + wros][curr->getCol() + wcos];
 
-    if (next->getWall() == false && next->getExplored() == false) {
+    if (next->getWall() == false && next->getStatus() == false) {
         wall->setWall(false);
         connected = true;
-    } else if (next->getWall() == false && next->getExplored() == true) {
+    } else if (next->getWall() == false && next->getStatus() == true) {
         checkBothDirections(curr, next, dir);
         next->setPrevNode(curr);
         curr = next;
-    } else if (next->getWall() == true()) {
+    } else if (next->getWall() == true) {
         checkBothDirections(curr, next, dir);
         next->setWall(false);
         next->setExplored(true);
@@ -376,20 +379,20 @@ MazeNode* Maze::probeDirection(MazeNode* curr, int dir, bool& connected) {
 void Maze::checkBothDirections(MazeNode* curr, MazeNode* next, int dir) {
     // CHECK UP
     if (dir == 0) {
-        curr->checkUp();
-        next->checkDown();
+        curr->markUp();
+        next->markDown();
     //  CHECK DOWN
     } else if (dir == 1) {
-        curr->checkDown();
-        next->checkUp();
+        curr->markDown();
+        next->markUp();
     // CHECK LEFT
     } else if (dir == 2) {
-        curr->checkLeft();
-        next->checkRight();
+        curr->markLeft();
+        next->markRight();
     // CHECK RIGHT
     } else if (dir == 3) {
-        curr->checkRight();
-        next->checkLeft();
+        curr->markRight();
+        next->markLeft();
     }
 }
 

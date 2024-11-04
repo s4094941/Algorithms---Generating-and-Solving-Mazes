@@ -34,6 +34,7 @@ class Maze {
         MazeNode* findStartPoint();
         MazeNode* probeDirection(MazeNode*, int, bool&);
         void checkBothDirections(MazeNode*, MazeNode*, int );
+        void printAllDirections();
 
     public:
         // Constructor
