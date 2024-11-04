@@ -10,5 +10,5 @@ Compiling and Running:
 
 Assumptions:
 - Solving Manually: Solving manually can only occur after a maze has been generated and built. The random location within a maze is chosen via the set of all air blocks in one y-coord level within a maze, rather than the set of all blocks within a maze in one y-coord level. Meaning the algorithm does not just loop naively until a random air block is found.
-- Show Escape Route: Showing the escape route can only occur after a maze has been generated and built. The player has to be inside the maze and the blue carpet marking the exit is one block out of the maze (where an edge of a maze could go). Also assume that the lime carpet can be oriented in any way, such 
-that the 'player's right hand' is facing a wall.
+- Show Escape Route: Showing the escape route can only occur after a maze has been generated and built. The player has to be inside the maze and the blue carpet marking the exit is one block out of the maze (where an edge of a maze could go). Also assume that the lime carpet can be oriented in any way, such that the 'player's right hand' is facing a wall.
+- Enhancement 1: The obstacles/unflattened terrain cannot obstruct all the maze border blocks as well as the starting point (from recursive backtracking). The obstacles are also represented by 'x's within the maze like the maze walls. Also any 2 or more blocks deeper than the basepoint areas are filled in as those areas can be inaccessible.
