@@ -23,7 +23,8 @@ int main (void) {
 
     if (mode == 1 || mode == 2) {
         maze.createMaze();
-        //maze.printMaze();
+        maze.resetAll();
+        maze.printMaze();
     } else if (mode == 3) {
         maze.buildMaze();
         maze.connectIsolatedNodes();
