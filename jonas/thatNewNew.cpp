@@ -50,6 +50,7 @@ private:
 
     void checkEdge(MazeNode*);
     MazeNode* findStartPoint();
+    MazeNode* peekDirection(MazeNode*, int);
 
 public:
     void resetAll();
@@ -267,17 +268,50 @@ void Maze::floodFill(MazeNode* startPoint) {
 
 }
 
-// void Maze::findIsolatedNode (MazeNode* startPoint) {
-//     floodFill(startPoint);
-//     MazeNode* isoNode = nullptr;
+void Maze::findIsolatedNode (MazeNode* startPoint) {
+    floodFill(startPoint);
+    MazeNode* isolatedNode = nullptr;
+    bool connected = false;
 
-//     for (int i = 1; i < row - 1; ++i) {
-//         for (int j = 1; j < col - 1; ++j) {
-//             if (isoNode = nullptr && maze[i][j]->) {
+    for (int i = 1; i < row - 1; ++i) {
+        for (int j = 1; j < col - 1; ++j) {
+            if (isolatedNode = nullptr
+            && maze[i][j]->getStatus() == false && maze[i][j]->getWall() == false) {
+                isolatedNode = maze[i][j];
+            }
+        }
+    }
 
-//             }
-//         }
-//     }
-// }
+    if (isolatedNode == nullptr) {
+        std::cout << "No isolated nodes found." << std::endl;
+    }
+
+    resetAll();
+    // check edges? Might need to make an edge case for it if checks for the entrance (i.e. don't check the directino if it is on edge and wall == false)
+    floodFill(isolatedNode);
+
+    while (connected == false) {
+        int dir = isolatedNode->getRandomDirection();
+        MazeNode* next = peekDirection(isolatedNode, dir);
+        if (next->getExplored() == true) {  // next node is explored (part of the isolated path)
+
+            isolatedNode = next;
+
+        }
+    }
+
+
+
+    // iterate through maze array
+        // first non-filled node is an isolated node.
+            // Reset array, flood fill using isolated node
+                // using isolated node as a starting point, check to see if it aligns with odd x odd convention
+                    // if not, check one block in each direction, and set to current if explored and not wall (if even x even / if even x odd / if odd x even)
+                    // node can be assumed to be in odd x odd position
+                // check 2 blocks in random direction.
+                    // if wall, break both new node and the wall between, set new node as current node. mark direction as checked for previous node and current node.
+                    // If explored node, set to current node. mark direction as checked for previous node and current node.
+                    // If unexplored node, break wall between and end loop.
+}
 
 // //====================================================================================
