@@ -7,6 +7,7 @@
         All corners are correctly filled as walls
         There must be at least one non-isolated node, not including the exit point
         odd x even or even x odd node can exist, but even x even node cannot.
+        even x even nodes cannot be paths.
 
 
     FIXES:
@@ -50,9 +51,15 @@ private:
     bool checkNodeLeft(MazeNode*);
     bool checkNodeRight(MazeNode*);
 
+    bool checkWallUp(MazeNode*);
+    bool checkWallDown(MazeNode*);
+    bool checkWallLeft(MazeNode*);
+    bool checkWallRight(MazeNode*);
+
     void checkEdge(MazeNode*);
     MazeNode* findStartPoint();
     MazeNode* findIsolatedNode();
+    MazeNode* findIsolatedWall();
     MazeNode* correctNodePos(MazeNode*);
     MazeNode* probeDirection(MazeNode*, int, bool&);
     void checkBothDirections(MazeNode*, MazeNode*, int );
@@ -185,50 +192,65 @@ MazeNode* Maze::getNodeRight(MazeNode* n) {
 // Check whether the node directly adjacent in a particular direction to the provided argument is an unexplored, non-wall node
 bool Maze::checkNodeUp(MazeNode* n) {
     bool nodeAvailable = false;
-
-    if (n->getRow() != 0) {
+    if (n->getRow() != 0 && n->getWall() == false) {
         if (getNodeUp(n)->getWall()   == false
          && getNodeUp(n)->getStatus() == false) {
             nodeAvailable = true;
         }
+    } else if (n->getRow() != 0 && n->getWall() == false) {
+        if (getNodeUp(n)->getWall()   == true
+         && getNodeUp(n)->getStatus() == false) {
+            nodeAvailable = true;
+        }
     }
-
     return nodeAvailable;
 }
 bool Maze::checkNodeDown(MazeNode* n) {
     bool nodeAvailable = false;
-    if (n->getRow() != row - 1) {
+    if (n->getRow() != row - 2 && n->getWall() == false) {
         if (getNodeDown(n)->getWall() == false
          && getNodeDown(n)->getStatus() == false) {
             nodeAvailable = true;
         }
+    } else if (n->getRow() != row - 2 && n->getWall() == true) {
+        if (getNodeUp(n)->getWall()   == true
+         && getNodeUp(n)->getStatus() == false) {
+            nodeAvailable = true;
+        }
     }
-
     return nodeAvailable;
 }
 bool Maze::checkNodeLeft(MazeNode* n) {
     bool nodeAvailable = false;
-
-    if (n->getCol() != 0) {
+    if (n->getCol() != 0 && n->getWall() == false) {
         if (getNodeLeft(n)->getWall()   == false
          && getNodeLeft(n)->getStatus() == false) {
             nodeAvailable = true;
         }
+    } else if (n->getCol() != 0 && n->getWall() == true) {
+        if (getNodeUp(n)->getWall()   == true
+         && getNodeUp(n)->getStatus() == false) {
+            nodeAvailable = true;
+        }
     }
-
     return nodeAvailable;
 }
 bool Maze::checkNodeRight(MazeNode* n) {
     bool nodeAvailable = false;
-    if (n->getCol() != col - 1) {
+    if (n->getCol() != col - 2 && n->getWall() == false) {
         if (getNodeRight(n)->getWall() == false
          && getNodeRight(n)->getStatus() == false) {
             nodeAvailable = true;
         }
+    } else if (n->getCol() != col - 2 && n->getWall() == true) {
+        if (getNodeUp(n)->getWall()   == true
+         && getNodeUp(n)->getStatus() == false) {
+            nodeAvailable = true;
+        }
     }
-
     return nodeAvailable;
 }
+
 
 // Returns the first instance of a non-wall unexplored node.
 MazeNode* Maze::findIsolatedNode() {
@@ -243,6 +265,11 @@ MazeNode* Maze::findIsolatedNode() {
     }
 
     return node;
+}
+
+
+MazeNode* Maze::findIsolatedWall() {
+    // TURN ALL even x even NODES TO WALL. They should NOT be path
 }
 
 // Ensures that a node is in an odd x odd location
@@ -289,29 +316,33 @@ void Maze::floodFill(MazeNode* startPoint) {
    stack.push(startPoint);
    startPoint->setExplored(true);
 
-    while (stack.empty() == false) {
-        // Set current node to the top of the stack, then pop it off the top of the stack, since it won't need to be checked again.
-        // Check nodes in each direction, adding them to the stack and marking them if they are unexplored, non-wall nodes.
-        MazeNode* curr = stack.top();
-        stack.pop();
+    if (startPoint->getWall == false) {
+        while (stack.empty() == false) {
+            // Set current node to the top of the stack, then pop it off the top of the stack, since it won't need to be checked again.
+            // Check nodes in each direction, adding them to the stack and marking them if they are unexplored, non-wall nodes.
+            MazeNode* curr = stack.top();
+            stack.pop();
 
-        // Check each direciton
-        if (checkNodeUp(curr) == true) {
-            getNodeUp(curr)->setExplored(true);
-            stack.push(getNodeUp(curr));
+            // Check each direciton
+            if (checkNodeUp(curr) == true) {
+                getNodeUp(curr)->setExplored(true);
+                stack.push(getNodeUp(curr));
+            }
+            if (checkNodeDown(curr) == true) {
+                getNodeDown(curr)->setExplored(true);
+                stack.push(getNodeDown(curr));
+            }
+            if (checkNodeLeft(curr) == true) {
+                getNodeLeft(curr)->setExplored(true);
+                stack.push(getNodeLeft(curr));
+            }
+            if (checkNodeRight(curr) == true) {
+                getNodeRight(curr)->setExplored(true);
+                stack.push(getNodeRight(curr));
+            }
         }
-        if (checkNodeDown(curr) == true) {
-            getNodeDown(curr)->setExplored(true);
-            stack.push(getNodeDown(curr));
-        }
-        if (checkNodeLeft(curr) == true) {
-            getNodeLeft(curr)->setExplored(true);
-            stack.push(getNodeLeft(curr));
-        }
-        if (checkNodeRight(curr) == true) {
-            getNodeRight(curr)->setExplored(true);
-            stack.push(getNodeRight(curr));
-        }
+    } else {
+
     }
 }
 
