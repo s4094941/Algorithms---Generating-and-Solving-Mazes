@@ -144,7 +144,7 @@ MazeNode* Maze::getRandomStart() {
             y = (rand() % ((col - 1) / 2)) * 2 + 1;
             // CASE: TOP ROW
             if (x == 1) {
-                if (!maze[0][y]->getTerrain()) {
+                if (!maze[0][y]->getTerrain() && !maze[1][y]->getTerrain()) {
                     maze[0][y]->setWall(false);
                     maze[0][y]->setExplored(true);
                     startFound = true;
@@ -152,7 +152,7 @@ MazeNode* Maze::getRandomStart() {
                 
             } else {
             // CASE: BOTTOM ROW
-                if (!maze[row - 1][y]->getTerrain()) {
+                if (!maze[row - 1][y]->getTerrain() && !maze[row - 2][y]->getTerrain()) {
                     maze[row - 1][y]->setWall(false);
                     maze[row - 1][y]->setExplored(true);
                     startFound = true;
@@ -164,7 +164,7 @@ MazeNode* Maze::getRandomStart() {
             y = rand() % 2;
             // CASE: LEFT
             if (y == 0) {
-                if (!maze[x][0]->getTerrain()) {
+                if (!maze[x][0]->getTerrain() && !maze[x][1]->getTerrain()) {
                     maze[x][0]->setWall(false);
                     maze[x][0]->setExplored(true);
                     startFound = true;
@@ -174,7 +174,7 @@ MazeNode* Maze::getRandomStart() {
             } else if (y == 1) {
             // CASE: RIGHT
                 y = col - 2;
-                if (!maze[x][col - 1]->getTerrain()) {
+                if (!maze[x][col - 1]->getTerrain() && !maze[x][col - 2]->getTerrain()) {
                     maze[x][col - 1]->setWall(false);
                     maze[x][col - 1]->setExplored(true);
                     startFound = true;
@@ -207,7 +207,7 @@ MazeNode* Maze::checkDirection(MazeNode* curr, int dir) {
 
     MazeNode* next = maze[curr->getRow() + ros][curr->getCol() + cos];
     MazeNode* wall = maze[curr->getRow() + wros][curr->getCol() + wcos];
-    if (!next->getStatus() && !next->getTerrain()) {
+    if (!next->getStatus() && !wall->getTerrain()) {
         next->setPrevNode(curr);
         wall->setExplored(true);
         curr=next;
@@ -269,7 +269,6 @@ void Maze::checkUnexploredArea() {
         for (int j = 0; j < this->col; j++) {
             if (!this->maze[i][j]->getStatus() && !this->maze[i][j]->getWall() 
                     && !this->maze[i][j]->getTerrain()) {
-
                 this->maze[i][j]->setWall(true);
             }
         }
@@ -303,16 +302,18 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
         // Current z coordinate
         for (int j = basePoint.z; j < basePoint.z + row; ++j) {
 
-            if (maze[j-basePoint.z][i-basePoint.x]->getWall()) {
+            if (maze[j-basePoint.z][i-basePoint.x]->getWall() || maze[j-basePoint.z][i-basePoint.x]->getTerrain()) {
                 // Set placeWall to current detected coordinate
                 placeWall.x = i;
                 placeWall.y = mc.getHeight(i, j) + 1;
                 placeWall.z = j;
 
                 // Place a 3 block high wall
-                for (int k = 0; k < 3; ++k) {
+                for (int k = placeWall.y; k < (basePoint.y + 3); ++k) {
                     mc.setBlock(placeWall, ACACIA_WOOD_PLANKS);
+                    mazeBlocks.push_back(placeWall);
                     ++placeWall.y;
+                    
                     sleep_for(milliseconds(50));
                 }
             }
@@ -322,12 +323,12 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
     // Finding the entrance...
     // Checks each side before setting carpet location one block outside of the entrance.
     for (int i = 0; i < col; ++i && !entranceLocated) {
-        if (!maze[0][i]->getWall()) {
+        if (!maze[0][i]->getWall() && !maze[0][i]->getTerrain()) {
             entrance.x = basePoint.x + i;
             entrance.y = basePoint.y;
             entrance.z = basePoint.z - 1;
             entranceLocated = true;
-        } else if (!maze[col - 1][i]->getWall()) {
+        } else if (!maze[col - 1][i]->getWall() && !maze[col - 1][i]->getTerrain()) {
             entrance.x = basePoint.x + i;
             entrance.y = basePoint.y;
             entrance.z = basePoint.z + row;
@@ -336,12 +337,12 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
     }
 
     for (int j = 0; j < row; ++j && !entranceLocated) {
-        if (!maze[j][0]->getWall()) {
+        if (!maze[j][0]->getWall() && !maze[j][0]->getTerrain()) {
             entrance.x = basePoint.x - 1;
             entrance.y = basePoint.y;
             entrance.z = basePoint.z + j;
             entranceLocated = true;
-        } else if (!maze[j][col - 1]->getWall()) {
+        } else if (!maze[j][col - 1]->getWall() && !maze[j][col - 1]->getTerrain()) {
             entrance.x = basePoint.x + col;
             entrance.y = basePoint.y;
             entrance.z = basePoint.z + j;
@@ -358,6 +359,7 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
             editBlocks.y = mc.getHeight(entrance.x, entrance.z);
             addNode(editBlocks, mc.getBlock(editBlocks));
             mc.setBlock(editBlocks, AIR);
+            mazeBlocks.push_back(editBlocks);
         }
     }
 
@@ -368,6 +370,7 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
             tempPlacement = mc.getBlock(editBlocks);
             editBlocks.y = mc.getHeight(entrance.x, entrance.z) + 1;
             mc.setBlock(editBlocks, tempPlacement);
+            mazeBlocks.push_back(editBlocks);
 
             // Add the new block to linked list
             addNode(editBlocks, tempPlacement);
@@ -375,6 +378,7 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
     }
     sleep_for(milliseconds(50));
     mc.setBlock(entrance, BLUE_CARPET);
+    mazeBlocks.push_back(entrance);
     addNode(entrance, BLUE_CARPET);
 }
 
@@ -384,44 +388,54 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
     mcpp::Coordinate removeBlock;
     mcpp::BlockType const AIR(0);
     mcpp::BlockType const BLUE_CARPET(171,11);
-    blockNode* blockHistory;
+    bool allRemoved = false;
+    // blockNode* blockHistory;
     
 // REMOVE MAZE (Look through Jonas array, remove if wall)
-    for (int i = basePoint.x; i < basePoint.x + col; ++i) {
+    for (int i = basePoint.x; (i < basePoint.x + col) && !allRemoved; ++i) {
 
         // Current z coordinate
-        for (int j = basePoint.z; j < basePoint.z + row; ++j) {
+        for (int j = basePoint.z; j < basePoint.z + row && !allRemoved; ++j) {
 
-            if (maze[j-basePoint.z][i-basePoint.x]->getWall() == true) {
+            if (maze[j-basePoint.z][i-basePoint.x]->getWall() || maze[j-basePoint.z][i-basePoint.x]->getTerrain()) {
                 removeBlock.x = i;
                 removeBlock.z = j;
                 removeBlock.y = mc.getHeight(i, j);
 
-                for (int k = 0; k < 3; ++k) {
-                    mc.setBlock(removeBlock, AIR);
-                    removeBlock.y = removeBlock.y - 1;
-                    sleep_for(milliseconds(50));
+                if (this->enhancementMode) {
+                    for (size_t k = 0; k < mazeBlocks.size(); k++) {
+                        mc.setBlock(mazeBlocks.at(k), AIR);
+                        sleep_for(milliseconds(50));
+                    }
                 }
+                else {
+                    for (int k = removeBlock.y; k < (basePoint.y + 2); ++k) {
+                        mc.setBlock(removeBlock, AIR);
+                        removeBlock.y = removeBlock.y - 1;
+                        sleep_for(milliseconds(50));
+                    }
+                }
+                allRemoved = true;
             }
         }
     }
 
 // RESTORE TERRAIN (Access coordinates and block id, then add/remove depending on y)
-    blockHistory = getNext();
-    while (blockHistory != nullptr) {
+    // blockHistory = getNext();
+    // while (blockHistory != nullptr) {
         
-        // ACCESS LINKED LIST
-        // If block is above, place | Otherwise, remove
-        if (blockHistory->blockID == BLUE_CARPET) {
-            mc.setBlock(blockHistory->blockLocation, AIR);
-        } else if (blockHistory->blockLocation.y >= basePoint.y) {
-            mc.setBlock(blockHistory->blockLocation, blockHistory->blockID);
-        } else if (blockHistory->blockLocation.y < basePoint.y) {
-            mc.setBlock(blockHistory->blockLocation, AIR);
-        }
-        blockHistory = getNext();
-        sleep_for(milliseconds(50));
-    }
+    //     // ACCESS LINKED LIST
+    //     // If block is above, place | Otherwise, remove
+    //     if (blockHistory->blockID == BLUE_CARPET) {
+    //         mc.setBlock(blockHistory->blockLocation, AIR);
+    //     } else if (blockHistory->blockLocation.y >= basePoint.y) {
+    //         mc.setBlock(blockHistory->blockLocation, blockHistory->blockID);
+    //     } else if (blockHistory->blockLocation.y < basePoint.y) {
+    //         mc.setBlock(blockHistory->blockLocation, AIR);
+    //     }
+    //     blockHistory = getNext();
+    //     sleep_for(milliseconds(50));
+    // }
 }
 
 void Maze::addNode(mcpp::Coordinate blockLocation, mcpp::BlockType blockID) {
