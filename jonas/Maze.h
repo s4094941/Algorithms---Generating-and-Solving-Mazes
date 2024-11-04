@@ -40,7 +40,7 @@ class Maze {
         MazeNode* findStartPoint();
         MazeNode* findIsolatedNode();
         MazeNode* correctNodePos(MazeNode*);
-        MazeNode* probeDirection(MazeNode*, int, bool&);
+        MazeNode* probeDirection(MazeNode*, bool&);
         void checkBothDirections(MazeNode*, MazeNode*, int );
         void printAllDirections();
 
