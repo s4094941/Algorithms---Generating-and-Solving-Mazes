@@ -462,7 +462,7 @@ MazeNode* Maze::findIsolatedNode() {
     for (int i = 1; i < row - 1; ++i) {
         for (int j = 1; j < col - 1; ++j) {
             if (maze[i][j]->getStatus() == false && maze[i][j]->getWall() == false) {
-                isolatedNode = maze[i][j];
+                node = maze[i][j];
             }
         }
     }
@@ -472,38 +472,40 @@ MazeNode* Maze::findIsolatedNode() {
 
 // Ensures that a node is in an odd x odd location
 MazeNode* Maze::correctNodePos(MazeNode* node) {
-        if (node->getRow() % 2 == 0) {
-            if (checkNodeUp(node)) {
-                node = getNodeUp(node);
-            } else if (checkNodeDown(node)) {
-                node = getNodeDown(isolatedNode);
-            } else {
-                if (node->getRow() > 1) {
-                    node = getNodeUp(node);
-                    node->setWall(false);
-                } else {
-                    node = getNodeDown(node);
-                    node->setWall(false);
-                }
-            }
-        } else if (node->getCol() % 2 == 0)  {
-            if (checkNodeLeft(node)) {
-                node = getNodeLeft(node);
-            } else if (checkNodeRight(node)){
-                node = getNodeRight(node);
-            } else {
-                if (node->getCol() > 1) {
-                    node = getNodeLeft(node);
-                    node->setWall(false);
-                } else {
-                    node = getNodeRight(node);
-                    node->setWall(false);
-                }
-            }
-        } 
 
-        return node;
+    // Check if the node is in an even row
+    if (node->getRow() % 2 == 0) {
+        if (checkNodeUp(node)) {
+            node = getNodeUp(node);
+        } else if (checkNodeDown(node)) {
+            node = getNodeDown(node);
+        } else if (node->getRow() > 1) {
+            node = getNodeUp(node); // Move up if possible
+            node->setWall(false);
+        } else if (node->getRow() < row - 2) {
+            node = getNodeDown(node); // Move down if possible
+            node->setWall(false);
+        }
+    } 
+    // Check if the node is in an even column
+    else if (node->getCol() % 2 == 0) {
+        if (checkNodeLeft(node)) {
+            node = getNodeLeft(node);
+        } else if (checkNodeRight(node)) {
+            node = getNodeRight(node);
+        } else if (node->getCol() > 1) {
+            node = getNodeLeft(node); // Move left if possible
+            node->setWall(false);
+        } else if (node->getCol() < col - 2) {
+            node = getNodeRight(node); // Move right if possible
+            node->setWall(false);
+        }
     }
+
+    printMaze();
+    std::cout << std::endl;
+    return node;
+}
 
 // Flood fills using the argument as a starting point. "Marked" nodes are labeled as explored
 void Maze::floodFill(MazeNode* startPoint) {
@@ -541,8 +543,10 @@ void Maze::floodFill(MazeNode* startPoint) {
 
 
 
-
+// Randomly joins any isolated nodes to the main path
 void Maze::connectIsolatedNodes () {
+    resetAll();
+
     floodFill(findStartPoint());
     MazeNode* isolatedNode = nullptr;
     
@@ -550,7 +554,7 @@ void Maze::connectIsolatedNodes () {
     isolatedNode = findIsolatedNode();
 
     // Loop until no nodes exist that are isolated from the main path
-    while (!isolatedNode) {
+    while (isolatedNode) {
         isolatedNode = correctNodePos(isolatedNode);
         resetAll();
         floodFill(isolatedNode);
@@ -565,24 +569,17 @@ void Maze::connectIsolatedNodes () {
             }
         }
 
-        resetAll()
+        resetAll();
         floodFill(findStartPoint());
         isolatedNode = findIsolatedNode();
     }
 
-    printMaze();
-    // IDEA: make tiers of checks. Only break wall if it cannot jump to another node first.
+    resetAll();
 }
 
-// Check random direction.
-    // if explored node, then set as current and loop
-    // if wall node, set as currrent and loop.
-    // if unexplored non-wall node, set connected to true. Flood fill and check for more isolation.
+// checkDirection for connecting isolated nodes. 
 MazeNode* Maze::probeDirection(MazeNode* curr, int dir, bool& connected) {
-    // if explored == true, it is part of the isolated path, set curr to next. Mark directions.
-    // if explored == false, then it is connected to the main path
-    // if wall, break, set to current.
-
+    // IDEA: make tiers of checks. Only break wall if it cannot jump to another node first.
     // Row offset and Column offset
     int ros = 0;
     int cos = 0;
@@ -604,14 +601,17 @@ MazeNode* Maze::probeDirection(MazeNode* curr, int dir, bool& connected) {
     MazeNode* next = maze[curr->getRow() + ros][curr->getCol() + cos];
     MazeNode* wall = maze[curr->getRow() + wros][curr->getCol() + wcos];
 
-    if (next->getWall() == false && next->getExplored() == false) {
+    // if explored == false, then it is connected to the main path
+    if (next->getWall() == false && next->getStatus() == false) {
         wall->setWall(false);
         connected = true;
-    } else if (next->getWall() == false && next->getExplored() == true) {
+    // if explored == true, it is part of the isolated path, set curr to next. Mark directions.
+    } else if (next->getWall() == false && next->getStatus() == true) {
         checkBothDirections(curr, next, dir);
         next->setPrevNode(curr);
         curr = next;
-    } else if (next->getWall() == true()) {
+    // if wall, break, set to current.
+    } else if (next->getWall() == true) {
         checkBothDirections(curr, next, dir);
         next->setWall(false);
         next->setExplored(true);
@@ -627,20 +627,20 @@ MazeNode* Maze::probeDirection(MazeNode* curr, int dir, bool& connected) {
 void Maze::checkBothDirections(MazeNode* curr, MazeNode* next, int dir) {
     // CHECK UP
     if (dir == 0) {
-        curr->checkUp();
-        next->checkDown();
+        curr->markUp();
+        next->markDown();
     //  CHECK DOWN
     } else if (dir == 1) {
-        curr->checkDown();
-        next->checkUp();
+        curr->markDown();
+        next->markUp();
     // CHECK LEFT
     } else if (dir == 2) {
-        curr->checkLeft();
-        next->checkRight();
+        curr->markLeft();
+        next->markRight();
     // CHECK RIGHT
     } else if (dir == 3) {
-        curr->checkRight();
-        next->checkLeft();
+        curr->markRight();
+        next->markLeft();
     }
 }
 
