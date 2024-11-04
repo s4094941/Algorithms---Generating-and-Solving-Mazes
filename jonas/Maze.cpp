@@ -455,6 +455,22 @@ bool Maze::checkNodeRight(MazeNode* n) {
     return nodeAvailable;
 }
 
+// Returns the first instance of a non-wall unexplored node.
+MazeNode* Maze::findIsolatedNode() {
+    MazeNode* node = nullptr;
+
+    for (int i = 1; i < row - 1; ++i) {
+        for (int j = 1; j < col - 1; ++j) {
+            if (maze[i][j]->getStatus() == false && maze[i][j]->getWall() == false) {
+                isolatedNode = maze[i][j];
+            }
+        }
+    }
+
+    return node;
+}
+
+// Ensures that a node is in an odd x odd location
 MazeNode* Maze::correctNodePos(MazeNode* node) {
         if (node->getRow() % 2 == 0) {
             if (checkNodeUp(node)) {
@@ -492,15 +508,7 @@ MazeNode* Maze::correctNodePos(MazeNode* node) {
 // Flood fills using the argument as a starting point. "Marked" nodes are labeled as explored
 void Maze::floodFill(MazeNode* startPoint) {
     std::stack<MazeNode*> stack;
-    /*
-    Stack reminders
-        Push(MazeNode*) - add an element to the end of the stack.
-            eg: [a, b, c]        push(d) -> [a, b, c, d]
-        pop() - remove last element
-        isEmpty() returns true for empty stack
-        top() returns the current top element without removing it
-        size() returns number of elements in stack
-    */
+   
    stack.push(startPoint);
    startPoint->setExplored(true);
 
@@ -533,65 +541,43 @@ void Maze::floodFill(MazeNode* startPoint) {
 
 
 
-// iterate through maze array
-    // first non-filled node is an isolated node.
-        // Reset array, flood fill using isolated node
-            // using isolated node as a starting point, check to see if it aligns with odd x odd convention
-                // if not, check one block in each direction, and set to current if explored and not wall (if even x even / if even x odd / if odd x even)
-                // node can be assumed to be in odd x odd position
-            // check 2 blocks in random direction.
-                // if wall, break both new node and the wall between, set new node as current node. mark direction as checked for previous node and current node.
-                // If explored node, set to current node. mark direction as checked for previous node and current node.
-                // If unexplored node, break wall between and end loop.
-void Maze::connectIsolatedNodes () {
-    MazeNode* startPoint = findStartPoint();
-    floodFill(startPoint);
-    MazeNode* isolatedNode = nullptr;
-    //bool complete = false;
 
-    // Start completed loop here!!
-    for (int i = 1; i < row - 1; ++i) {
-        for (int j = 1; j < col - 1; ++j) {
-            if (isolatedNode = nullptr
-            && maze[i][j]->getStatus() == false && maze[i][j]->getWall() == false) {
-                isolatedNode = maze[i][j];
+void Maze::connectIsolatedNodes () {
+    floodFill(findStartPoint());
+    MazeNode* isolatedNode = nullptr;
+    
+    // Initial check to find any isolated nodes
+    isolatedNode = findIsolatedNode();
+
+    // Loop until no nodes exist that are isolated from the main path
+    while (!isolatedNode) {
+        isolatedNode = correctNodePos(isolatedNode);
+        resetAll();
+        floodFill(isolatedNode);
+
+        bool connected = false;
+        while (connected == false) {
+            if (isolatedNode->getDirCount() > 0) {
+                int dir = isolatedNode->getRandomDirection();
+                isolatedNode = probeDirection(isolatedNode, dir, connected);
+            } else {
+                isolatedNode = isolatedNode->getPrevNode();
             }
         }
+
+        resetAll()
+        floodFill(findStartPoint());
+        isolatedNode = findIsolatedNode();
     }
-    // Make node odd x odd. Even x odd or odd x even will always only have odd x odd connected. even x even cannot exist.
-    // IF EVEN ROW, CHECK UP OR DOWN
-        // carve up 1 if possible
-        // else carve down 1
-    // IF EVEN COLUMN, CHECK LEFT OR RIGHT
-        // carve up 1 if possible
-        // else carve down 1
-    isolatedNode = correctNodePos(isolatedNode);        
 
-    // repeat until isolatedNode = nullptr
-
-    resetAll();
-    // check edges? Might need to make an edge case for it if checks for the entrance (i.e. don't check the directino if it is on edge and wall == false)
-    floodFill(isolatedNode);
-
-    // Need to separate joined and connected. There could be a case where two isolated nodes join.
-    bool connected = false;
-    while (connected == false) {
-        // Check random direction.
-            // if explored node, then set as current and loop
-            // if wall node, set as currrent and loop.
-            // if unexplored non-wall node, set connected to true. Flood fill and check for more isolation.
-        if (isolatedNode->getDirCount() > 0) {
-            int dir = isolatedNode->getRandomDirection();
-        } else {
-            isolatedNode = isolatedNode->getPrevNode();
-        }
-        
-    }
-    // Once connected, reset all and flood fill again and check for more isolation. End once no isolation exists.
-
+    printMaze();
     // IDEA: make tiers of checks. Only break wall if it cannot jump to another node first.
 }
 
+// Check random direction.
+    // if explored node, then set as current and loop
+    // if wall node, set as currrent and loop.
+    // if unexplored non-wall node, set connected to true. Flood fill and check for more isolation.
 MazeNode* Maze::probeDirection(MazeNode* curr, int dir, bool& connected) {
     // if explored == true, it is part of the isolated path, set curr to next. Mark directions.
     // if explored == false, then it is connected to the main path
