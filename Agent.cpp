@@ -120,12 +120,12 @@ void Agent::rightHandFollow(bool mode) {
             xFactor = 0;
             zFactor = 0;
 
-            // Place carpet with a half a second delay in each run of inner loop
-            this->halfSecDelay();
-
             // Terminal step output
             stepCounter++;
             this->stepOutput(stepCounter);
+
+            // Place carpet with a half a second delay in each run of inner loop
+            this->halfSecDelay();
 
             // Move forward and check the block in front of the current block
             if (currOrientation == Z_PLUS) {
@@ -258,8 +258,8 @@ void Agent::rightHandFollow(bool mode) {
             currOrientation = static_cast<agentOrientation>(rand() % 4);
         }
     }
-    this->halfSecDelay();
     this->stepOutput(stepCounter);
+    this->halfSecDelay();
 }
 
 bool Agent::isNotWall(const mcpp::Coordinate& neighbourCoord) {

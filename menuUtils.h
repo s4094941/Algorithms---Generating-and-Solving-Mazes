@@ -24,7 +24,8 @@ void printGenerateMazeMenu() {
     cout << endl << "------------- GENERATE MAZE -------------" << endl;
     cout << "1) Read Maze from terminal" << endl;
     cout << "2) Generate Random Maze" << endl;
-    cout << "3) Back" << endl;
+    cout << "3) Enhancement 1 - Generate Random Maze Without Flattening Terrain" << endl;
+    cout << "4) Back" << endl;
     cout << endl << "Enter Menu item to continue: " << endl;
 }
 

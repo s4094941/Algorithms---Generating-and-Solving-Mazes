@@ -11,11 +11,16 @@ class Maze {
     private:
         int row, col;
         bool testMode;
+        bool enhancementMode;
         // bool isBuilt;
         MazeNode*** maze;
 
+        // For E1
+        std::vector<Coordinate> mazeBlocks;
+
         // Private methods
         void createGrid();  // TODO: Regenerate base grid (set walls/air)
+        void scanTerrain(Coordinate basePoint);
 
         MazeNode* checkDirection(MazeNode*, int);
         MazeNode* getRandomStart();
@@ -23,6 +28,7 @@ class Maze {
         // Generate maze based on testMode
         void generateTestMaze();
         void generateRandomMaze();
+        void checkUnexploredArea();
 
         struct blockNode {
             mcpp::Coordinate blockLocation;
@@ -38,7 +44,7 @@ class Maze {
 
     public:
         // Constructor
-        Maze(int, int, bool);
+        Maze(int, int, bool, bool, Coordinate);
 
         // Accessors
         int getRow();

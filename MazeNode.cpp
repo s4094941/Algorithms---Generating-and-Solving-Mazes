@@ -13,6 +13,16 @@ void MazeNode::setWall (bool status) {
         explored = true;
     }
 }
+
+void MazeNode::setTerrain(bool status) {
+    // Set wall to true as a terrain/obstacle counts as a wall
+    this->isWall = true;
+    this->isTerrain = status;
+    if (status) {
+        this->explored = true;
+    }
+}
+
 void MazeNode::setExplored(bool status) {
     explored = status;
     if (status == true) {
@@ -51,6 +61,10 @@ bool MazeNode::getStatus() {
 }
 bool MazeNode::getWall() {
     return isWall;
+}
+
+bool MazeNode::getTerrain() {
+    return this->isTerrain;
 }
 MazeNode* MazeNode::getPrevNode() {
     if (prevNode != nullptr) { return prevNode; }
@@ -98,6 +112,7 @@ int MazeNode::getTestDirection() {
 
 // Print Node
 void MazeNode::printNode() {
+    // Either terrain or maze wall
     if (isWall) {
         std::cout << 'x';
     } else if (explored) {

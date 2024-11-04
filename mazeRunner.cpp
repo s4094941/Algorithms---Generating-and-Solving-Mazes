@@ -25,6 +25,7 @@ int main(int argc, char* argv[]) {
     string cmdLineArg = "";
     string doneStr = "";
     bool mode = NORMAL_MODE;
+    bool enhancementMode = false;
     bool hasBuilt = false;
     bool hasGenerated = false;
     States curState = ST_Main;
@@ -43,8 +44,13 @@ int main(int argc, char* argv[]) {
     }
 
     try {
+        // Add a mc server check if server is running otherwise catch
         MinecraftConnection mc;
         mc.doCommand("time set day");
+
+        // Add a player check to check if player is on server otherwise catch
+        mc.getPlayerPosition();
+
         printStartText();
         curState = ST_Main;
         // State machine for menu
@@ -63,8 +69,11 @@ int main(int argc, char* argv[]) {
                         cout << "Rebuilding Maze" << endl;
                         maze->restoreTerrain(*basePoint);
                     }
-                    cout << "Flattening Terrain" << endl;
-                    maze->flattenTerrain(*basePoint);
+                    // Flatten terrain for base program
+                    if (!enhancementMode) {
+                        cout << "Flattening Terrain" << endl;
+                        maze->flattenTerrain(*basePoint);
+                    }
                     cout << "Placing Maze" << endl;
                     maze->placeMaze(*basePoint);
                     hasBuilt = true;
@@ -91,6 +100,7 @@ int main(int argc, char* argv[]) {
                 printGenerateMazeMenu();
                 cin >> generateMenuOption;
                 if (generateMenuOption == "1") {
+                    enhancementMode = false;
                     if (hasBuilt == true) {
                         cout << "Fixing Terrain\n";
                         maze->restoreTerrain(*basePoint);
@@ -102,18 +112,6 @@ int main(int argc, char* argv[]) {
                         printLengthAndWidthMessage();
                         cin >> length >> width;
 
-                        if (maze != nullptr) {
-                            delete maze;
-                            maze = nullptr;
-                        }
-                        maze = new Maze(length, width, mode);
-
-                        printEnterStructureMessage();
-                        maze->buildMaze();
-
-                        printMazeReadMessage();
-                        printStartMazeMessage();
-
                         if (basePoint != nullptr) {
                             delete basePoint;
                             basePoint = nullptr;
@@ -122,13 +120,24 @@ int main(int argc, char* argv[]) {
                         cout << "BasePoint: (" << basePoint->x << ", " << 
                             basePoint->y << ", " << basePoint->z << ")" << 
                             endl;
+
+                        if (maze != nullptr) {
+                            delete maze;
+                            maze = nullptr;
+                        }
+                        maze = new Maze(length, width, mode, enhancementMode, *basePoint);
+
+                        printEnterStructureMessage();
+                        maze->buildMaze();
+
+                        printMazeReadMessage();
+                        printStartMazeMessage();
+
+                        
                         printStructureMessage();
 
                         printEndMazeMessage();
                         maze->printMaze();
-                        
-                        
-
                         
                         hasGenerated = true;
                         curState = ST_Main;
@@ -140,6 +149,7 @@ int main(int argc, char* argv[]) {
                     curState = ST_Main;
                 }
                 else if (generateMenuOption == "2") {
+                    enhancementMode = false;
                     if (hasBuilt == true) {
                         cout << "Fixing Terrain\n";
                         maze->restoreTerrain(*basePoint);
@@ -161,7 +171,8 @@ int main(int argc, char* argv[]) {
                             delete maze;
                             maze = nullptr;
                         }
-                        maze = new Maze(length, width, mode);
+                        maze = new Maze(length, width, mode, enhancementMode, 
+                                        *basePoint);
                         printMazeGeneratedMessage();
                         printStartMazeMessage();
                         cout << "BasePoint: (" << basePoint->x << ", " << 
@@ -178,6 +189,46 @@ int main(int argc, char* argv[]) {
                     }
                 }
                 else if (generateMenuOption == "3") {
+                    enhancementMode = true;
+                    if (hasBuilt == true) {
+                        cout << "Fixing Terrain\n";
+                        maze->restoreTerrain(*basePoint);
+                        hasBuilt = false;
+                    }
+                    printNavigateMessage();
+                    cin >> doneStr;
+                    if (doneStr == "done") {
+                        printLengthAndWidthMessage();
+                        cin >> length >> width;
+                        
+                        if (basePoint != nullptr) {
+                            delete basePoint;
+                            basePoint = nullptr;
+                        }
+                        basePoint = new Coordinate(mc.getPlayerPosition());
+
+                        if (maze != nullptr) {
+                            delete maze;
+                            maze = nullptr;
+                        }
+                        maze = new Maze(length, width, mode, enhancementMode, 
+                                        *basePoint);
+                        printMazeGeneratedMessage();
+                        printStartMazeMessage();
+                        cout << "BasePoint: (" << basePoint->x << ", " << 
+                            basePoint->y << ", " << basePoint->z << ")" << 
+                            endl;
+                        printStructureMessage();
+                        maze->createMaze();
+                        printEndMazeMessage();
+                        hasGenerated = true;
+                        curState = ST_Main;
+                    }
+                    else {
+                        printInputErrorDoneMessage();
+                    }
+                }
+                else if (generateMenuOption == "4") {
                     curState = ST_Main;
                 }
                 else if (!cin.eof()) {

@@ -9,6 +9,7 @@ class MazeNode {
         int dirCount;
         bool up, down, left, right;
         bool isWall, explored;
+        bool isTerrain;
         MazeNode* prevNode;
 
     public:
@@ -17,6 +18,7 @@ class MazeNode {
 
         // Mutators
         void setWall(bool);
+        void setTerrain(bool);
         void setExplored(bool);
         void setPrevNode(MazeNode*);
 
@@ -32,6 +34,7 @@ class MazeNode {
         int getDirCount();
         bool getStatus();
         bool getWall();
+        bool getTerrain();
         MazeNode* getPrevNode();
 
         // Get a random direction from available directions
