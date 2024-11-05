@@ -27,11 +27,6 @@ void Agent::stepOutput(int stepCounter) {
         this->startLoc.y << ", " << this->startLoc.z << ")" << endl;
 }
 
-// Set the start orientation checking each pos and neg x and z
-void Agent::setStartOrientation(agentOrientation currOrientation) {
-    
-}
-
 /* Input: A bool mode which tells the method to run as testing or normal mode
  *
  * Brief: In normal mode, this method starts by initialising the lime carpet 

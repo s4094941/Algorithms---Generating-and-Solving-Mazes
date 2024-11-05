@@ -48,7 +48,6 @@ class Agent {
 
         void halfSecDelay();
         void stepOutput(int stepCounter);
-        void setStartOrientation(agentOrientation currOrientation);
 
         // Enhancement
         bool isNotWall(const mcpp::Coordinate& coord);
