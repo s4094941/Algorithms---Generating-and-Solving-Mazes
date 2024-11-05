@@ -659,7 +659,7 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
     mcpp::MinecraftConnection mc;
     mcpp::Coordinate removeBlock;
     mcpp::BlockType const AIR(0);
-    mcpp::BlockType const BLUE_CARPET(171,11);
+    //mcpp::BlockType const BLUE_CARPET(171,11);
     // blockNode* blockHistory;
     bool allRemoved = false;
     
@@ -839,8 +839,6 @@ void Maze::buildMaze() {
 
         }
     }
-    resetAll();
-    printMaze();
 }
 
 // Resets all variables to their base values, except row, column, and wall values

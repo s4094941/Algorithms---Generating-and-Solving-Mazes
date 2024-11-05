@@ -118,7 +118,7 @@ void MazeNode::printNode() {
     } else if (explored) {
         std::cout << '.';
     } else {
-        std::cout << dirCount;
+        std::cout << '.';
     }
 }
 

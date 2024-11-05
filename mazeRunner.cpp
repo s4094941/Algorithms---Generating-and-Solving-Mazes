@@ -149,7 +149,7 @@ int main(int argc, char* argv[]) {
                         printEndMazeMessage();
 
                         char valOption;
-                        std::cout << "Would you like to validate the maze?\n";
+                        std::cout << "Enhancement 3 - Would you like to validate the maze?\n";
                         std::cout << "This will remove all loops and connect isolated nodes to the main path.\n";
                         std::cout << "[y]: yes\t[n]: no" << std::endl;
                         std::cin >> valOption;
