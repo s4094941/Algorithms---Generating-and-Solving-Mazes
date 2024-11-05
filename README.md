@@ -31,7 +31,9 @@ In user-generated modes:
 - The main path stemming from the exit point must follow regular maze conventions.
         
 Enhancement 1:
-- The obstacles/unflattened terrain cannot obstruct all the maze border blocks as well as the starting point (from recursive backtracking). The obstacles are also represented by 'x's within the maze like the maze walls. Also any 2 or more blocks deeper than the basepoint areas are filled in as those areas can be inaccessible.
+- The obstacles/unflattened terrain cannot obstruct all the maze border blocks as well as the starting point (from recursive backtracking).
+- The obstacles are also represented by 'x's within the maze like the maze walls. Also any 2 or more blocks deeper than the basepoint areas are filled in as those areas can be inaccessible.
+- Assuming the basepoint acts as the 'leveled block' (from demo video on canvas), meaning if there is terrain that is 2 or more blocks deeper than a terrain that is 1 or more blocks higher than the basepoint, possible inaccessiblities can happen.
 
 Enhancement 3:
 - If multiple entry points detected, only first one will count. Any additionals will be turned to wall.
