@@ -71,10 +71,8 @@ int main(int argc, char* argv[]) {
                     }
                     // Flatten terrain for base program
                     if (!enhancementMode) {
-                        cout << "Flattening Terrain" << endl;
                         maze->flattenTerrain(*basePoint);
                     }
-                    cout << "Placing Maze" << endl;
                     maze->placeMaze(*basePoint);
                     hasBuilt = true;
                 }
@@ -176,8 +174,18 @@ int main(int argc, char* argv[]) {
                         maze->restoreTerrain(*basePoint);
                         hasBuilt = false;
                     }
-                    printNavigateMessage();
-                    cin >> doneStr;
+                    if (mode == TESTING_MODE) {
+                        cout << "Teleported to: (4848, 71, 4369)" << endl;
+                        mc.setPlayerPosition(Coordinate(4848, 71, 4369));
+                    }
+                    else {
+                        printNavigateMessage();
+                        cin >> doneStr;
+                        if (doneStr != "done") {
+                            printInputErrorDoneMessage();
+                        }
+                    }
+
                     if (doneStr == "done") {
                         printLengthAndWidthMessage();
                         cin >> length >> width;
@@ -204,9 +212,6 @@ int main(int argc, char* argv[]) {
                         printEndMazeMessage();
                         hasGenerated = true;
                         curState = ST_Main;
-                    }
-                    else {
-                        printInputErrorDoneMessage();
                     }
                 }
                 else if (generateMenuOption == "3") {

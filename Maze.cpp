@@ -4,6 +4,8 @@ using mcpp::Coordinate;
 using std::this_thread::sleep_for;
 using std::chrono::milliseconds;
 using mcpp::HeightMap;
+using std::cout;
+using std::endl;
 
 // Construct maze with x rows and y columns
 Maze::Maze(int length, int width, bool testMode, bool enhancementMode, Coordinate basePoint) {
@@ -490,7 +492,6 @@ void Maze::flattenTerrain(mcpp::Coordinate basePoint) {
 
 // PLACE MAZE ADJUSTMENT - AS Z INCREASES, BUILD DOWNWARDS, AS X INCREASES, BUILD TO THE RIGHT
 void Maze::placeMaze(mcpp::Coordinate basePoint) {
-    std::cout << "Building Maze" << std::endl;
 /*
  * Begin Building Maze
  * If alphabet (x), place
@@ -805,7 +806,11 @@ void Maze::solveManually(Coordinate* basePoint) {
         }
     }
     airLoc.y = mc.getHeight(airLoc.x, airLoc.z);
+    cout << "Teleported to: (4855, 71, 4378)" << endl;
     mc.setPlayerTilePosition(airLoc);
+
+    // Give enough time for the player to load
+    sleep_for(milliseconds(1000));
 }
 
 
