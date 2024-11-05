@@ -1,0 +1,158 @@
+
+Welcome to MineCraft MazeRunner!
+--------------------------------
+
+------------- MAIN MENU -------------
+1) Generate Maze
+2) Build Maze in MineCraft
+3) Solve Maze
+4) Show Team Information
+5) Exit
+
+Enter Menu item to continue: 
+
+------------- GENERATE MAZE -------------
+1) Read Maze from terminal
+2) Generate Random Maze
+3) Enhancement 1 - Generate Random Maze Without Flattening Terrain
+4) Back
+
+Enter Menu item to continue: 
+Teleported to: (4848, 71, 4369)
+Enter the length and width of maze:
+Maze generated successfully
+**Printing Maze**
+BasePoint: (4848, 71, 4369)
+Structure:
+xxxxxxxxx
+........x
+xxxxxxx.x
+x.x...x.x
+x.x.x.x.x
+x.x.x.x.x
+x.x.x.x.x
+x.x.x.x.x
+x.x.x.x.x
+x...x...x
+xxxxxxxxx
+**End Printing Maze**
+
+------------- MAIN MENU -------------
+1) Generate Maze
+2) Build Maze in MineCraft
+3) Solve Maze
+4) Show Team Information
+5) Exit
+
+Enter Menu item to continue: 
+
+------------- MAIN MENU -------------
+1) Generate Maze
+2) Build Maze in MineCraft
+3) Solve Maze
+4) Show Team Information
+5) Exit
+
+Enter Menu item to continue: 
+
+------------- SOLVE MAZE -------------
+1) Solve Manually
+2) Show Escape Route
+3) Ehancement 2 - Find the Shortest Path
+4) Back
+
+Enter Menu item to continue: 
+Maze ready to Solve...
+Teleported to: (4855, 71, 4378)
+
+------------- SOLVE MAZE -------------
+1) Solve Manually
+2) Show Escape Route
+3) Ehancement 2 - Find the Shortest Path
+4) Back
+
+Enter Menu item to continue: 
+Step[1]: (4855, 71, 4378)
+Step[2]: (4854, 71, 4378)
+Step[3]: (4853, 71, 4378)
+Step[4]: (4853, 71, 4377)
+Step[5]: (4853, 71, 4376)
+Step[6]: (4853, 71, 4375)
+Step[7]: (4853, 71, 4374)
+Step[8]: (4853, 71, 4373)
+Step[9]: (4853, 71, 4372)
+Step[10]: (4852, 71, 4372)
+Step[11]: (4851, 71, 4372)
+Step[12]: (4851, 71, 4373)
+Step[13]: (4851, 71, 4374)
+Step[14]: (4851, 71, 4375)
+Step[15]: (4851, 71, 4376)
+Step[16]: (4851, 71, 4377)
+Step[17]: (4851, 71, 4378)
+Step[18]: (4850, 71, 4378)
+Step[19]: (4849, 71, 4378)
+Step[20]: (4849, 71, 4377)
+Step[21]: (4849, 71, 4376)
+Step[22]: (4849, 71, 4375)
+Step[23]: (4849, 71, 4374)
+Step[24]: (4849, 71, 4373)
+Step[25]: (4849, 71, 4372)
+Step[26]: (4849, 71, 4373)
+Step[27]: (4849, 71, 4374)
+Step[28]: (4849, 71, 4375)
+Step[29]: (4849, 71, 4376)
+Step[30]: (4849, 71, 4377)
+Step[31]: (4849, 71, 4378)
+Step[32]: (4850, 71, 4378)
+Step[33]: (4851, 71, 4378)
+Step[34]: (4851, 71, 4377)
+Step[35]: (4851, 71, 4376)
+Step[36]: (4851, 71, 4375)
+Step[37]: (4851, 71, 4374)
+Step[38]: (4851, 71, 4373)
+Step[39]: (4851, 71, 4372)
+Step[40]: (4852, 71, 4372)
+Step[41]: (4853, 71, 4372)
+Step[42]: (4853, 71, 4373)
+Step[43]: (4853, 71, 4374)
+Step[44]: (4853, 71, 4375)
+Step[45]: (4853, 71, 4376)
+Step[46]: (4853, 71, 4377)
+Step[47]: (4853, 71, 4378)
+Step[48]: (4854, 71, 4378)
+Step[49]: (4855, 71, 4378)
+Step[50]: (4855, 71, 4377)
+Step[51]: (4855, 71, 4376)
+Step[52]: (4855, 71, 4375)
+Step[53]: (4855, 71, 4374)
+Step[54]: (4855, 71, 4373)
+Step[55]: (4855, 71, 4372)
+Step[56]: (4855, 71, 4371)
+Step[57]: (4855, 71, 4370)
+Step[58]: (4854, 71, 4370)
+Step[59]: (4853, 71, 4370)
+Step[60]: (4852, 71, 4370)
+Step[61]: (4851, 71, 4370)
+Step[62]: (4850, 71, 4370)
+Step[63]: (4849, 71, 4370)
+Step[63]: (4848, 71, 4370)
+
+------------- SOLVE MAZE -------------
+1) Solve Manually
+2) Show Escape Route
+3) Ehancement 2 - Find the Shortest Path
+4) Back
+
+Enter Menu item to continue: 
+
+------------- MAIN MENU -------------
+1) Generate Maze
+2) Build Maze in MineCraft
+3) Solve Maze
+4) Show Team Information
+5) Exit
+
+Enter Menu item to continue: 
+
+The End!
+
