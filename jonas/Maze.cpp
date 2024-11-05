@@ -1,3 +1,9 @@
+// ASSUMPTIONS:
+    
+
+// TODO: Remove occurrences of multiple return commands
+// TODO: Remove continue, break, goto, next
+
 #include "Maze.h"
 #include <iostream>
 #include <cstdlib>
@@ -191,7 +197,7 @@ void Maze::generateTestMaze() {
     // Set wallStatus to false for all nodes where x and y are odd
     createGrid();
 
-    // Test randomisation. Begin at [1][0]. Break available walls in the order:
+    // Test mode randomisation. Begin at [1][0]. Break available walls in the order:
     // Up, Right, Down, Left. If no walls are available, backtrack until currNode = headNode.
     
     MazeNode* headNode = new MazeNode(-1, -1);
@@ -222,8 +228,8 @@ void Maze::generateTestMaze() {
 
 // Generate maze using user input
 void Maze::buildMaze() {
-    std::cout << "\'x\' for wall, \'.\' for empty space." << std::endl;                             // CHECK IF OUTPUT HAS TO MATCH 100%
-    std::cout << "Note: Entering q will fill the remaining structure with walls." << std::endl;     // CHECK IF OUTPUT HAS TO MATCH 100%
+    std::cout << "\'x\' for wall, \'.\' for empty space." << std::endl;                             
+    std::cout << "Note: Entering q will fill the remaining structure with walls." << std::endl;     
     bool quitState = false;
     char currChar = ' ';
     for (int i = 0; i < row; ++i) {
@@ -249,7 +255,6 @@ void Maze::buildMaze() {
         }
     }
     printMaze();
-    // TODO: CHECK VALIDITY OF USER-GENERATED MAZE
 }
 
 // Print all nodes in terminal
@@ -284,24 +289,6 @@ Maze::~Maze() {
         }
         delete[] maze;
 }
-
-// ASSUMPTIONS:
-    // row and column must both be positive odd integers. If a value below 3 is passed, it will be converted to 3.
-        // Any even values will have 1 added to them such that they are odd.
-
-
-// Random exit
-    // random row between 0 and row - 1
-        // if rand == 0 or row - 1
-            // exit = random between 1 and col - 1
-        // else
-            // exit = 0 or col - 1
-
-// TODO: Remove occurrences of multiple return commands
-// TODO: Remove continue, break, goto, next
-// TODO: Create checkUp, checkDown, checkLeft, checkRight commands
-
-
 
 // NEW =================================================================================
 // NEW =================================================================================
@@ -737,58 +724,6 @@ MazeNode* Maze::probeDirection(MazeNode* curr, bool& connected) {
     if (!found) connected = true;
     return curr;
 }
-
-
-// // checkDirection for connecting isolated nodes. 
-// MazeNode* Maze::probeDirection(MazeNode* curr, int dir, bool& connected) {
-    
-//     int ros, cos;
-//     if (dir == 0) ros = -2;  // Up
-//     if (dir == 1) ros = 2;   // Down
-//     if (dir == 2) cos = -2;  // Left
-//     if (dir == 3) cos = 2;   // Right
-
-//     int newRow = curr->getRow() + ros;
-//     int newCol = curr->getCol() + cos;
-
-//     // probably unnecessary since the directions are set
-//     if (newRow < 0 || newRow >= row - 1 || newCol < 0 || newCol >= col - 1) {
-//         return curr->getPrevNode();  // Backtrack if out of bounds
-//     }
-
-//     MazeNode* next = maze[newRow][newCol];
-//     MazeNode* wall = maze[curr->getRow() + ros / 2][curr->getCol() + cos / 2];
-
-//     // 1. If next node is part of the main path, connect and mark as connected
-//     if (!next->getWall() && !next->getStatus()) {
-//         wall->setWall(false);       // Remove wall to create a connection
-//         connected = true;           // Successfully connected to main path
-//     }
-//     // 2. If next node is in the isolated area, move forward only if unvisited
-//     else if (!next->getWall() && next->getStatus() && !next->getPrevNode()) {
-//         checkBothDirections(curr, next, dir);
-//         next->setPrevNode(curr);    // Set previous node to avoid cycles
-//         curr = next;
-//     }
-//     // 3. If next is a wall, break through as a last resort
-//     else if (next->getWall() && !next->getStatus()) {
-//         checkBothDirections(curr, next, dir);
-//         wall->setWall(false);       // Break through the wall
-//         next->setWall(false);
-//         next->setExplored(true);
-//         next->setPrevNode(curr);
-//         curr = next;
-//     }
-//     // 4. If no progress is possible, mark as fully visited and backtrack
-//     else {
-//         curr->setExplored(true);     // Mark as fully visited to avoid revisiting
-//         curr = curr->getPrevNode(); // Backtrack to previous node
-//     }
-
-//     return curr;
-// }
-
-
 
 void Maze::checkBothDirections(MazeNode* curr, MazeNode* next, int dir) {
     // CHECK UP

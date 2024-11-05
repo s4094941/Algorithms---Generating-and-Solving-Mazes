@@ -1,5 +1,7 @@
 /*
     ASSUMPTIONS:
+        Row and column must both be positive odd integers. If a value below 3 is passed, it will be converted to 3.
+        Any even values will have 1 added to them such that they are odd.
         Maze edges are intact, only one exit.
         Maze follows correct structure (air nodes are only available in [odd][odd] positions
         Isolated node is not in an even position (will only check for isolated nodes in [odd][odd] positions)
@@ -7,10 +9,11 @@
         All corners are correctly filled as walls
         There must be at least one non-isolated node, not including the exit point
         odd x even or even x odd node can exist, but even x even node cannot.
-
-
+        
     FIXES:
         If multiple entry points detected, only first one will count. Any additionals will be turned to wall.
+        If isolated wall is found in a node connection (odd x even or even x odd), it will correct itself to an odd x odd node
+        If multiple walls are between an isolated path node and the main path, the program will randomly tunnel through walls until they connect
 */
 
 // =============== MazeNode.h ========================================================
@@ -81,7 +84,7 @@ private:
 
     void checkEdge(MazeNode*);
     MazeNode* findStartPoint();
-    MazeNode* findIsolatedNode();
+    MazeNode* findIsolatedNode(bool);
     MazeNode* correctNodePos(MazeNode*);
     MazeNode* probeDirection(MazeNode*, int, bool&);
     void checkBothDirections(MazeNode*, MazeNode*, int );
@@ -92,6 +95,7 @@ public:
     void floodFillWall(MazeNode*);
 
     void connectIsolatedNodes();
+    void breakLoops();
 
 
 
