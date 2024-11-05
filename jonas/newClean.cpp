@@ -2,13 +2,19 @@
     ASSUMPTIONS:
         Row and column must both be positive odd integers. If a value below 3 is passed, it will be converted to 3.
         Any even values will have 1 added to them such that they are odd.
-        Maze edges are intact, only one exit.
-        Maze follows correct structure (air nodes are only available in [odd][odd] positions
-        Isolated node is not in an even position (will only check for isolated nodes in [odd][odd] positions)
-        If isolated node is connected to an isolated path, maze follows correct convention (each turn is only possible 2 nodes away)
-        All corners are correctly filled as walls
-        There must be at least one non-isolated node, not including the exit point
-        odd x even or even x odd node can exist, but even x even node cannot.
+
+        A maze is built up of wall nodes, path nodes, and path connection nodes.
+            - Only one exit node can exist, which is a path node on the outer edge of the maze.
+            - By default, path nodes can only be on [odd][odd] positions (eg. maze[1][1], which is technically the 2nd row and column).
+                * As such, any isolated wall nodes encapsulated by a loop must have an [even][even] node within the cluster.
+            - In non-user-generated modes, [odd][odd] nodes will always be path nodes, and [even][even] nodes will always be wall nodes.
+        
+        In user-generated modes:
+            - [odd][odd] nodes may be walls, but [even][even] nodes must still be walls.
+            - Maze edges must be all walls, with only one exit node. Any additional exit nodes will be converted to walls.
+            - Exit points must be connected to at least one path node.
+            - All corners must be filled in with walls.
+            - The main path stemming from the exit point must follow regular maze conventions.
         
     FIXES:
         If multiple entry points detected, only first one will count. Any additionals will be turned to wall.
@@ -86,8 +92,8 @@ private:
     MazeNode* findStartPoint();
     MazeNode* findIsolatedNode(bool);
     MazeNode* correctNodePos(MazeNode*);
-    MazeNode* probeDirection(MazeNode*, int, bool&);
-    void checkBothDirections(MazeNode*, MazeNode*, int );
+    MazeNode* probePath(MazeNode*, int, bool&);
+    MazeNode* probeWall(MazeNode*, bool&);
 
 public:
     void resetAll();
@@ -104,7 +110,7 @@ public:
 
 
 
-
+ADD RESETALL TO BUILDMAZE
 
 //=============== Maze.cpp ============================================================
 

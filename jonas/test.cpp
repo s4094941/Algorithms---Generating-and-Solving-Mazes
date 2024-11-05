@@ -23,14 +23,15 @@ int main (void) {
 
     if (mode == 1 || mode == 2) {
         maze.createMaze();
-        maze.resetAll();
-        maze.printMaze();
     } else if (mode == 3) {
         maze.buildMaze();
-        maze.connectIsolatedNodes();
-        std::cout << std::endl << std::endl;
-        maze.printMaze();
+        // maze.connectIsolatedNodes();
+        // maze.breakLoops();
+        maze.validateMaze();
     }
+    std::cout << std::endl;
+    maze.resetAll();
+    maze.printMaze();
 
     return EXIT_SUCCESS;
 }

@@ -12,7 +12,7 @@ class Maze {
         std::mt19937 gen;
 
         // Private methods
-        void createGrid();  // TODO: Regenerate base grid (set walls/air)
+        void createGrid();
 
         MazeNode* checkDirection(MazeNode*, int);
         MazeNode* getRandomStart();
@@ -31,17 +31,12 @@ class Maze {
         bool checkNodeLeft(MazeNode*, int);
         bool checkNodeRight(MazeNode*, int);
 
-        bool checkWallUp(MazeNode*);
-        bool checkWallDown(MazeNode*);
-        bool checkWallLeft(MazeNode*);
-        bool checkWallRight(MazeNode*);
-
         void checkEdge(MazeNode*);
         MazeNode* findStartPoint();
         MazeNode* findIsolatedNode(bool);
         MazeNode* correctNodePos(MazeNode*);
-        MazeNode* probeDirection(MazeNode*, bool&);
-        void checkBothDirections(MazeNode*, MazeNode*, int );
+        MazeNode* probePath(MazeNode*, bool&);
+        MazeNode* probeWall(MazeNode*, bool&);
         void printAllDirections();
 
     public:
@@ -64,23 +59,13 @@ class Maze {
         // Destructor
         ~Maze();
         
-
         void resetAll();
         void floodFill(MazeNode*);
-        void floodFillWall(MazeNode*);
-
-
         void connectIsolatedNodes();
         void breakLoops();
+        void validateMaze();
 };
 
 
 
 #endif // MAZE_H
-
-
-// TODO: Check if user-generated maze if valid:
-    // check edge of maze. If open areas != 1, invalid
-    // if not perfect maze (i.e. existence of a loop), invalid
-
-    // Get random location, send to Agent

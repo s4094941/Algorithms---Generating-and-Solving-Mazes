@@ -695,3 +695,174 @@ void Maze::checkBothDirections(MazeNode* curr, MazeNode* next, int dir) {
 }
 
 // //====================================================================================
+
+
+
+
+
+
+
+MazeNode* Maze::probeDirection(MazeNode* curr, bool& connected) {
+    std::vector<int> dirList;
+    bool found = false;
+
+    // Add available directions to dirList and shuffle
+    if (curr->getUp()) {
+        dirList.push_back(0);
+        std::cout << "Direction Up available.\n";
+    }
+    if (curr->getDown()) {
+        dirList.push_back(1);
+        std::cout << "Direction Down available.\n";
+    }
+    if (curr->getLeft()) {
+        dirList.push_back(2);
+        std::cout << "Direction Left available.\n";
+    }
+    if (curr->getRight()) {
+        dirList.push_back(3);
+        std::cout << "Direction Right available.\n";
+    }
+
+    // Shuffle available directions to prevent loops
+    std::shuffle(dirList.begin(), dirList.end(), gen);
+    std::cout << "Shuffled directions: ";
+    for (int dir : dirList) {
+        std::cout << dir << " ";
+    }
+    std::cout << "\n";
+
+    // 1. Check for unexplored path nodes, if found, end.
+    for (int i = 0; i < dirList.size(); ++i) {
+        std::cout << "Checking direction: " << dirList[i] << "\n";
+        if (!found && dirList[i] == 0) {          // Case: Up
+            MazeNode* upNode = getNodeUp(curr, 2);
+            if (upNode->getStatus() == false && upNode->getWall() == false) {
+                upNode->setExplored(true);
+                connected = true;
+                found = true;
+                std::cout << "Found unexplored Up node.\n";
+            }
+        } else if (!found && dirList[i] == 1) {   // Case: Down
+            MazeNode* downNode = getNodeDown(curr, 2);
+            if (downNode->getStatus() == false && downNode->getWall() == false) {
+                downNode->setExplored(true);
+                connected = true;
+                found = true;
+                std::cout << "Found unexplored Down node.\n";
+            }
+        } else if (!found && dirList[i] == 2) {   // Case: Left
+            MazeNode* leftNode = getNodeLeft(curr, 2);
+            if (leftNode->getStatus() == false && leftNode->getWall() == false) {
+                leftNode->setExplored(true);
+                connected = true;
+                found = true;
+                std::cout << "Found unexplored Left node.\n";
+            }
+        } else if (!found && dirList[i] == 3) {   // Case: Right
+            MazeNode* rightNode = getNodeRight(curr, 2);
+            if (rightNode->getStatus() == false && rightNode->getWall() == false) {
+                rightNode->setExplored(true);
+                connected = true;
+                found = true;
+                std::cout << "Found unexplored Right node.\n";
+            }
+        }
+    }
+
+    // 2. Break down walls
+    if (!found) {
+        for (int i = 0; i < dirList.size(); ++i) {
+            std::cout << "Attempting to break wall in direction: " << dirList[i] << "\n";
+            if (!found && dirList[i] == 0) {        // Case: Up
+                MazeNode* upNode = getNodeUp(curr, 2);
+                if (upNode->getWall() == true) {
+                    upNode->setExplored(true);
+                    getNodeUp(curr, 1)->setExplored(true);
+                    upNode->setPrevNode(curr);
+                    curr = upNode;
+                    found = true;
+                    std::cout << "Broke wall Up and moved.\n";
+                }
+            } else if (!found && dirList[i] == 1) { // Case: Down
+                MazeNode* downNode = getNodeDown(curr, 2);
+                if (downNode->getWall() == true) {
+                    downNode->setExplored(true);
+                    getNodeDown(curr, 1)->setExplored(true);
+                    downNode->setPrevNode(curr);
+                    curr = downNode;
+                    found = true;
+                    std::cout << "Broke wall Down and moved.\n";
+                }
+            } else if (!found && dirList[i] == 2) { // Case: Left
+                MazeNode* leftNode = getNodeLeft(curr, 2);
+                if (leftNode->getWall() == true) {
+                    leftNode->setExplored(true);
+                    getNodeLeft(curr, 1)->setExplored(true);
+                    leftNode->setPrevNode(curr);
+                    curr = leftNode;
+                    found = true;
+                    std::cout << "Broke wall Left and moved.\n";
+                }
+            } else if (!found && dirList[i] == 3) { // Case: Right
+                MazeNode* rightNode = getNodeRight(curr, 2);
+                if (rightNode->getWall() == true) {
+                    rightNode->setExplored(true);
+                    getNodeRight(curr, 1)->setExplored(true);
+                    rightNode->setPrevNode(curr);
+                    curr = rightNode;
+                    found = true;
+                    std::cout << "Broke wall Right and moved.\n";
+                }
+            }
+        }
+    }
+
+    // 3. Jump to a possible point in the path
+    if (!found) {
+        for (int i = 0; i < dirList.size(); ++i) {
+            std::cout << "Jumping to possible point in direction: " << dirList[i] << "\n";
+            if (!found && dirList[i] == 0) {        // Case: Up
+                if (getNodeUp(curr, 2)->getStatus() == true) {
+                    curr = getNodeUp(curr, 2);
+                    found = true;
+                    std::cout << "Jumped Up.\n";
+                }
+            } else if (!found && dirList[i] == 1) { // Case: Down
+                if (getNodeDown(curr, 2)->getStatus() == true) {
+                    curr = getNodeDown(curr, 2);
+                    found = true;
+                    std::cout << "Jumped Down.\n";
+                }
+            } else if (!found && dirList[i] == 2) { // Case: Left
+                if (getNodeLeft(curr, 2)->getStatus() == true) {
+                    curr = getNodeLeft(curr, 2);
+                    found = true;
+                    std::cout << "Jumped Left.\n";
+                }
+            } else if (!found && dirList[i] == 3) { // Case: Right
+                if (getNodeRight(curr, 2)->getStatus() == true) {
+                    curr = getNodeRight(curr, 2);
+                    found = true;
+                    std::cout << "Jumped Right.\n";
+                }
+            }
+        }
+    }
+
+    if (!found) {
+        connected = true;
+        std::cout << "No connection found, setting connected to true.\n";
+    }
+
+    return curr;
+
+    MazeNode* iso = nullptr;
+    resetAll();
+    printMaze();
+    floodFill(findStartPoint());
+    iso = findIsolatedNode();
+    if (iso == nullptr) connected = true;
+
+    return curr;
+}
