@@ -552,6 +552,27 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
 
     // Finding the entrance...
     // Checks each side before setting carpet location one block outside of the entrance.
+
+    /*
+    MazeNode* enntrance = nullptr;
+    for (int i = 0; i < row ++ i) {
+        for (int j = 0; j < col; ++j) {
+            if (entrance == nullptr) {
+                // CHECK TOP WALL
+                if (i == 0 && !maze[i][j]->getWall()) {
+                    entrance = maze[i][j];
+                // CHECK BOTTOM WALL
+                } else if (i == row - 1 && !maze[i][j]->getWall()) {
+                    entrance = maze[i][j];
+                }
+                // CHECK LEFT
+                
+            }
+        }
+    }
+    */
+
+
     for (int i = 0; i < col; ++i && !entranceLocated) {
         if (this->enhancementMode) {
             if (!maze[0][i]->getWall() && !maze[0][i]->getTerrain()) {
@@ -659,10 +680,10 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
     mcpp::MinecraftConnection mc;
     mcpp::Coordinate removeBlock;
     mcpp::BlockType const AIR(0);
-    //mcpp::BlockType const BLUE_CARPET(171,11);
+    mcpp::BlockType const BLUE_CARPET(171,11);
     // blockNode* blockHistory;
     bool allRemoved = false;
-    
+    if (BLUE_CARPET != NULL) {};    
 // REMOVE MAZE (Look through Jonas array, remove if wall)
     for (int i = basePoint.x; i < basePoint.x + col && !allRemoved; ++i) {
 
