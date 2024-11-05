@@ -659,8 +659,8 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
     mcpp::MinecraftConnection mc;
     mcpp::Coordinate removeBlock;
     mcpp::BlockType const AIR(0);
-    //mcpp::BlockType const BLUE_CARPET(171,11);
-    // blockNode* blockHistory;
+    mcpp::BlockType const BLUE_CARPET(171,11);
+    blockNode* blockHistory;
     bool allRemoved = false;
     
 // REMOVE MAZE (Look through Jonas array, remove if wall)
@@ -693,28 +693,27 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
                         removeBlock.y = removeBlock.y - 1;
                         sleep_for(milliseconds(50));
                     }
-                    allRemoved = true;
                 }
             }
         }
     }
 
 // RESTORE TERRAIN (Access coordinates and block id, then add/remove depending on y)
-    // blockHistory = getNext();
-    // while (blockHistory != nullptr) {
+    blockHistory = getNext();
+    while (blockHistory != nullptr) {
         
-    //     // ACCESS LINKED LIST
-    //     // If block is above, place | Otherwise, remove
-    //     if (blockHistory->blockID == BLUE_CARPET) {
-    //         mc.setBlock(blockHistory->blockLocation, AIR);
-    //     } else if (blockHistory->blockLocation.y >= basePoint.y) {
-    //         mc.setBlock(blockHistory->blockLocation, blockHistory->blockID);
-    //     } else if (blockHistory->blockLocation.y < basePoint.y) {
-    //         mc.setBlock(blockHistory->blockLocation, AIR);
-    //     }
-    //     blockHistory = getNext();
-    //     sleep_for(milliseconds(50));
-    // }
+        // ACCESS LINKED LIST
+        // If block is above, place | Otherwise, remove
+        if (blockHistory->blockID == BLUE_CARPET) {
+            mc.setBlock(blockHistory->blockLocation, AIR);
+        } else if (blockHistory->blockLocation.y >= basePoint.y) {
+            mc.setBlock(blockHistory->blockLocation, blockHistory->blockID);
+        } else if (blockHistory->blockLocation.y < basePoint.y) {
+            mc.setBlock(blockHistory->blockLocation, AIR);
+        }
+        blockHistory = getNext();
+        sleep_for(milliseconds(50));
+    }
 }
 
 void Maze::addNode(mcpp::Coordinate blockLocation, mcpp::BlockType blockID) {
