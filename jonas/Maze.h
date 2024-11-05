@@ -38,7 +38,7 @@ class Maze {
 
         void checkEdge(MazeNode*);
         MazeNode* findStartPoint();
-        MazeNode* findIsolatedNode();
+        MazeNode* findIsolatedNode(bool);
         MazeNode* correctNodePos(MazeNode*);
         MazeNode* probeDirection(MazeNode*, bool&);
         void checkBothDirections(MazeNode*, MazeNode*, int );
@@ -71,6 +71,7 @@ class Maze {
 
 
         void connectIsolatedNodes();
+        void breakLoops();
 };
 
 

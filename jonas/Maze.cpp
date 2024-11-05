@@ -480,17 +480,28 @@ bool Maze::checkNodeRight(MazeNode* n, int count) {
 
 
 // Returns the first instance of a non-wall unexplored node.
-MazeNode* Maze::findIsolatedNode() {
+    // if TRUE search for isolated wall, if FALSE search for isolated path
+MazeNode* Maze::findIsolatedNode(bool isWall) {
     MazeNode* node = nullptr;
+    bool found = false;
 
-    for (int i = 1; i < row - 1; ++i) {
-        for (int j = 1; j < col - 1; ++j) {
-            if (maze[i][j]->getStatus() == false && maze[i][j]->getWall() == false) {
-                node = maze[i][j];
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            if (!found) {
+                if (!isWall) {  // Search for isolated path
+                    if (!maze[i][j]->getWall() && !maze[i][j]->getStatus()) {
+                        node = maze[i][j];
+                        found = true;
+                    }
+                } else {        // Seach for isolated wall
+                    if (maze[i][j]->getWall() && maze[i][j]->getStatus()) {
+                        node = maze[i][j];
+                        found = true;
+                    }
+                }
             }
         }
     }
-
     return node;
 }
 
@@ -564,41 +575,6 @@ void Maze::floodFill(MazeNode* startPoint) {
 }
 
 
-
-// // Flood fills using the argument as a starting point. "Marked" nodes are labeled as explored
-// void Maze::floodFill(MazeNode* startPoint) {
-//     std::stack<MazeNode*> stack;
-   
-//    stack.push(startPoint);
-//    startPoint->setExplored(true);
-
-//     while (stack.empty() == false) {
-//         // Set current node to the top of the stack, then pop it off the top of the stack, since it won't need to be checked again.
-//         // Check nodes in each direction, adding them to the stack and marking them if they are unexplored, non-wall nodes.
-//         MazeNode* curr = stack.top();
-//         stack.pop();
-
-//         // Check each direciton
-//         if (checkNodeUp(curr, 1) == true) {
-//             getNodeUp(curr, 1)->setExplored(true);
-//             stack.push(getNodeUp(curr, 1));
-//         }
-//         if (checkNodeDown(curr, 1) == true) {
-//             getNodeDown(curr, 1)->setExplored(true);
-//             stack.push(getNodeDown(curr, 1));
-//         }
-//         if (checkNodeLeft(curr, 1) == true) {
-//             getNodeLeft(curr, 1)->setExplored(true);
-//             stack.push(getNodeLeft(curr, 1));
-//         }
-//         if (checkNodeRight(curr, 1) == true) {
-//             getNodeRight(curr, 1)->setExplored(true);
-//             stack.push(getNodeRight(curr, 1));
-//         }
-//     }
-// }
-
-
 // Randomly joins any isolated nodes to the main path
 void Maze::connectIsolatedNodes () {
     resetAll();
@@ -607,7 +583,7 @@ void Maze::connectIsolatedNodes () {
     MazeNode* isolatedNode = nullptr;
     
     // Initial check to find any isolated nodes
-    isolatedNode = findIsolatedNode();
+    isolatedNode = findIsolatedNode(false);
 
     // Loop until no nodes exist that are isolated from the main path
     while (isolatedNode) {
@@ -626,14 +602,23 @@ void Maze::connectIsolatedNodes () {
 
         resetAll();
         floodFill(findStartPoint());
-        isolatedNode = findIsolatedNode();
+        isolatedNode = findIsolatedNode(false);
     }
 
+    // DEBUG, REMOVE AFTER
+    std::cout << "DEBUG TESTS, REMOVE AFTER" << std::endl;
     resetAll();
+    floodFill(findStartPoint());
     printMaze();
+    std::cout << std::endl;
 
+    resetAll();
     floodFill(maze[0][0]);
     printMaze();
+}
+
+void Maze::breakLoops() {
+    floodFill(maze[0][0]);
 }
 
 
