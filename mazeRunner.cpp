@@ -143,7 +143,7 @@ int main(int argc, char* argv[]) {
                         printStartMazeMessage();
                         printStructureMessage();
                         
-                        maze->resetAll();
+                        maze->resetAll();   
                         maze->printMaze();
                         
                         printEndMazeMessage();
@@ -161,6 +161,8 @@ int main(int argc, char* argv[]) {
                             maze->printMaze();
                         } else {
                             std::cout << "\nMaze will not be validated." << std::endl;
+                            maze->resetAll();
+                            maze->printMaze();
                         }
                         
                         hasGenerated = true;
