@@ -410,6 +410,7 @@ void Maze::buildMaze() {
 
         }
     }
+
 }
 
 // Print all nodes in terminal
@@ -739,19 +740,6 @@ Maze::blockNode* Maze::getNext() {
         currentNode = currentNode->next.get(); 
     }
     return placeNode; 
-}
-
-
-
-// Destructor
-Maze::~Maze() {
-    for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < col; ++j) {
-            delete maze[i][j];
-        }
-        delete[] maze[i];
-    }
-    delete[] maze;
 }
 
 /*
@@ -1417,3 +1405,13 @@ void Maze::validateMaze() {
     }
 }
 
+// Destructor
+Maze::~Maze() {
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            delete maze[i][j];
+        }
+        delete[] maze[i];
+    }
+    delete[] maze;
+}
