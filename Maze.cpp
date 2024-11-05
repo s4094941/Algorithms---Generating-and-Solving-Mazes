@@ -553,38 +553,16 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
     // Finding the entrance...
     // Checks each side before setting carpet location one block outside of the entrance.
 
-    /*
-    MazeNode* enntrance = nullptr;
-    for (int i = 0; i < row ++ i) {
-        for (int j = 0; j < col; ++j) {
-            if (entrance == nullptr) {
-                // CHECK TOP WALL
-                if (i == 0 && !maze[i][j]->getWall()) {
-                    entrance = maze[i][j];
-                // CHECK BOTTOM WALL
-                } else if (i == row - 1 && !maze[i][j]->getWall()) {
-                    entrance = maze[i][j];
-                }
-                // CHECK LEFT
-                
-            }
-        }
-    }
-    */
-
-
     for (int i = 0; i < col; ++i && !entranceLocated) {
         if (this->enhancementMode) {
             if (!maze[0][i]->getWall() && !maze[0][i]->getTerrain()) {
                 entrance.x = basePoint.x + i;
-                // entrance.y = basePoint.y;
                 entrance.z = basePoint.z - 1;
                 entrance.y = mc.getHeight(entrance.x, entrance.z) + 1;
                 
                 entranceLocated = true;
             } else if (!maze[col - 1][i]->getWall() && !maze[col - 1][i]->getTerrain()) {
                 entrance.x = basePoint.x + i;
-                // entrance.y = basePoint.y;
                 entrance.z = basePoint.z + row;
                 entrance.y = mc.getHeight(entrance.x, entrance.z) + 1;
 
@@ -594,16 +572,16 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
         else {
             if (!maze[0][i]->getWall()) {
                 entrance.x = basePoint.x + i;
-                // entrance.y = basePoint.y;
+                entrance.y = basePoint.y;
                 entrance.z = basePoint.z - 1;
-                entrance.y = mc.getHeight(entrance.x, entrance.z) + 1;
+                // entrance.y = mc.getHeight(entrance.x, entrance.z) + 1;
 
                 entranceLocated = true;
             } else if (!maze[col - 1][i]->getWall()) {
                 entrance.x = basePoint.x + i;
-                // entrance.y = basePoint.y;
+                entrance.y = basePoint.y;
                 entrance.z = basePoint.z + row;
-                entrance.y = mc.getHeight(entrance.x, entrance.z) + 1;
+                // entrance.y = mc.getHeight(entrance.x, entrance.z) + 1;
 
                 entranceLocated = true;
             }

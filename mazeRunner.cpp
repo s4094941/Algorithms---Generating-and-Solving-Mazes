@@ -148,13 +148,13 @@ int main(int argc, char* argv[]) {
                         
                         printEndMazeMessage();
 
-                        char valOption;
+                        string valOption;
                         std::cout << "Enhancement 3 - Would you like to validate the maze?\n";
                         std::cout << "This will remove all loops and connect isolated nodes to the main path.\n";
                         std::cout << "[y]: yes\t[n]: no" << std::endl;
                         std::cin >> valOption;
 
-                        if (valOption == 'y' || valOption == 'Y') {
+                        if (valOption == "yes" || valOption == "y" || valOption == "Y") {
                             maze->validateMaze();
                             std::cout << "\nMaze after validation:" << std::endl;
                             maze->resetAll();
@@ -168,7 +168,6 @@ int main(int argc, char* argv[]) {
                         hasGenerated = true;
                         curState = ST_Main;
                     }
-                    curState = ST_Main;
                 }
                 else if (generateMenuOption == "2") {
                     enhancementMode = false;
