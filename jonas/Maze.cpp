@@ -826,7 +826,6 @@ void Maze::breakLoops() {
         bool connected = false;
         while (!connected) {
             isolatedNode = probeWall(isolatedNode, connected);
-            std::cout << std::endl;
         }
 
         isolatedNode = findIsolatedNode(true);

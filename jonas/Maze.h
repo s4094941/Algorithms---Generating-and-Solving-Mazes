@@ -37,7 +37,6 @@ class Maze {
         MazeNode* correctNodePos(MazeNode*);
         MazeNode* probePath(MazeNode*, bool&);
         MazeNode* probeWall(MazeNode*, bool&);
-        void printAllDirections();
 
     public:
         // Constructor
