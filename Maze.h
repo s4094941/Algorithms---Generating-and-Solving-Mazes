@@ -7,6 +7,8 @@
 #include <thread>
 #include <stack>
 #include <vector>
+#include <cstdlib>
+#include <random>
 #include <algorithm>
 using mcpp::Coordinate;
 

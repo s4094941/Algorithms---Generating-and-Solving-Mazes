@@ -132,16 +132,30 @@ int main(int argc, char* argv[]) {
 
                         printMazeReadMessage();
                         printStartMazeMessage();
-
-                        
                         printStructureMessage();
-
-                        printEndMazeMessage();
+                        
+                        maze->resetAll();
                         maze->printMaze();
+                        
+                        printEndMazeMessage();
+
+                        char valOption;
+                        std::cout << "Would you like to validate the maze?\n";
+                        std::cout << "This will remove all loops and connect isolated nodes to the main path.\n";
+                        std::cout << "[y]: yes\t[n]: no" << std::endl;
+                        std::cin >> valOption;
+
+                        if (valOption == 'y' || valOption == 'Y') {
+                            maze->validateMaze();
+                            std::cout << "\nMaze after validation:" << std::endl;
+                            maze->resetAll();
+                            maze->printMaze();
+                        } else {
+                            std::cout << "\nMaze will not be validated." << std::endl;
+                        }
                         
                         hasGenerated = true;
                         curState = ST_Main;
-                        std::cout << "END OF USER-GENERATED TEST" << std::endl;
                     }
                     else {
                         printInputErrorDoneMessage();

@@ -408,10 +408,8 @@ void Maze::buildMaze() {
                 maze[i][j]->setWall(true);
             }
 
-        }\
+        }
     }
-    printMaze();
-    // TODO: CHECK VALIDITY OF USER-GENERATED MAZE
 }
 
 // Print all nodes in terminal
