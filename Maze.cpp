@@ -382,36 +382,36 @@ void Maze::generateTestMaze() {
 }
 
 // Generate maze using user input
-void Maze::buildMaze() {
-    std::cout << "'x' for wall, '.' for empty space.";
-    std::cout << "Note: Entering q will fill the remaining structure with walls." << std::endl;
-    std::cout << "Construct your [" << row << " x " << col << "] structure:" << std::endl;
-    bool quitState = false;
-    char currChar = ' ';
-    for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < col; ++j) {
-            if (!quitState) {
-                std::cin >> currChar;
-                if (currChar == 'x') {
-                    maze[i][j]->setWall(true);
-                } else if (currChar == '.') {
-                    maze[i][j]->setExplored(true);
-                } else if (currChar == 'q') {
-                    maze[i][j]->setWall(true);
-                    std::cout << "filling in remaining structure with walls." << std::endl;
-                    quitState = true;
-                } else {
-                    maze[i][j]->setWall(true);
-                    std::cout << "invalid char at [" << i << "][" << j << "]. Defaulted to x" << std::endl;
-                }
-            } else {
-                maze[i][j]->setWall(true);
-            }
+// void Maze::buildMaze() {
+//     std::cout << "'x' for wall, '.' for empty space.";
+//     std::cout << "Note: Entering q will fill the remaining structure with walls." << std::endl;
+//     std::cout << "Construct your [" << row << " x " << col << "] structure:" << std::endl;
+//     bool quitState = false;
+//     char currChar = ' ';
+//     for (int i = 0; i < row; ++i) {
+//         for (int j = 0; j < col; ++j) {
+//             if (!quitState) {
+//                 std::cin >> currChar;
+//                 if (currChar == 'x') {
+//                     maze[i][j]->setWall(true);
+//                 } else if (currChar == '.') {
+//                     maze[i][j]->setExplored(true);
+//                 } else if (currChar == 'q') {
+//                     maze[i][j]->setWall(true);
+//                     std::cout << "filling in remaining structure with walls." << std::endl;
+//                     quitState = true;
+//                 } else {
+//                     maze[i][j]->setWall(true);
+//                     std::cout << "invalid char at [" << i << "][" << j << "]. Defaulted to x" << std::endl;
+//                 }
+//             } else {
+//                 maze[i][j]->setWall(true);
+//             }
 
-        }
-    }
+//         }
+//     }
 
-}
+// }
 
 // Print all nodes in terminal
 void Maze::printMaze() {
@@ -1119,7 +1119,7 @@ MazeNode* Maze::probePath(MazeNode* curr, bool& connected) {
     std::shuffle(dirList.begin(), dirList.end(), gen);
 
     // 1. Check for unexplored path nodes, if found, end.
-    for (int i = 0; i < dirList.size(); ++i) {
+    for (size_t i = 0; i < dirList.size(); ++i) {
         if (!found && dirList[i] == 0) {          // Case: Up
             if (getNodeUp(curr, 2)->getStatus() == false
             && getNodeUp(curr, 2)->getWall() == false) {
@@ -1153,7 +1153,7 @@ MazeNode* Maze::probePath(MazeNode* curr, bool& connected) {
 
     // 2. Break down walls
     if (!found) {
-        for (int i = 0; i < dirList.size(); ++i) {
+        for (size_t i = 0; i < dirList.size(); ++i) {
             if (!found && dirList[i] == 0) {        // Case: Up
                 if (getNodeUp(curr, 2)->getWall() == true) {
                     getNodeUp(curr, 1)->setExplored(true);
@@ -1192,7 +1192,7 @@ MazeNode* Maze::probePath(MazeNode* curr, bool& connected) {
 
     // 3. Jump to a possible point in the path
     if (!found) {
-        for (int i = 0; i < dirList.size(); ++i) {
+        for (size_t i = 0; i < dirList.size(); ++i) {
             if (!found && dirList[i] == 0) {        // Case: Up
                 if (getNodeUp(curr, 2)->getStatus() == true) {
                     curr = getNodeUp(curr, 2);
@@ -1235,7 +1235,7 @@ MazeNode* Maze::probeWall(MazeNode* curr, bool& connected) {
     std::shuffle(dirList.begin(), dirList.end(), gen);
 
     // 1. Check each available direction for an unexplored wall node
-    for (int i = 0; i < dirList.size(); ++i) {
+    for (size_t i = 0; i < dirList.size(); ++i) {
         if (dirList[i] == 0 && !found) {          // Case: Up
             if (checkNodeUp(curr, 2)) {
                 getNodeUp(curr, 1)->setWall(true);
@@ -1265,7 +1265,7 @@ MazeNode* Maze::probeWall(MazeNode* curr, bool& connected) {
 
     // 2. Jump to random connected wall
     if (!found) {
-        for (int i = 0; i < dirList.size(); ++i) {
+        for (size_t i = 0; i < dirList.size(); ++i) {
             if (!found && dirList[i] == 0) {        // Case: Up
                 if (getNodeUp(curr, 2)->getStatus() == true) {
                     curr = getNodeUp(curr, 2);
