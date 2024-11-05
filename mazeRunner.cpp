@@ -71,8 +71,10 @@ int main(int argc, char* argv[]) {
                     }
                     // Flatten terrain for base program
                     if (!enhancementMode) {
+                        cout << "Flattening Terrain" << endl;
                         maze->flattenTerrain(*basePoint);
                     }
+                    cout << "Placing Maze" << endl;
                     maze->placeMaze(*basePoint);
                     hasBuilt = true;
                 }
