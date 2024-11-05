@@ -37,6 +37,14 @@ class MazeNode {
         bool getTerrain();
         MazeNode* getPrevNode();
 
+        void mark();
+        void checkWall();
+        void resetNode();
+        bool getUp();
+        bool getDown();
+        bool getLeft();
+        bool getRight();
+
         // Get a random direction from available directions
         // 0 = UP, 1 = DOWN, 2 = LEFT, 3 = RIGHT
         int getRandomDirection();

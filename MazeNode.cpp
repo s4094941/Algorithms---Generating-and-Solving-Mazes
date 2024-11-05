@@ -128,3 +128,37 @@ void MazeNode::placeNode(mcpp::Coordinate currentCoordinates, mcpp::BlockType bl
         // mc.setBlock();
     }
 }
+
+
+bool MazeNode::getUp() {
+    return up;
+}
+bool MazeNode::getDown() {
+    return down;
+}
+bool MazeNode::getLeft() {
+    return left;
+}
+bool MazeNode::getRight() {
+    return right;
+}
+void MazeNode::checkWall() {
+    if (isWall) {
+        explored = true;
+    }
+}
+
+void MazeNode::mark() {
+    explored = true;
+}
+
+void MazeNode::resetNode() {
+    up = false;
+    down = false;
+    left = false;
+    right = false;
+    explored = false;
+    prevNode = nullptr;
+    dirCount = 4;
+    explored = false;
+}

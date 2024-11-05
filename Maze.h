@@ -5,6 +5,9 @@
 #include <mcpp/mcpp.h>
 #include <memory>
 #include <thread>
+#include <stack>
+#include <vector>
+#include <algorithm>
 using mcpp::Coordinate;
 
 class Maze {
@@ -42,6 +45,28 @@ class Maze {
         std::unique_ptr<blockNode> newestNode;
         blockNode* currentNode;
 
+
+
+        // NEW ================================
+        std::mt19937 gen;
+
+        MazeNode* getNodeUp(MazeNode*, int);
+        MazeNode* getNodeDown(MazeNode*, int);
+        MazeNode* getNodeLeft(MazeNode*, int);
+        MazeNode* getNodeRight(MazeNode*, int);
+
+        bool checkNodeUp(MazeNode*, int);
+        bool checkNodeDown(MazeNode*, int);
+        bool checkNodeLeft(MazeNode*, int);
+        bool checkNodeRight(MazeNode*, int);
+
+        void checkEdge(MazeNode*);
+        MazeNode* findStartPoint();
+        MazeNode* findIsolatedNode(bool);
+        MazeNode* correctNodePos(MazeNode*);
+        MazeNode* probePath(MazeNode*, bool&);
+        MazeNode* probeWall(MazeNode*, bool&);
+
     public:
         // Constructor
         Maze(int, int, bool, bool, Coordinate);
@@ -68,6 +93,14 @@ class Maze {
 
         // void placeMaze();
         void solveManually(Coordinate* basePoint);
+
+
+        // NEW ================================
+        void resetAll();
+        void floodFill(MazeNode*);
+        void connectIsolatedNodes();
+        void breakLoops();
+        void validateMaze();
 
         // Destructor
         ~Maze();
