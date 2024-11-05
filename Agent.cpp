@@ -60,19 +60,19 @@ void Agent::rightHandFollow(bool mode) {
     // If -testing mode flag is enabled
     if (mode) {
         if (mc.getBlock(Coordinate(this->startLoc.x + 1, this->startLoc.y, 
-                this->startLoc.z))  != Blocks::ACACIA_WOOD_PLANK) {
+                this->startLoc.z)) != Blocks::ACACIA_WOOD_PLANK) {
             currOrientation = X_PLUS;
         }
         else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
-                this->startLoc.z + 1))  != Blocks::ACACIA_WOOD_PLANK) {
+                this->startLoc.z + 1)) != Blocks::ACACIA_WOOD_PLANK) {
             currOrientation = Z_PLUS;
         }
         else if (mc.getBlock(Coordinate(this->startLoc.x - 1, this->startLoc.y,
-                this->startLoc.z))  != Blocks::ACACIA_WOOD_PLANK) {
+                this->startLoc.z)) != Blocks::ACACIA_WOOD_PLANK) {
             currOrientation = X_MINUS;
         }
         else if (mc.getBlock(Coordinate(this->startLoc.x, this->startLoc.y, 
-                this->startLoc.z + 1))  != Blocks::ACACIA_WOOD_PLANK) {
+                this->startLoc.z + 1)) != Blocks::ACACIA_WOOD_PLANK) {
             currOrientation = Z_MINUS;
         }
         else {
