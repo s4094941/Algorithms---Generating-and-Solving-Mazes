@@ -682,10 +682,8 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
     mcpp::BlockType const AIR(0);
     mcpp::BlockType const BLUE_CARPET(171,11);
     blockNode* blockHistory;
-    mcpp::BlockType const BLUE_CARPET(171,11);
-    // blockNode* blockHistory;
     bool allRemoved = false;
-    if (BLUE_CARPET != NULL) {};    
+    // if (BLUE_CARPET != NULL) {};    
 // REMOVE MAZE (Look through Jonas array, remove if wall)
     for (int i = basePoint.x; i < basePoint.x + col && !allRemoved; ++i) {
 
