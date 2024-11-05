@@ -558,14 +558,14 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
         if (this->enhancementMode) {
             if (!maze[0][i]->getWall() && !maze[0][i]->getTerrain()) {
                 entrance.x = basePoint.x + i;
+                entrance.y = basePoint.y;
                 entrance.z = basePoint.z - 1;
-                entrance.y = mc.getHeight(entrance.x, entrance.z) + 1;
                 
                 entranceLocated = true;
             } else if (!maze[col - 1][i]->getWall() && !maze[col - 1][i]->getTerrain()) {
                 entrance.x = basePoint.x + i;
+                entrance.y = basePoint.y;
                 entrance.z = basePoint.z + row;
-                entrance.y = mc.getHeight(entrance.x, entrance.z) + 1;
 
                 entranceLocated = true;
             }
@@ -578,7 +578,7 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
                 // entrance.y = mc.getHeight(entrance.x, entrance.z) + 1;
 
                 entranceLocated = true;
-            } else if (!maze[col - 1][i]->getWall()) {
+            } else if (!maze[row - 1][i]->getWall()) {
                 entrance.x = basePoint.x + i;
                 entrance.y = basePoint.y;
                 entrance.z = basePoint.z + row;
