@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
     string generateMenuOption = "";
     string solveMenuOption = "";
     string cmdLineArg = "";
-    string doneStr = "";
+    string doneStr = "done";
     bool mode = NORMAL_MODE;
     bool enhancementMode = false;
     bool hasBuilt = false;
@@ -106,8 +106,17 @@ int main(int argc, char* argv[]) {
                         maze->restoreTerrain(*basePoint);
                         hasBuilt = false;
                     }
-                    printNavigateMessage();
-                    cin >> doneStr;
+                    if (mode == TESTING_MODE) {
+                        mc.setPlayerPosition(Coordinate(4848, 71, 4369));
+                    }
+                    else {
+                        printNavigateMessage();
+                        cin >> doneStr;
+                        if (doneStr != "done") {
+                            printInputErrorDoneMessage();
+                        }
+                    }
+
                     if (doneStr == "done") {
                         printLengthAndWidthMessage();
                         cin >> length >> width;
@@ -156,9 +165,6 @@ int main(int argc, char* argv[]) {
                         
                         hasGenerated = true;
                         curState = ST_Main;
-                    }
-                    else {
-                        printInputErrorDoneMessage();
                     }
                     curState = ST_Main;
                 }
