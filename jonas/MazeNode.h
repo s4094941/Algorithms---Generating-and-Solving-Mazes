@@ -15,11 +15,11 @@ class MazeNode {
 
         // Mutators
         void setWall(bool);
-        void checkWall();
         void setExplored(bool);
         void setPrevNode(MazeNode*);
 
         // Mark invalid directions
+        void mark();
         void markUp();
         void markDown();
         void markLeft();

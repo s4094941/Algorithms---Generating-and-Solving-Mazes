@@ -14,10 +14,8 @@ void MazeNode::setWall (bool status) {
         explored = false;
     }
 }
-void MazeNode::checkWall() {
-    if (isWall) {
-        explored = true;
-    }
+void MazeNode::mark() {
+    explored = true;
 }
 void MazeNode::setExplored(bool status) {
     explored = status;
