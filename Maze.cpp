@@ -382,36 +382,36 @@ void Maze::generateTestMaze() {
 }
 
 // Generate maze using user input
-void Maze::buildMaze() {
-    std::cout << "'x' for wall, '.' for empty space.";
-    std::cout << "Note: Entering q will fill the remaining structure with walls." << std::endl;
-    std::cout << "Construct your [" << row << " x " << col << "] structure:" << std::endl;
-    bool quitState = false;
-    char currChar = ' ';
-    for (int i = 0; i < row; ++i) {
-        for (int j = 0; j < col; ++j) {
-            if (!quitState) {
-                std::cin >> currChar;
-                if (currChar == 'x') {
-                    maze[i][j]->setWall(true);
-                } else if (currChar == '.') {
-                    maze[i][j]->setExplored(true);
-                } else if (currChar == 'q') {
-                    maze[i][j]->setWall(true);
-                    std::cout << "filling in remaining structure with walls." << std::endl;
-                    quitState = true;
-                } else {
-                    maze[i][j]->setWall(true);
-                    std::cout << "invalid char at [" << i << "][" << j << "]. Defaulted to x" << std::endl;
-                }
-            } else {
-                maze[i][j]->setWall(true);
-            }
+// void Maze::buildMaze() {
+//     std::cout << "'x' for wall, '.' for empty space.";
+//     std::cout << "Note: Entering q will fill the remaining structure with walls." << std::endl;
+//     std::cout << "Construct your [" << row << " x " << col << "] structure:" << std::endl;
+//     bool quitState = false;
+//     char currChar = ' ';
+//     for (int i = 0; i < row; ++i) {
+//         for (int j = 0; j < col; ++j) {
+//             if (!quitState) {
+//                 std::cin >> currChar;
+//                 if (currChar == 'x') {
+//                     maze[i][j]->setWall(true);
+//                 } else if (currChar == '.') {
+//                     maze[i][j]->setExplored(true);
+//                 } else if (currChar == 'q') {
+//                     maze[i][j]->setWall(true);
+//                     std::cout << "filling in remaining structure with walls." << std::endl;
+//                     quitState = true;
+//                 } else {
+//                     maze[i][j]->setWall(true);
+//                     std::cout << "invalid char at [" << i << "][" << j << "]. Defaulted to x" << std::endl;
+//                 }
+//             } else {
+//                 maze[i][j]->setWall(true);
+//             }
 
-        }
-    }
+//         }
+//     }
 
-}
+// }
 
 // Print all nodes in terminal
 void Maze::printMaze() {
@@ -659,7 +659,7 @@ void Maze::restoreTerrain(mcpp::Coordinate basePoint) {
     mcpp::MinecraftConnection mc;
     mcpp::Coordinate removeBlock;
     mcpp::BlockType const AIR(0);
-    mcpp::BlockType const BLUE_CARPET(171,11);
+    //mcpp::BlockType const BLUE_CARPET(171,11);
     // blockNode* blockHistory;
     bool allRemoved = false;
     
@@ -839,8 +839,6 @@ void Maze::buildMaze() {
 
         }
     }
-    resetAll();
-    printMaze();
 }
 
 // Resets all variables to their base values, except row, column, and wall values
