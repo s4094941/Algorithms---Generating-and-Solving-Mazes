@@ -44,6 +44,16 @@ Maze::Maze(int length, int width, bool testMode, bool enhancementMode, Coordinat
         }
     }
 
+    if (enhancementMode) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (maze[i][j]->getTerrain()) {
+                    maze[i][j]->setTerrain(false);
+                }
+            }
+        }
+    }
+
     // If user selects enhancement mode option from the menu
     if (this->enhancementMode) {
         this->scanTerrain(basePoint);
@@ -323,11 +333,6 @@ void Maze::generateRandomMaze() {
             }
             currNode = checkDirection(currNode, dir);
         }
-    }
-
-    // Cleaup if requred to fill in any maze wall blocks
-    if (this->enhancementMode) {
-        this->checkUnexploredArea();
     }
     printMaze();
 }
