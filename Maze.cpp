@@ -859,6 +859,17 @@ void Maze::resetAll() {
     }
 }
 
+// Marks all non-wall nodes as explored
+void Maze::exploreAll() {
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            if (!maze[i][j]->getWall()) {
+                maze[i][j]->mark();
+            }
+        }
+    }
+}
+
 // Marks invalid directions to check for all nodes in the maze (POTENTIALLY UNNECESSARY WITH NEW ROW/COL CHECKS)
 void Maze::checkEdge(MazeNode* node) {
     if (node->getRow() == 0 || node->getRow() == 1) {
