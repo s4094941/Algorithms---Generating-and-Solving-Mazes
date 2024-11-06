@@ -107,6 +107,7 @@ int main(int argc, char* argv[]) {
                         hasBuilt = false;
                     }
                     if (mode == TESTING_MODE) {
+                        cout << "Teleported to: (4848, 71, 4369)" << endl;
                         mc.setPlayerPosition(Coordinate(4848, 71, 4369));
                     }
                     else {
