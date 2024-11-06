@@ -320,6 +320,7 @@ int main(int argc, char* argv[]) {
     }
     catch (exception& excpt) {
         cout << excpt.what() << endl;
+        cout << "Make sure the player is on the server" << endl;
     }
 
     if (basePoint != nullptr) {
