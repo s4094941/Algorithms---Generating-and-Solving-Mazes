@@ -772,8 +772,20 @@ void Maze::solveManually(Coordinate* basePoint) {
 
     // If -testing mode flag is enabled
     if (this->testMode) {
-        airLoc.z += this->row - 2 + basePoint->z;
-        airLoc.x += this->col - 2 + basePoint->x;
+        for (int i = this->row - 1; (i >= 0) && !foundRandAir; i--) {
+            for (int j = this->col - 1; (j >= 0) && !foundRandAir; j--) {
+                if (this->maze[i][j]->getStatus()) {
+                    airLoc.z = i + basePoint->z;
+                    airLoc.x = j + basePoint->x;
+
+                    /*
+                     * Break out of both loops when found to avoid redundant 
+                     * checking
+                     */
+                    foundRandAir = true;
+                }
+            }
+        }
     }
     else {
         for (int i = 0; i < this->row; i++) {
@@ -801,10 +813,6 @@ void Maze::solveManually(Coordinate* basePoint) {
                     airLoc.z = i + basePoint->z;
                     airLoc.x = j + basePoint->x;
 
-                    /*
-                     * Break out of both loops when found to avoid redundant 
-                     * checking
-                     */
                     foundRandAir = true;
                 }
             }
