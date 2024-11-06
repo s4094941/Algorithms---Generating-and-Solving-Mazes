@@ -1,0 +1,154 @@
+
+Welcome to MineCraft MazeRunner!
+--------------------------------
+
+------------- MAIN MENU -------------
+1) Generate Maze
+2) Build Maze in MineCraft
+3) Solve Maze
+4) Show Team Information
+5) Exit
+
+Enter Menu item to continue: 
+
+------------- GENERATE MAZE -------------
+1) Read Maze from terminal
+2) Generate Random Maze
+3) Enhancement 1 - Generate Random Maze Without Flattening Terrain
+4) Back
+
+Enter Menu item to continue: 
+Teleported to: (4848, 71, 4369)
+Enter the length and width of maze:
+BasePoint: (4848, 71, 4369)
+Enter the maze structure:
+'x' for wall, '.' for empty space.
+Note: Entering q will fill the remaining structure with walls.
+invalid char at [0][0]. Defaulted to x
+invalid char at [0][1]. Defaulted to x
+invalid char at [0][2]. Defaulted to x
+invalid char at [0][3]. Defaulted to x
+invalid char at [0][4]. Defaulted to x
+invalid char at [0][5]. Defaulted to x
+invalid char at [0][6]. Defaulted to x
+invalid char at [0][7]. Defaulted to x
+invalid char at [0][8]. Defaulted to x
+invalid char at [0][9]. Defaulted to x
+invalid char at [0][11]. Defaulted to x
+invalid char at [0][12]. Defaulted to x
+invalid char at [1][0]. Defaulted to x
+invalid char at [1][2]. Defaulted to x
+invalid char at [1][3]. Defaulted to x
+invalid char at [1][4]. Defaulted to x
+invalid char at [1][5]. Defaulted to x
+invalid char at [1][6]. Defaulted to x
+invalid char at [1][8]. Defaulted to x
+invalid char at [1][9]. Defaulted to x
+invalid char at [1][11]. Defaulted to x
+invalid char at [1][12]. Defaulted to x
+invalid char at [2][0]. Defaulted to x
+invalid char at [2][2]. Defaulted to x
+invalid char at [2][3]. Defaulted to x
+invalid char at [2][4]. Defaulted to x
+invalid char at [2][5]. Defaulted to x
+invalid char at [2][6]. Defaulted to x
+invalid char at [2][9]. Defaulted to x
+invalid char at [2][11]. Defaulted to x
+invalid char at [2][12]. Defaulted to x
+invalid char at [3][0]. Defaulted to x
+invalid char at [3][2]. Defaulted to x
+invalid char at [3][3]. Defaulted to x
+invalid char at [3][4]. Defaulted to x
+invalid char at [3][5]. Defaulted to x
+invalid char at [3][6]. Defaulted to x
+invalid char at [3][8]. Defaulted to x
+invalid char at [3][9]. Defaulted to x
+invalid char at [3][11]. Defaulted to x
+invalid char at [3][12]. Defaulted to x
+invalid char at [4][0]. Defaulted to x
+invalid char at [4][1]. Defaulted to x
+invalid char at [4][2]. Defaulted to x
+invalid char at [4][3]. Defaulted to x
+invalid char at [4][4]. Defaulted to x
+invalid char at [4][5]. Defaulted to x
+invalid char at [4][6]. Defaulted to x
+invalid char at [4][7]. Defaulted to x
+invalid char at [4][8]. Defaulted to x
+invalid char at [4][9]. Defaulted to x
+invalid char at [4][11]. Defaulted to x
+invalid char at [4][12]. Defaulted to x
+invalid char at [5][0]. Defaulted to x
+invalid char at [5][2]. Defaulted to x
+invalid char at [5][4]. Defaulted to x
+invalid char at [5][5]. Defaulted to x
+invalid char at [5][6]. Defaulted to x
+invalid char at [5][8]. Defaulted to x
+invalid char at [5][9]. Defaulted to x
+invalid char at [5][11]. Defaulted to x
+invalid char at [5][12]. Defaulted to x
+invalid char at [6][0]. Defaulted to x
+invalid char at [6][2]. Defaulted to x
+invalid char at [6][4]. Defaulted to x
+invalid char at [6][5]. Defaulted to x
+invalid char at [6][6]. Defaulted to x
+invalid char at [6][8]. Defaulted to x
+invalid char at [6][9]. Defaulted to x
+invalid char at [6][11]. Defaulted to x
+invalid char at [6][12]. Defaulted to x
+invalid char at [7][0]. Defaulted to x
+invalid char at [7][2]. Defaulted to x
+invalid char at [7][4]. Defaulted to x
+invalid char at [7][5]. Defaulted to x
+invalid char at [7][6]. Defaulted to x
+invalid char at [7][8]. Defaulted to x
+invalid char at [8][0]. Defaulted to x
+invalid char at [8][1]. Defaulted to x
+invalid char at [8][2]. Defaulted to x
+invalid char at [8][3]. Defaulted to x
+invalid char at [8][4]. Defaulted to x
+invalid char at [8][5]. Defaulted to x
+invalid char at [8][6]. Defaulted to x
+invalid char at [8][7]. Defaulted to x
+invalid char at [8][8]. Defaulted to x
+invalid char at [8][9]. Defaulted to x
+invalid char at [8][11]. Defaulted to x
+invalid char at [8][12]. Defaulted to x
+Maze read successfully
+**Printing Maze**
+Structure:
+xxxxxxxxxxxxx
+x.xxxxx.xxxxx
+x.xxxxx.xxxxx
+x.xxxxx.xxxxx
+xxxxxxxxxxxxx
+x.x.xxx.xxxxx
+x.x.xxx.xxxxx
+x.x.xxx.x...x
+xxxxxxxxxxxxx
+**End Printing Maze**
+Enhancement 3 - Would you like to validate the maze?
+This will remove all loops and connect isolated nodes to the main path.
+[y]: yes	[n]: no
+
+Maze will not be validated.
+xxxxxxxxxxxxx
+x.xxxxx.xxxxx
+x.xxxxx.xxxxx
+x.xxxxx.xxxxx
+xxxxxxxxxxxxx
+x.x.xxx.xxxxx
+x.x.xxx.xxxxx
+x.x.xxx.x...x
+xxxxxxxxxxxxx
+
+------------- MAIN MENU -------------
+1) Generate Maze
+2) Build Maze in MineCraft
+3) Solve Maze
+4) Show Team Information
+5) Exit
+
+Enter Menu item to continue: 
+
+The End!
+

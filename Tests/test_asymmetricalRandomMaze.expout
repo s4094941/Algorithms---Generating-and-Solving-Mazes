@@ -1,0 +1,70 @@
+
+Welcome to MineCraft MazeRunner!
+--------------------------------
+
+------------- MAIN MENU -------------
+1) Generate Maze
+2) Build Maze in MineCraft
+3) Solve Maze
+4) Show Team Information
+5) Exit
+
+Enter Menu item to continue: 
+
+------------- GENERATE MAZE -------------
+1) Read Maze from terminal
+2) Generate Random Maze
+3) Enhancement 1 - Generate Random Maze Without Flattening Terrain
+4) Back
+
+Enter Menu item to continue: 
+Teleported to: (4848, 71, 4369)
+Enter the length and width of maze:
+Maze generated successfully
+**Printing Maze**
+BasePoint: (4848, 71, 4369)
+Structure:
+xxxxxxxxxxxxxxx
+..............x
+xxxxxxxxxxxxx.x
+x...x...x...x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x.x.x.x.x.x.x
+x.x...x...x...x
+xxxxxxxxxxxxxxx
+**End Printing Maze**
+
+------------- MAIN MENU -------------
+1) Generate Maze
+2) Build Maze in MineCraft
+3) Solve Maze
+4) Show Team Information
+5) Exit
+
+Enter Menu item to continue: 
+
+The End!
+

@@ -99,6 +99,7 @@ class Maze {
 
         // NEW ================================
         void resetAll();
+        void exploreAll();
         void floodFill(MazeNode*);
         void connectIsolatedNodes();
         void breakLoops();

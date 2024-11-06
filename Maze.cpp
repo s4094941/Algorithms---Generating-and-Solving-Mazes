@@ -44,6 +44,16 @@ Maze::Maze(int length, int width, bool testMode, bool enhancementMode, Coordinat
         }
     }
 
+    if (enhancementMode) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (maze[i][j]->getTerrain()) {
+                    maze[i][j]->setTerrain(false);
+                }
+            }
+        }
+    }
+
     // If user selects enhancement mode option from the menu
     if (this->enhancementMode) {
         this->scanTerrain(basePoint);
@@ -323,11 +333,6 @@ void Maze::generateRandomMaze() {
             }
             currNode = checkDirection(currNode, dir);
         }
-    }
-
-    // Cleaup if requred to fill in any maze wall blocks
-    if (this->enhancementMode) {
-        this->checkUnexploredArea();
     }
     printMaze();
 }
@@ -766,8 +771,20 @@ void Maze::solveManually(Coordinate* basePoint) {
 
     // If -testing mode flag is enabled
     if (this->testMode) {
-        airLoc.z += this->row - 2 + basePoint->z;
-        airLoc.x += this->col - 2 + basePoint->x;
+        for (int i = this->row - 1; (i >= 0) && !foundRandAir; i--) {
+            for (int j = this->col - 1; (j >= 0) && !foundRandAir; j--) {
+                if (this->maze[i][j]->getStatus()) {
+                    airLoc.z = i + basePoint->z;
+                    airLoc.x = j + basePoint->x;
+
+                    /*
+                     * Break out of both loops when found to avoid redundant 
+                     * checking
+                     */
+                    foundRandAir = true;
+                }
+            }
+        }
     }
     else {
         for (int i = 0; i < this->row; i++) {
@@ -795,17 +812,13 @@ void Maze::solveManually(Coordinate* basePoint) {
                     airLoc.z = i + basePoint->z;
                     airLoc.x = j + basePoint->x;
 
-                    /*
-                     * Break out of both loops when found to avoid redundant 
-                     * checking
-                     */
                     foundRandAir = true;
                 }
             }
         }
     }
     airLoc.y = mc.getHeight(airLoc.x, airLoc.z);
-    cout << "Teleported to: (4855, 71, 4378)" << endl;
+    cout << "Teleported to: " << "(" << airLoc.x << ", " << airLoc.y << ", " << airLoc.z << ")" << endl;
     mc.setPlayerTilePosition(airLoc);
 
     // Give enough time for the player to load
@@ -849,6 +862,17 @@ void Maze::resetAll() {
         for (int j = 0; j < col; ++j) {
             maze[i][j]->resetNode();
             checkEdge(maze[i][j]);
+        }
+    }
+}
+
+// Marks all non-wall nodes as explored
+void Maze::exploreAll() {
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) {
+            if (!maze[i][j]->getWall()) {
+                maze[i][j]->mark();
+            }
         }
     }
 }

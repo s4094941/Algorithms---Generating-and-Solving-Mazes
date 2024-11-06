@@ -1,0 +1,6 @@
+Failed to connect to the server. Check if the server is running.
+Make sure the player is on the server
+
+Server failed to execute command: player.getPos()
+
+Make sure the player is on the server

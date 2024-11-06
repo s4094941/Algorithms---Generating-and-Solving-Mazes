@@ -35,11 +35,16 @@
 *.DS_Store
 *.dSYM
 *.dSYM/
-.vscode/
 
-# Windows specific
+# Person specific
+.vscode/
+jonas/
+alex/
+caiden/
+jonas/
+
+# Object files
 Agent
 Maze
 mazeRunner
 MazeNode
-jonas/test
