@@ -144,7 +144,8 @@ int main(int argc, char* argv[]) {
                         printStartMazeMessage();
                         printStructureMessage();
                         
-                        maze->resetAll();   
+                        maze->resetAll();
+                        maze->exploreAll();   
                         maze->printMaze();
                         
                         printEndMazeMessage();
@@ -159,10 +160,12 @@ int main(int argc, char* argv[]) {
                             maze->validateMaze();
                             std::cout << "\nMaze after validation:" << std::endl;
                             maze->resetAll();
+                            maze->exploreAll();
                             maze->printMaze();
                         } else {
                             std::cout << "\nMaze will not be validated." << std::endl;
                             maze->resetAll();
+                            maze->exploreAll();
                             maze->printMaze();
                         }
                         
