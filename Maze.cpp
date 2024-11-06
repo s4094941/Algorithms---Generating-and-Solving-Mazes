@@ -496,7 +496,6 @@ void Maze::placeMaze(mcpp::Coordinate basePoint) {
  * Begin Building Maze
  * If alphabet (x), place
  * If symbol (.), do nothing
- * [Test cases for other character done by generation?]
 */
     mcpp::Coordinate placeWall;
     mcpp::Coordinate entrance;

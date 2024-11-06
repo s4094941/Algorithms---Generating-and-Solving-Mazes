@@ -298,7 +298,7 @@ void Agent::BFS() {
     mazeNodes.push(playerPos);
     visited.insert(playerPos);
 
-    // Loop while there are nodes to explore, {{and currentNode doesn't have a blue carpet}} ADD THIS LATER
+    // Loop while there are nodes to explore
     while (!mazeNodes.empty() && mc.getBlock(currentNode) != BLUE_CARPET) {
         // Checks start of queue, and removes the start of queue node
         currentNode = mazeNodes.front();
