@@ -806,7 +806,7 @@ void Maze::solveManually(Coordinate* basePoint) {
         }
     }
     airLoc.y = mc.getHeight(airLoc.x, airLoc.z);
-    cout << "Teleported to: " << "(" << basePoint->x << ", " << basePoint->y << ", " << basePoint->z << ")" << endl;
+    cout << "Teleported to: " << "(" << airLoc.x << ", " << airLoc.y << ", " << airLoc.z << ")" << endl;
     mc.setPlayerTilePosition(airLoc);
 
     // Give enough time for the player to load
