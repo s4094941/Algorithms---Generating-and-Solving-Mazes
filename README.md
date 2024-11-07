@@ -12,19 +12,22 @@ Runing in test mode
 - Run ```./mazeRunner -testmode``` in a unix terminal
 
 Assumptions:
-- Solving Manually: Solving manually can only occur after a maze has been generated and built.
--     The random location within a maze is chosen via the set of all air blocks in one y-coord level within a maze, rather than the set of all blocks within a maze in one y-coord level. Meaning the algorithm does not just loop naively until a random air block is found.
+Solving Manually:
+- Solving manually can only occur after a maze has been generated and built.
+- The random location within a maze is chosen via the set of all air blocks in one y-coord level within a maze, rather than the set of all blocks within a maze in one y-coord level. Meaning the algorithm does not just loop naively until a random air block is found.
 
-- Placing the Maze: Minecraft blocks that are unaccessible by the mcpp library will not be in the terrain upon building.
--     Blocks that occupy more than one coordinate will not be in the terrain.
+Placing the Maze:
+- Minecraft blocks that are unaccessible by the mcpp library will not be in the terrain upon building.
+- Blocks that occupy more than one coordinate will not be in the terrain.
 
-- Show Escape Route: Showing the escape route can only occur after a maze has been generated and built.
--     The player has to be inside the maze and the blue carpet marking the exit is one block out of the maze (where an edge of a maze could go).
--     Also assume that the lime carpet can be oriented in any way, such that the 'player's right hand' is facing a wall.
+Show Escape Route:
+- Showing the escape route can only occur after a maze has been generated and built.
+- The player has to be inside the maze and the blue carpet marking the exit is one block out of the maze (where an edge of a maze could go).
+- Also assume that the lime carpet can be oriented in any way, such that the 'player's right hand' is facing a wall.
 
 Maze Generation:
-    Row and column must both be positive odd integers. If a value below 3 is passed, it will be converted to 3.
-    Any even values will have 1 added to them such that they are odd.
+- Row and column must both be positive odd integers. If a value below 3 is passed, it will be converted to 3.
+- Any even values will have 1 added to them such that they are odd.
 
 A maze is built up of wall nodes, path nodes, and path connection nodes.
 - Only one exit node can exist, which is a path node on the outer edge of the maze.
@@ -52,8 +55,6 @@ Enhancement 3:
 - If multiple entry points detected, only first one will count. Any additionals will be turned to wall.
 - If isolated wall is found in a node connection (odd x even or even x odd), it will correct itself to an odd x odd node
 - If multiple walls are between an isolated path node and the main path, the program will randomly tunnel through walls until they connect
-
-
 
 Enhancements:
 - Are available through the main menu options in this repository.
