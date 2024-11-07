@@ -52,4 +52,4 @@ Enhancements:
 - Are available through the main menu options in this repository.
 
 Video:
-- <insert link here>
+- <https://drive.google.com/file/d/1_YGdCiD0Jd5s2xXMyunJo3X82OqbUE2h/view>
