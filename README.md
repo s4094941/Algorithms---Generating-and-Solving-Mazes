@@ -9,18 +9,18 @@ Compiling and Running:
 - Run ```make && ./mazeRunner``` in a unix terminal
 
 Runing in test mode
-- Run ```./mazerunner -testmode``` in a unix terminal
+- Run ```./mazeRunner -testmode``` in a unix terminal
 
 Assumptions:
 - Solving Manually: Solving manually can only occur after a maze has been generated and built.
-- The random location within a maze is chosen via the set of all air blocks in one y-coord level within a maze, rather than the set of all blocks within a maze in one y-coord level. Meaning the algorithm does not just loop naively until a random air block is found.
+-     The random location within a maze is chosen via the set of all air blocks in one y-coord level within a maze, rather than the set of all blocks within a maze in one y-coord level. Meaning the algorithm does not just loop naively until a random air block is found.
 
 - Placing the Maze: Minecraft blocks that are unaccessible by the mcpp library will not be in the terrain upon building.
-- Blocks that occupy more than one coordinate will not be in the terrain.
+-     Blocks that occupy more than one coordinate will not be in the terrain.
 
 - Show Escape Route: Showing the escape route can only occur after a maze has been generated and built.
-- The player has to be inside the maze and the blue carpet marking the exit is one block out of the maze (where an edge of a maze could go).
-- Also assume that the lime carpet can be oriented in any way, such that the 'player's right hand' is facing a wall.
+-     The player has to be inside the maze and the blue carpet marking the exit is one block out of the maze (where an edge of a maze could go).
+-     Also assume that the lime carpet can be oriented in any way, such that the 'player's right hand' is facing a wall.
 
 Maze Generation:
     Row and column must both be positive odd integers. If a value below 3 is passed, it will be converted to 3.
