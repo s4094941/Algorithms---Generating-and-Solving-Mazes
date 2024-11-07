@@ -41,7 +41,7 @@ void printSolveMazeMenu() {
 void printTeamInfo() {
     cout << endl << "Team members:" << endl;
     cout << "\t [1] Alexander Davidson (s4089452@student.rmit.edu.au)" << endl;
-    cout << "\t [2] Caiden da Costa (s4904941@student.rmit.edu.au)" << endl;
+    cout << "\t [2] Caiden da Costa (s4094941@student.rmit.edu.au)" << endl;
     cout << "\t [3] Jonas Inocencio (s3787701@student.rmit.edu.au)" << endl;
     cout << endl;
 }
