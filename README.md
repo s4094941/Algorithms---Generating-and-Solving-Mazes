@@ -1,9 +1,9 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Jwdk2u8p)
 # cosc2804-assignment3-mazes-team03-sep24-veritas
 Team Member Allocations:
-- Alex: Maze Solving, E1 (Build Maze Without Flattening Terrain)
-- Caiden: Maze Building & Cleaning World, E2 (Find Shortest Path)
-- Jonas: Maze Generation, E3 (Validate User Input Maze)
+- Alexander Davidson (4089452) (GitHub user: Alex-D-4089452): Maze Solving, E1 (Build Maze Without Flattening Terrain)
+- Caiden da Costa (4094941) (GitHub user: s4094941): Maze Building & Cleaning World, E2 (Find Shortest Path)
+- Jonas Inocencio (3787701) (GitHub user: jonas-ino): Maze Generation, E3 (Validate User Input Maze)
 
 Compiling and Running:
 - Run ```make && ./mazeRunner``` in a unix terminal
